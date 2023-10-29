@@ -1,13 +1,14 @@
 package ra.model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import ra.model.Catalog;
 
-import static ra.service.impl.CatalogServiceIMPL.catalogList;
+import java.io.Serializable;
+
 import static ra.service.impl.ProductServiceIMPL.productList;
 
+
 public class Product implements Serializable {
-    private int newId = 1;
+    private static int newId = 1;
     private int productId;
     private String productName;
     private int categoryId;
@@ -26,7 +27,6 @@ public class Product implements Serializable {
     }
 
     public Product(int newId, int productId, String productName, int categoryId, String description, double unitPrice, int stock, boolean status, Catalog catalog) {
-        this.newId = newId;
         this.productId = productId;
         this.productName = productName;
         this.categoryId = categoryId;

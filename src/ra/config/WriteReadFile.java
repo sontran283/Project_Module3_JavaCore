@@ -51,7 +51,7 @@ public class WriteReadFile<T> {
                 ois.close();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("ko tim thay file");
+            System.out.println("Không tìm thấy file");
         } catch (IOException e) {
             System.out.println();
         } catch (ClassNotFoundException e) {

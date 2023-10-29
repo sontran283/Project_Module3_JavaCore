@@ -5,10 +5,9 @@ import ra.constant.RoleName;
 
 import java.io.Serializable;
 
-import static ra.service.impl.ProductServiceIMPL.productList;
-import static ra.service.impl.UserServiceIMPL.usersList;
 
 public class Users implements Serializable {
+    private boolean isAdmin;
     private int newId = 1;
     private int id;
     private String name;
@@ -19,11 +18,7 @@ public class Users implements Serializable {
     private RoleName role = RoleName.USER;
 
     public Users() {
-        if (usersList.isEmpty()) {
-            this.id = 1;
-        } else {
-            this.id = (productList.get(usersList.size() - 1).getProductId()) + 1;
-        }
+        this.id = newId++;
     }
 
     public Users(int id, String name, String username, String password, String email, boolean status, RoleName role) {
@@ -34,6 +29,17 @@ public class Users implements Serializable {
         this.email = email;
         this.status = status;
         this.role = role;
+
+        // Đặt giá trị cho trường isAdmin dựa trên role
+        this.isAdmin = role == RoleName.ADMIN;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public int getId() {

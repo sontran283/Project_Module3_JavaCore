@@ -21,11 +21,11 @@ public class catalogManagement {
             System.out.println(".======================================================================.");
             System.out.println("|                      --->> CATALOG MANAGER <<---                     |");
             System.out.println("|======================================================================|");
-            System.out.println("|                    1. Tạo mới danh mục                               |");
+            System.out.println("|                    1. Thêm mới danh mục                              |");
             System.out.println("|                    2. Hiển thị danh sách danh mục                    |");
             System.out.println("|                    3. Tìm kiếm danh mục theo tên                     |");
             System.out.println("|                    4. Chỉnh sửa thông tin danh mục                   |");
-            System.out.println("|                    5. Xoá danh mục theo mã danh mục                  |");
+            System.out.println("|                    5. Xoá danh mục theo mã ID                        |");
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================.");
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -81,7 +81,7 @@ public class catalogManagement {
     }
 
     private void searchCatalog() {
-        System.out.println("Mời nhập tên người dùng cần tìm: ");
+        System.out.println("Mời nhập tên danh mục cần tìm: ");
         String searchName = Config.scanner().nextLine();
         int count = 0;
         System.out.println("Danh sách danh mục cần tìm kiếm: ");
@@ -118,7 +118,7 @@ public class catalogManagement {
         int idDelete = Config.validateInt();
         Catalog catalogDelete = catalogService.findByID(idDelete);
         if (catalogDelete == null) {
-            System.out.println("___ Không tồn tại danh mục theo ID " + idDelete + " vừa nhập ___");
+            System.out.println("___ Không tồn tại danh mục theo ID " + idDelete + " ___");
         } else {
             catalogService.delete(idDelete);
             System.out.println("Xóa danh mục thành công!");

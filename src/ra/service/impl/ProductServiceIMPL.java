@@ -12,7 +12,7 @@ public class ProductServiceIMPL implements IProductService {
     public static List<Product> productList;
 
     static {
-        productList = writeReadFile.readFile(WriteReadFile.PATH_CATALOG);
+        productList = writeReadFile.readFile(WriteReadFile.PATH_PRODUCT);
         productList = (productList == null) ? new ArrayList<>() : productList;
     }
 

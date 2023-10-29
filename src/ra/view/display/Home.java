@@ -1,6 +1,7 @@
 package ra.view.display;
 
 import ra.config.Config;
+import ra.config.Validate;
 import ra.constant.RoleName;
 import ra.model.Users;
 import ra.service.IUserService;
@@ -13,6 +14,14 @@ public class Home {
     public static Users userLogin;
 
     public void menuHome() {
+        if (userLogin != null) {
+            TypeMenu();
+        } else {
+            showMenu();
+        }
+    }
+
+    public void showMenu() {
         do {
             System.out.println("Danh sách người dùng: ");
             for (Users users : userService.findAll()) {
@@ -54,7 +63,6 @@ public class Home {
         String pass = Config.validateString();
 
         Users users = userService.checkLogin(name, pass);
-        // kiem tra
         if (users == null) {
             System.out.println("___ Sai tên tài khoản hoặc mật khẩu, mời nhập lại ___");
         } else {
@@ -116,7 +124,7 @@ public class Home {
 
         System.out.println("Nhập email: ");
         while (true) {
-            String email = Config.validateString();
+            String email = Validate.validateEmail();
             if (userService.existEmail(email)) {
                 System.out.println("___ Email đăng nhập đã tồn tại, mời nhập lại ___");
             } else {
@@ -128,5 +136,13 @@ public class Home {
         userService.save(users);
         System.out.println("Tạo tài khoản thành công!");
         login();
+    }
+
+    private void TypeMenu() {
+        if (userLogin.getRole().equals(RoleName.ADMIN)) {
+            new AdminManager().menuAdmin();
+        } else {
+            new UserManager().menuUser();
+        }
     }
 }

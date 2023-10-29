@@ -18,7 +18,7 @@ public class UserServiceIMPL implements IUserService {
         usersList = config.readFile(Config.PATH_USER);
         if (usersList == null) {
             usersList = new ArrayList<>();
-            usersList.add(new Users(0, "ADMIN", "admin", "11111111", "admin@gmail.com", true, RoleName.ADMIN));
+            usersList.add(new Users(1, "ADMIN", "admin", "11111111", "admin@gmail.com", true, RoleName.ADMIN));
             new UserServiceIMPL().updateData();
         }
     }

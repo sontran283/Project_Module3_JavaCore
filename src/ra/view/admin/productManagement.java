@@ -18,7 +18,7 @@ public class productManagement {
             System.out.println(".======================================================================.");
             System.out.println("|                      --->> PRODUCT MANAGER <<---                     |");
             System.out.println("|======================================================================|");
-            System.out.println("|                   1. Thêm mới 1 hoặc nhiều sản phẩm                  |");
+            System.out.println("|                   1. Thêm mới sản phẩm                               |");
             System.out.println("|                   2. Hiển thị danh sách sản phẩm                     |");
             System.out.println("|                   3. Chỉnh sửa thông tin sản phẩm                    |");
             System.out.println("|                   4. Xoá sản phẩm theo mã sản phẩm                   |");
@@ -59,7 +59,7 @@ public class productManagement {
             System.out.println("Sản phẩm thứ: " + (i + 1) + ", ");
             Product product = new Product();
 
-            // ten sp
+            // tên sp
             System.out.println("Nhập tên sản phẩm: ");
             product.setProductName(Config.scanner().nextLine());
 
@@ -78,9 +78,6 @@ public class productManagement {
                     System.out.println("___ Không có danh mục theo lựa chọn, mời nhập lại ___");
                 }
             }
-
-            System.out.println("Nhập tên sản phẩm: ");
-            product.setProductName(Config.scanner().nextLine());
 
             System.out.println("Nhập mô tả sản phẩm: ");
             product.setDescription(Config.scanner().nextLine());
@@ -107,52 +104,57 @@ public class productManagement {
         int idEdit = Config.validateInt();
         Product productedit = productService.findByID(idEdit);
 
-        System.out.println("1_ Sửa tên sản phẩm");
-        System.out.println("2_ Sửa danh mục sản phẩm");
-        System.out.println("3_ Sửa mô tả sản phẩm");
-        System.out.println("4_ Sửa đơn giá");
-        System.out.println("5_ Sửa số lượng trong kho");
-        int choice = Config.validateInt();
-        switch (choice) {
-            case 1:
-                System.out.println("Nhập tên mới: ");
-                productedit.setProductName(Config.scanner().nextLine());
-                System.out.println("Sửa tên thành công!");
-                break;
-            case 2:
-                System.out.println("Danh sách danh mục sản phẩm cần chọn: ");
-                for (int j = 0; j < catalogService.findAll().size(); j++) {
-                    System.out.println((j + 1) + ", " + catalogService.findAll().get(j).getCatalogName());
-                }
-                System.out.println("Mời chọn danh mục mới: ");
-                while (true) {
-                    int choiceEdit = Config.validateInt();
-                    if (choiceEdit >= 1 && choice <= catalogService.findAll().size()) {
-                        productedit.setCatalog(catalogService.findAll().get(choice - 1));
-                        break;
-                    } else {
-                        System.out.println("___ Không có danh mục theo lựa chọn, mời nhập lại ___");
+        if (productedit != null) {
+            System.out.println("1_ Sửa tên sản phẩm");
+            System.out.println("2_ Sửa danh mục sản phẩm");
+            System.out.println("3_ Sửa mô tả sản phẩm");
+            System.out.println("4_ Sửa đơn giá");
+            System.out.println("5_ Sửa số lượng trong kho");
+            int choice = Config.validateInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Nhập tên mới: ");
+                    productedit.setProductName(Config.scanner().nextLine());
+                    System.out.println("Sửa tên thành công!");
+                    break;
+                case 2:
+                    System.out.println("Danh sách danh mục sản phẩm cần chọn: ");
+                    for (int j = 0; j < catalogService.findAll().size(); j++) {
+                        System.out.println((j + 1) + ", " + catalogService.findAll().get(j).getCatalogName());
                     }
-                }
-                break;
-            case 3:
-                System.out.println("Nhập mô tả sản phẩm mới: ");
-                productedit.setDescription(Config.scanner().nextLine());
-                System.out.println("Sửa mô tả thành công!");
-                break;
-            case 4:
-                System.out.println("Nhập đơn giá mới: ");
-                productedit.setUnitPrice(Double.parseDouble(Config.scanner().nextLine()));
-                System.out.println("Sửa đơn giá thành công!");
-                break;
-            case 5:
-                System.out.println("Nhập mới số lượng hàng tồn kho: ");
-                productedit.setUnitPrice(Double.parseDouble(Config.scanner().nextLine()));
-                System.out.println("Sửa số lượng thành công!");
-                break;
-            default:
-                System.err.println("___ Nhập không hợp lệ, mời nhập lại ___");
-                break;
+                    System.out.println("Mời chọn danh mục mới: ");
+                    while (true) {
+                        int choiceEdit = Config.validateInt();
+                        if (choiceEdit >= 1 && choiceEdit <= catalogService.findAll().size()) {
+                            productedit.setCatalog(catalogService.findAll().get(choiceEdit - 1));
+                            break;
+                        } else {
+                            System.out.println("___ Không có danh mục theo lựa chọn, mời nhập lại ___");
+                        }
+                    }
+                    System.out.println("Sửa danh mục thành công!");
+                    break;
+                case 3:
+                    System.out.println("Nhập mô tả sản phẩm mới: ");
+                    productedit.setDescription(Config.scanner().nextLine());
+                    System.out.println("Sửa mô tả thành công!");
+                    break;
+                case 4:
+                    System.out.println("Nhập đơn giá mới: ");
+                    productedit.setUnitPrice(Double.parseDouble(Config.scanner().nextLine()));
+                    System.out.println("Sửa đơn giá thành công!");
+                    break;
+                case 5:
+                    System.out.println("Nhập mới số lượng hàng tồn kho: ");
+                    productedit.setStock(Integer.parseInt(Config.scanner().nextLine()));
+                    System.out.println("Sửa số lượng thành công!");
+                    break;
+                default:
+                    System.err.println("___ Nhập không hợp lệ, mời nhập lại ___");
+                    break;
+            }
+        } else {
+            System.out.println("___ Không tìm thấy sản phẩm có ID: " + idEdit + " ___");
         }
     }
 
