@@ -2,6 +2,7 @@ package ra.view.display;
 
 import ra.config.Config;
 import ra.config.Validate;
+import ra.config.WriteReadFile;
 import ra.constant.RoleName;
 import ra.model.Users;
 import ra.service.IUserService;
@@ -9,31 +10,27 @@ import ra.service.impl.UserServiceIMPL;
 import ra.view.admin.AdminManager;
 import ra.view.user.UserManager;
 
+import static ra.config.Color.*;
+
 public class Home {
     IUserService userService = new UserServiceIMPL();
     public static Users userLogin;
 
-    public void menuHome() {
-        if (userLogin != null) {
-            TypeMenu();
-        } else {
-            showMenu();
-        }
-    }
+    public static WriteReadFile<Users> config = new WriteReadFile<>();
 
-    public void showMenu() {
+    public void menuHome() {
         do {
             System.out.println("Danh sách người dùng: ");
             for (Users users : userService.findAll()) {
                 System.out.println(users);
             }
-            System.out.println(".======================================================================.");
+            System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                     --->> HELLO, WELCOME BACK <<---                  |");
             System.out.println("|======================================================================|");
-            System.out.println("|                             1. Đăng nhập                             |");
+            System.out.println(YELLOW + "|                             1. Đăng nhập                             |");
             System.out.println("|                             2. Đăng ký                               |");
             System.out.println("|                             0. Thoát                                 |");
-            System.out.println(".======================================================================.");
+            System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
             switch (Config.validateInt()) {
                 case 1:
@@ -46,7 +43,7 @@ public class Home {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại" + RESET);
                     break;
             }
         } while (true);
@@ -64,24 +61,33 @@ public class Home {
 
         Users users = userService.checkLogin(name, pass);
         if (users == null) {
-            System.out.println("___ Sai tên tài khoản hoặc mật khẩu, mời nhập lại ___");
+            System.out.println(RED + "Sai tên tài khoản hoặc mật khẩu, mời nhập lại" + RESET);
         } else {
-            // đúng tên tk với mk
-            if (users.getRole().equals(RoleName.ADMIN)) {
-                userLogin = users;
-                // chuyển trang quản lí với admin
-                System.out.println("Đăng nhập thành công");
-                new AdminManager().menuAdmin();
+            checkRoleLogin(users);
+        }
+    }
+
+    public void checkRoleLogin(Users users) {
+        // đúng tên tk với mk
+        if (users.getRole().equals(RoleName.ADMIN)) {
+            WriteReadFile<Users> config = new WriteReadFile<>();
+            config.writeFile(WriteReadFile.PATH_USER_LOGIN, users);
+
+            // chuyển trang quản lí với admin
+            System.out.println(YELLOW + "Đăng nhập thành công!" + RESET);
+            new AdminManager().menuAdmin();
+
+        } else {
+            if (users.isStatus()) {
+                WriteReadFile<Users> config = new WriteReadFile<>();
+                config.writeFile(WriteReadFile.PATH_USER_LOGIN, users); // ghi doi tuong users dang dang nhap vao file
+
+                // chuyển đến trang user
+                System.out.println(YELLOW + "Đăng nhập thành công!" + RESET);
+                new UserManager().menuUser();
 
             } else {
-                if (users.isStatus()) {
-                    userLogin = users;
-                    // chuyển đến trang user
-                    System.out.println("Đăng nhập thành công");
-                    new UserManager().menuUser();
-                } else {
-                    System.out.println("___ Tài khoản của bạn đã bị khoá ___ ");
-                }
+                System.out.println(RED + "Tài khoản của bạn đã bị khoá, vui lòng liên hệ quản trị viên" + RESET);
             }
         }
     }
@@ -102,7 +108,7 @@ public class Home {
         while (true) {
             String username = Config.validateString();
             if (userService.existUsername(username)) {
-                System.out.println("___ Tên đăng nhập đã tồn tại, mời nhập lại ___");
+                System.out.println(RED + "Tên đăng nhập đã tồn tại, mời nhập lại" + RESET);
             } else {
                 users.setUsername(username);
                 break;
@@ -118,7 +124,7 @@ public class Home {
             if (users.getPassword().equals(repeatPass)) {
                 break;
             } else {
-                System.out.println("___ Mật khẩu không trùng khớp, mời nhập lại ___");
+                System.out.println(RED + "Mật khẩu không trùng khớp, mời nhập lại" + RESET);
             }
         }
 
@@ -126,7 +132,7 @@ public class Home {
         while (true) {
             String email = Validate.validateEmail();
             if (userService.existEmail(email)) {
-                System.out.println("___ Email đăng nhập đã tồn tại, mời nhập lại ___");
+                System.out.println(RED + "Email đăng nhập đã tồn tại, mời nhập lại" + RESET);
             } else {
                 users.setEmail(email);
                 break;
@@ -134,15 +140,7 @@ public class Home {
         }
 
         userService.save(users);
-        System.out.println("Tạo tài khoản thành công!");
+        System.out.println(YELLOW + "Tạo tài khoản thành công!" + RESET);
         login();
-    }
-
-    private void TypeMenu() {
-        if (userLogin.getRole().equals(RoleName.ADMIN)) {
-            new AdminManager().menuAdmin();
-        } else {
-            new UserManager().menuUser();
-        }
     }
 }

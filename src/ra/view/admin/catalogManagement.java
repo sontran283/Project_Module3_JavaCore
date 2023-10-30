@@ -7,6 +7,9 @@ import ra.service.impl.*;
 
 import java.util.List;
 
+import static ra.config.Color.*;
+
+
 public class catalogManagement {
 
     ICatalogService catalogService = new CatalogServiceIMPL();
@@ -18,16 +21,16 @@ public class catalogManagement {
     public void menuCatalog() {
         int choice;
         do {
-            System.out.println(".======================================================================.");
+            System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                      --->> CATALOG MANAGER <<---                     |");
             System.out.println("|======================================================================|");
-            System.out.println("|                    1. Thêm mới danh mục                              |");
+            System.out.println(YELLOW + "|                    1. Thêm mới danh mục                              |");
             System.out.println("|                    2. Hiển thị danh sách danh mục                    |");
             System.out.println("|                    3. Tìm kiếm danh mục theo tên                     |");
             System.out.println("|                    4. Chỉnh sửa thông tin danh mục                   |");
             System.out.println("|                    5. Xoá danh mục theo mã ID                        |");
             System.out.println("|                    0. Quay lại                                       |");
-            System.out.println(".======================================================================.");
+            System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
             choice = Integer.parseInt(Config.scanner().nextLine());
             switch (choice) {
@@ -49,7 +52,7 @@ public class catalogManagement {
                 case 0:
                     return;
                 default:
-                    System.out.println("___ Lựa chọn không hợp lệ, mời chọn lại ___");
+                    System.out.println(RED + "Lựa chọn không hợp lệ, mời chọn lại" + RESET);
                     break;
             }
         } while (true);
@@ -118,10 +121,10 @@ public class catalogManagement {
         int idDelete = Config.validateInt();
         Catalog catalogDelete = catalogService.findByID(idDelete);
         if (catalogDelete == null) {
-            System.out.println("___ Không tồn tại danh mục theo ID " + idDelete + " ___");
+            System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
         } else {
             catalogService.delete(idDelete);
-            System.out.println("Xóa danh mục thành công!");
+            System.out.println(YELLOW + "Xóa danh mục thành công!" + RESET);
         }
     }
 }

@@ -1,8 +1,9 @@
 package ra.config;
 
 import java.io.*;
-import java.util.List;
 import java.util.Scanner;
+
+import static ra.config.Color.*;
 
 public class WriteReadFile<T> {
     public static final String PATH_CATALOG = "src/ra/data/catalog.dat";
@@ -11,6 +12,8 @@ public class WriteReadFile<T> {
     public static final String PATH_PRODUCT = "src/ra/data/product.dat";
     public static final String PATH_USER = "src/ra/data/user.dat";
     public static final String PATH_LOGIN = "src/ra/data/login.dat";
+    public static final String PATH_USER_LOGIN = "src/ra/data/userLogin.dat";
+
 
     public static Scanner scanner() {
         return new Scanner(System.in);

@@ -1,7 +1,8 @@
 package ra.config;
 
-import java.io.*;
 import java.util.Scanner;
+
+import static ra.config.Color.*;
 
 public class Config {
     public static final String PATH_CATALOG = "src/ra/data/catalog.dat";
@@ -23,7 +24,7 @@ public class Config {
                 n = Integer.parseInt(scanner().nextLine());
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("___ Sai định dạng, mời nhập lại ___");
+                System.out.println(RED + "Sai định dạng, mời nhập lại" + RESET);
             }
         }
         return n;
@@ -34,7 +35,7 @@ public class Config {
         while (true) {
             s = Config.scanner().nextLine();
             if (s.isEmpty()) {
-                System.out.println("___ Không được để trống, mời nhập lại ___");
+                System.out.println(RED + "Không được để trống, mời nhập lại" + RESET);
             } else {
                 break;
             }
@@ -49,7 +50,7 @@ public class Config {
             if (email.matches("[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@[a-z]+(\\.[a-z]+){1,2}")) {
                 break;
             } else {
-                System.out.println("___ Email không đúng định dạng, mời nhập lại ___");
+                System.out.println(RED + "Email không đúng định dạng, mời nhập lại" + RESET);
             }
         }
         return email;
@@ -62,7 +63,7 @@ public class Config {
             if (phoneNumber.matches("(0|\\+84)\\d{9}")) {
                 break;
             } else {
-                System.out.println("___ Số điện thoại không đúng định dạng, mời nhập lại ___");
+                System.out.println(RED + "Số điện thoại không đúng định dạng, mời nhập lại" + RESET);
             }
         }
         return phoneNumber;
@@ -75,7 +76,7 @@ public class Config {
             if (currency.matches("^[1-9]\\d{0,2}(,\\d{3})*?(\\.\\d{2})?$")) {
                 break;
             } else {
-                System.out.println("___ Số tiền không đúng định dạng, mời nhập lại ___");
+                System.out.println(RED + "Số tiền không đúng định dạng, mời nhập lại" + RESET);
             }
         }
         return currency;

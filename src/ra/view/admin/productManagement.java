@@ -5,6 +5,9 @@ import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
 
+import static ra.config.Color.*;
+
+
 public class productManagement {
     ICatalogService catalogService = new CatalogServiceIMPL();
     IProductService productService = new ProductServiceIMPL();
@@ -15,16 +18,16 @@ public class productManagement {
     public void menuProduct() {
         int choice;
         do {
-            System.out.println(".======================================================================.");
+            System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                      --->> PRODUCT MANAGER <<---                     |");
             System.out.println("|======================================================================|");
-            System.out.println("|                   1. Thêm mới sản phẩm                               |");
+            System.out.println(YELLOW + "|                   1. Thêm mới sản phẩm                               |");
             System.out.println("|                   2. Hiển thị danh sách sản phẩm                     |");
             System.out.println("|                   3. Chỉnh sửa thông tin sản phẩm                    |");
             System.out.println("|                   4. Xoá sản phẩm theo mã sản phẩm                   |");
             System.out.println("|                   5. Tìm kiếm sản phẩm theo tên                      |");
             System.out.println("|                   0. Quay lại                                        |");
-            System.out.println(".======================================================================.");
+            System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
             choice = Integer.parseInt(Config.scanner().nextLine());
             switch (choice) {
@@ -46,7 +49,7 @@ public class productManagement {
                 case 0:
                     return;
                 default:
-                    System.out.println("___ Lựa chọn không hợp lệ, mời chọn lại ___");
+                    System.out.println(RED + "Lựa chọn không hợp lệ, mời chọn lại" + RESET);
                     break;
             }
         } while (true);
@@ -75,7 +78,7 @@ public class productManagement {
                     product.setCatalog(catalogService.findAll().get(choice - 1));
                     break;
                 } else {
-                    System.out.println("___ Không có danh mục theo lựa chọn, mời nhập lại ___");
+                    System.out.println(RED + "Không có danh mục theo lựa chọn, mời nhập lại" + RESET);
                 }
             }
 
@@ -129,7 +132,7 @@ public class productManagement {
                             productedit.setCatalog(catalogService.findAll().get(choiceEdit - 1));
                             break;
                         } else {
-                            System.out.println("___ Không có danh mục theo lựa chọn, mời nhập lại ___");
+                            System.out.println(RED + "Không có danh mục theo lựa chọn, mời nhập lại" + RESET);
                         }
                     }
                     System.out.println("Sửa danh mục thành công!");
@@ -150,11 +153,11 @@ public class productManagement {
                     System.out.println("Sửa số lượng thành công!");
                     break;
                 default:
-                    System.err.println("___ Nhập không hợp lệ, mời nhập lại ___");
+                    System.err.println(RED + "Nhập không hợp lệ, mời nhập lại" + RESET);
                     break;
             }
         } else {
-            System.out.println("___ Không tìm thấy sản phẩm có ID: " + idEdit + " ___");
+            System.out.println(RED + "Không tìm thấy sản phẩm có ID: " + idEdit + " ___" + RESET);
         }
     }
 
@@ -165,12 +168,12 @@ public class productManagement {
         for (Product product : productService.findAll()) {
             if (product.getProductId() == idDelete) {
                 productService.delete(idDelete);
-                System.out.println("Xoá thành công!");
+                System.out.println(YELLOW+"Xoá thành công!"+RESET);
                 check = false;
             }
         }
         if (check) {
-            System.out.println("___ Không tìm thấy sản phẩm có ID: " + idDelete + " ___");
+            System.out.println(RED+"Không tìm thấy sản phẩm có ID: " + idDelete + " ___" +RESET);
         }
     }
 
