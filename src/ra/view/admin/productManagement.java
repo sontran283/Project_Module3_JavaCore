@@ -164,30 +164,27 @@ public class productManagement {
     private void deleteProduct() {
         System.out.println("Nhập ID sản phẩm cần xoá: ");
         int idDelete = Config.validateInt();
-        boolean check = true;
-        for (Product product : productService.findAll()) {
-            if (product.getProductId() == idDelete) {
-                productService.delete(idDelete);
-                System.out.println(YELLOW+"Xoá thành công!"+RESET);
-                check = false;
-            }
+        Product productDelete = productService.findByID(idDelete);
+        if (productDelete != null) {
+            productService.delete(idDelete);
+            System.out.println(YELLOW + "Xoá thành công" + RESET);
+            return;
         }
-        if (check) {
-            System.out.println(RED+"Không tìm thấy sản phẩm có ID: " + idDelete + " ___" +RESET);
-        }
+        System.out.println(RED + "Không tìm thấy sản phẩm có ID: " + idDelete + " ___" + RESET);
     }
 
     private void searchProduct() {
         System.out.println("Nhập tên sản phẩm muốn tìm: ");
-        String search = Config.scanner().nextLine();
+        String search = Config.scanner().nextLine().toLowerCase();
         int count = 0;
         System.out.println("Danh sách sản phẩm cần tìm: ");
         for (Product product : productService.findAll()) {
-            if (product.getProductName().contains(search)) {
+            if (product.getProductName().toLowerCase().contains(search)) {
                 System.out.println(product);
                 count++;
             }
         }
         System.out.printf("Tìm thấy %d sản phẩm theo từ khoá vừa nhập ", count);
+        System.out.println();
     }
 }

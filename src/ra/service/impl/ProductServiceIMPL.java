@@ -44,7 +44,7 @@ public class ProductServiceIMPL implements IProductService {
     public void delete(int id) {
         Product productDelete = findByID(id);
         productList.remove(productDelete);
-        writeReadFile.writeFile(WriteReadFile.PATH_PRODUCT, findAll());
+//        writeReadFile.writeFile(WriteReadFile.PATH_PRODUCT, findAll());
         updateData();
     }
 

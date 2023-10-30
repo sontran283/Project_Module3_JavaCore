@@ -1,6 +1,5 @@
 package ra.view.display;
 
-import ra.config.Config;
 import ra.config.WriteReadFile;
 import ra.model.Users;
 

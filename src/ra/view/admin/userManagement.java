@@ -6,6 +6,11 @@ import ra.model.Users;
 import ra.service.*;
 import ra.service.impl.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import static ra.config.Color.*;
 
 
@@ -59,19 +64,22 @@ public class userManagement {
     }
 
     private void showUser() {
+        List<Users> userList = new ArrayList<>(userService.findAll());
+        Collections.sort(userList, Comparator.comparing(Users::getUsername));
+
         System.out.println("Danh sách người dùng: ");
-        for (Users users : userService.findAll()) {
+        for (Users users : userList) {
             System.out.println(users);
         }
     }
 
     private void searchUser() {
         System.out.println("Mời nhập tên người dùng cần tìm: ");
-        String searchName = Config.scanner().nextLine();
+        String searchName = Config.scanner().nextLine().toLowerCase();
         int count = 0;
         System.out.println("Danh sách người dùng cần tìm kiếm");
         for (Users users : userService.findAll()) {
-            if (users.getUsername().contains(searchName)) {
+            if (users.getUsername().toLowerCase().contains(searchName)) {
                 System.out.println(users);
                 count++;
             }

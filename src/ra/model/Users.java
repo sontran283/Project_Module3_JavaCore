@@ -106,7 +106,7 @@ public class Users implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", status=" + status +
+                ", status=" + (status ? "Hoạt động" : "bị khoá") +
                 ", role=" + role +
                 '}';
     }

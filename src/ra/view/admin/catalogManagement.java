@@ -58,6 +58,7 @@ public class catalogManagement {
         } while (true);
     }
 
+
     private void addCatalog() {
         System.out.println("Nhập số lượng danh mục cần thêm: ");
         int n = Config.validateInt();
@@ -85,11 +86,11 @@ public class catalogManagement {
 
     private void searchCatalog() {
         System.out.println("Mời nhập tên danh mục cần tìm: ");
-        String searchName = Config.scanner().nextLine();
+        String searchName = Config.scanner().nextLine().toLowerCase();
         int count = 0;
         System.out.println("Danh sách danh mục cần tìm kiếm: ");
         for (Catalog catalog : catalogService.findAll()) {
-            if (catalog.getCatalogName().contains(searchName)) {
+            if (catalog.getCatalogName().toLowerCase().contains(searchName)) {
                 System.out.println(catalog);
                 count++;
             }

@@ -1,0 +1,91 @@
+package ra.view.user;
+
+import ra.config.Config;
+import ra.model.Product;
+import ra.service.ICatalogService;
+import ra.service.IProductService;
+import ra.service.impl.CatalogServiceIMPL;
+import ra.service.impl.ProductServiceIMPL;
+
+import java.util.Comparator;
+
+import static ra.config.Color.*;
+
+public class homePage {
+    ICatalogService catalogService = new CatalogServiceIMPL();
+    IProductService productService = new ProductServiceIMPL();
+
+    public void home() {
+        int choice;
+        do {
+            System.out.println(BLUE + ".======================================================================.");
+            System.out.println("|                        --->> HOME PAGE <<---                         |");
+            System.out.println("|======================================================================|");
+            System.out.println(YELLOW + "|                    1. Tìm kiếm sản phẩm                              |");
+            System.out.println("|                    2. Hiển thị sản phẩm nổi bật                      |");
+            System.out.println("|                    3. Danh sách sản phẩm                             |");
+            System.out.println("|                    4. Thêm vào giỏ hàng                              |");
+            System.out.println("|                    5. Sắp xếp theo giá tăng dần                      |");
+            System.out.println("|                    0. Quay lại                                       |");
+            System.out.println(".======================================================================." + RESET);
+            System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
+            choice = Integer.parseInt(Config.scanner().nextLine());
+            switch (choice) {
+                case 1:
+                    searchProduct();
+                    break;
+                case 2:
+                    showHotProduct();
+                    break;
+                case 3:
+                    listProduct();
+                    break;
+                case 4:
+                    addToCart();
+                    break;
+                case 5:
+                    sortProduct();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println(RED + "Lựa chọn không hợp lệ, mời chọn lại" + RESET);
+                    break;
+            }
+        } while (true);
+    }
+
+    private void searchProduct() {
+        System.out.println("Nhập tên sản phẩm muốn tìm: ");
+        String search = Config.scanner().nextLine();
+        int count = 0;
+        System.out.println("Danh sách sản phẩm cần tìm: ");
+        for (Product product : productService.findAll()) {
+            if (product.getProductName().contains(search)) {
+                System.out.println(product);
+                count++;
+            }
+        }
+        System.out.printf("Tìm thấy %d sản phẩm theo từ khoá vừa nhập ", count);
+    }
+
+    private void showHotProduct() {
+
+    }
+
+    private void listProduct() {
+        System.out.println("Danh sách sản phẩm: ");
+        for (Product product : productService.findAll()) {
+            System.out.println(product);
+        }
+    }
+
+    private void addToCart() {
+
+    }
+
+    private void sortProduct() {
+        productService.findAll().sort(Comparator.comparing(Product::getUnitPrice));
+        System.out.println(YELLOW + "Đã sắp xếp giá tăng dần thành công!" + RESET);
+    }
+}
