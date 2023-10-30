@@ -15,13 +15,12 @@ public class profilePage {
     IUserService userService = new UserServiceIMPL();
     public Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
-
     public void profileHome() {
         int choice;
         do {
-            WriteReadFile<Users> config = new WriteReadFile<>();
-            Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
-            System.out.println("Xin chào: " + users.getName());
+//            WriteReadFile<Users> config = new WriteReadFile<>();
+//            Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
+//            System.out.println("Xin chào: " + users.getName());
 
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                       --->> PROFILE PAGE <<---                       |");
@@ -54,20 +53,32 @@ public class profilePage {
 
     private void changePass() {
         Users usersEdit = userService.findByID(users.getId());
-        System.out.println("Nhập mật khẩu cần đổi");
-        String password = Validate.validateString();
-        usersEdit.setPassword(password);
+        String currentPassword = usersEdit.getPassword();
+
+        System.out.println("Nhập mật khẩu cũ: ");
+        String oldPassword = Validate.validateString();
+
+        while (!oldPassword.equals(currentPassword)) {
+            System.out.println(RED + "Mật khẩu cũ không trùng khớp, Vui lòng nhập lại" + RESET);
+            oldPassword = Validate.validateString();
+        }
+
+        System.out.println("Nhập mật khẩu mới: ");
+        String newPassword = Validate.validateString();
+        usersEdit.setPassword(newPassword);
         userService.save(usersEdit);
-        System.out.println(YELLOW + "Đổi mật khẩu thành công" + RESET);
+
+        System.out.println(YELLOW + "Đổi mật khẩu thành công, vui lòng đăng nhập lại!" + RESET);
         new WriteReadFile<Users>().writeFile(Config.PATH_LOGIN, null);
         new Home().menuHome();
     }
 
     private void showProfile() {
         System.out.println("Thông tin cá nhân: ");
-        for (Users users : userService.findAll()) {
-            System.out.println(users);
-        }
+        System.out.println("Tên: " + users.getName());
+        System.out.println("Email: " + users.getEmail());
+        System.out.println("Mật khẩu: " + users.getPassword());
+        System.out.println("Số điện thoại: " + users.getPhoneNumber());
     }
 
     private void changeProfile() {
@@ -95,7 +106,7 @@ public class profilePage {
             case 3:
                 System.out.println("Nhập số điện thoại cần đổi");
                 String phone = Config.validatePhone();
-                usersProfile.setPassword(phone);
+                usersProfile.setPhoneNumber(phone);
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi số điện thoại thành công" + RESET);
                 break;

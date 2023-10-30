@@ -1,6 +1,7 @@
 package ra.view.admin;
 
 import ra.config.Config;
+import ra.model.Catalog;
 import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
@@ -26,6 +27,7 @@ public class productManagement {
             System.out.println("|                   3. Chỉnh sửa thông tin sản phẩm                    |");
             System.out.println("|                   4. Xoá sản phẩm theo mã sản phẩm                   |");
             System.out.println("|                   5. Tìm kiếm sản phẩm theo tên                      |");
+            System.out.println("|                   6. Ẩn/Mở sản phẩm theo mã sản phẩm                 |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -45,6 +47,9 @@ public class productManagement {
                     break;
                 case 5:
                     searchProduct();
+                    break;
+                case 6:
+                    hideOpenProduct();
                     break;
                 case 0:
                     return;
@@ -69,16 +74,24 @@ public class productManagement {
             // danh mục sp
             System.out.println("Danh mục sản phẩm có thể chọn: ");
             for (int j = 0; j < catalogService.findAll().size(); j++) {
-                System.out.println((j + 1) + ", " + catalogService.findAll().get(j).getCatalogName());
+                Catalog catalog = catalogService.findAll().get(j);
+                if (catalog.isStatus()) {
+                    System.out.println((j + 1) + ", " + catalog.getCatalogName());
+                }
             }
             System.out.println("Mời lựa chọn danh mục sản phẩm: ");
             while (true) {
                 int choice = Config.validateInt();
                 if (choice >= 1 && choice <= catalogService.findAll().size()) {
-                    product.setCatalog(catalogService.findAll().get(choice - 1));
-                    break;
+                    Catalog selectedCatalog = catalogService.findAll().get(choice - 1);
+                    if (selectedCatalog.isStatus()) {
+                        product.setCatalog(selectedCatalog);
+                        break;
+                    } else {
+                        System.out.println(RED + "Danh mục đã bị ẩn, mời chọn lại" + RESET);
+                    }
                 } else {
-                    System.out.println(RED + "Không có danh mục theo lựa chọn, mời nhập lại" + RESET);
+                    System.out.println(RED + "Lựa chọn không hợp lệ, mời nhập lại" + RESET);
                 }
             }
 
@@ -186,5 +199,43 @@ public class productManagement {
         }
         System.out.printf("Tìm thấy %d sản phẩm theo từ khoá vừa nhập ", count);
         System.out.println();
+    }
+
+    private void hideOpenProduct() {
+        System.out.println("Nhập mã sản phẩm cần ẩn/mở lại: ");
+        int productId = Config.validateInt();
+        Product product = productService.findByID(productId);
+
+        if (product != null) {
+            System.out.println("1. Ẩn sản phẩm");
+            System.out.println("2. Mở lại sản phẩm");
+            int choice = Config.validateInt();
+
+            switch (choice) {
+                case 1:
+                    if (product.isStatus()) {
+                        product.setStatus(false);
+                        productService.update(product);
+                        System.out.println(YELLOW + "Sản phẩm đã được ẩn thành công" + RESET);
+                    } else {
+                        System.out.println(YELLOW + "Sản phẩm đã được ẩn trước đó" + RESET);
+                    }
+                    break;
+                case 2:
+                    if (!product.isStatus()) {
+                        product.setStatus(true);
+                        productService.update(product);
+                        System.out.println(YELLOW + "Sản phẩm đã được mở lại thành công" + RESET);
+                    } else {
+                        System.out.println(YELLOW + "Sản phẩm đã được mở lại trước đó" + RESET);
+                    }
+                    break;
+                default:
+                    System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);
+                    break;
+            }
+        } else {
+            System.out.println(RED + "Không tìm thấy sản phẩm có mã: " + productId + RESET);
+        }
     }
 }

@@ -1,9 +1,7 @@
 package ra.view.admin;
 
 import ra.config.Config;
-import ra.constant.RoleName;
 import ra.model.Catalog;
-import ra.model.Users;
 import ra.service.*;
 import ra.service.impl.*;
 
@@ -20,6 +18,7 @@ public class catalogManagement {
     IOrderService orderService = new OrderServiceIMPL();
     IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
 
+
     public void menuCatalog() {
         int choice;
         do {
@@ -31,7 +30,7 @@ public class catalogManagement {
             System.out.println("|                    3. Tìm kiếm danh mục theo tên                     |");
             System.out.println("|                    4. Chỉnh sửa thông tin danh mục                   |");
             System.out.println("|                    5. Xoá danh mục theo mã ID                        |");
-            System.out.println("|                    6. Ẩn danh mục theo mã ID                         |");
+            System.out.println("|                    6. Ẩn/Mở danh mục theo mã ID                      |");
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -53,7 +52,7 @@ public class catalogManagement {
                     deleteCatalog();
                     break;
                 case 6:
-                    hideCatalog();
+                    hideOpenCatalog();
                     break;
                 case 0:
                     return;
@@ -134,7 +133,41 @@ public class catalogManagement {
         }
     }
 
-    private void hideCatalog() {
+    private void hideOpenCatalog() {
+        System.out.println("Nhập ID danh mục cần ẩn/mở: ");
+        int catalogId = Config.validateInt();
+        Catalog catalog = catalogService.findByID(catalogId);
 
+        if (catalog != null) {
+            System.out.println("1. Ẩn danh mục");
+            System.out.println("2. Mở lại danh mục");
+            int choice = Config.validateInt();
+
+            switch (choice) {
+                case 1:
+                    if (catalog.isStatus()) {
+                        catalog.setStatus(false);
+                        catalogService.update(catalog);
+                        System.out.println(YELLOW + "Ẩn danh mục thành công" + RESET);
+                    } else {
+                        System.out.println(YELLOW + "Danh mục đã được ẩn trước đó" + RESET);
+                    }
+                    break;
+                case 2:
+                    if (!catalog.isStatus()) {
+                        catalog.setStatus(true);
+                        catalogService.update(catalog);
+                        System.out.println(YELLOW + "Danh mục đã được mở lại thành công" + RESET);
+                    } else {
+                        System.out.println(YELLOW + "Danh mục đã được mở lại trước đó" + RESET);
+                    }
+                    break;
+                default:
+                    System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);
+                    break;
+            }
+        } else {
+            System.out.println(RED + "Không tìm thấy danh mục có mã: " + catalogId + RESET);
+        }
     }
 }

@@ -117,7 +117,7 @@ public class Users implements Serializable {
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", status=" + (status ? "Hoạt động" : "bị khoá") +
+                ", status=" + (status ? "Hoạt động" : "Bị khoá") +
                 ", role=" + role +
                 '}';
     }

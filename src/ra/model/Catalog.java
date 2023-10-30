@@ -1,6 +1,7 @@
 package ra.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import static ra.service.impl.CatalogServiceIMPL.catalogList;
 
@@ -64,7 +65,7 @@ public class Catalog implements Serializable {
                 "catalogId=" + catalogId +
                 ", catalogName='" + catalogName + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
+                ", status=" + (status ? "Mở" : "Ẩn") +
                 '}';
     }
 }
