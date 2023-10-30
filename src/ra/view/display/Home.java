@@ -25,11 +25,11 @@ public class Home {
                 System.out.println(users);
             }
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                     --->> HELLO, WELCOME BACK <<---                  |");
+            System.out.println("|                    --->> HELLO, WELCOME BACK <<---                   |");
             System.out.println("|======================================================================|");
-            System.out.println(YELLOW + "|                             1. Đăng nhập                             |");
-            System.out.println("|                             2. Đăng ký                               |");
-            System.out.println("|                             0. Thoát                                 |");
+            System.out.println(YELLOW + "|                            1. Đăng nhập                              |");
+            System.out.println("|                            2. Đăng ký                                |");
+            System.out.println("|                            0. Thoát                                  |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
             switch (Config.validateInt()) {

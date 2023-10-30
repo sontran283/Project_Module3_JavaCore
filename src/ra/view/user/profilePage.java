@@ -18,10 +18,6 @@ public class profilePage {
     public void profileHome() {
         int choice;
         do {
-//            WriteReadFile<Users> config = new WriteReadFile<>();
-//            Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
-//            System.out.println("Xin chào: " + users.getName());
-
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                       --->> PROFILE PAGE <<---                       |");
             System.out.println("|======================================================================|");
@@ -74,11 +70,9 @@ public class profilePage {
     }
 
     private void showProfile() {
-        System.out.println("Thông tin cá nhân: ");
-        System.out.println("Tên: " + users.getName());
-        System.out.println("Email: " + users.getEmail());
-        System.out.println("Mật khẩu: " + users.getPassword());
-        System.out.println("Số điện thoại: " + users.getPhoneNumber());
+        System.out.println("Thông tin tài khoản: ");
+        Users usersProfile = userService.findByID(users.getId());
+        System.out.println(usersProfile);
     }
 
     private void changeProfile() {
@@ -91,27 +85,27 @@ public class profilePage {
         switch (Validate.validateInt()) {
             case 1:
                 System.out.println("Nhập tên cần đổi");
-                String fullName = Config.validateString();
-                usersProfile.setName(fullName);
+                String newName = Config.validateString();
+                usersProfile.setName(newName);
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi tên thành công" + RESET);
                 break;
             case 2:
                 System.out.println("Nhập email cần đổi");
-                String email = Config.validateEmail();
-                usersProfile.setEmail(email);
+                String newEmail = Config.validateEmail();
+                usersProfile.setEmail(newEmail);
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi email thành công" + RESET);
                 break;
             case 3:
                 System.out.println("Nhập số điện thoại cần đổi");
-                String phone = Config.validatePhone();
-                usersProfile.setPhoneNumber(phone);
+                String newPhone = Config.validatePhone();
+                usersProfile.setPhoneNumber(newPhone);
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi số điện thoại thành công" + RESET);
                 break;
             default:
-                System.out.println(RED + "Nhập không đúng dịnh dạng, mời nhập lại" + RESET);
+                System.out.println(RED + "Không đúng định dạng, mời nhập lại" + RESET);
         }
     }
 }
