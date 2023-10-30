@@ -139,6 +139,17 @@ public class Home {
             }
         }
 
+        System.out.println("Nhập số điện thoại: ");
+        while (true) {
+            String phone = Config.validatePhone();
+            if (userService.existPhone(phone)) {
+                System.out.println(RED + "Số điện thoại đăng nhập đã tồn tại, mời nhập lại" + RESET);
+            } else {
+                users.setPhoneNumber(phone);
+                break;
+            }
+        }
+
         userService.save(users);
         System.out.println(YELLOW + "Tạo tài khoản thành công!" + RESET);
         login();

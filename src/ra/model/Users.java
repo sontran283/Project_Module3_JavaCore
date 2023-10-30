@@ -16,12 +16,13 @@ public class Users implements Serializable {
     private String email;
     private boolean status = true;
     private RoleName role = RoleName.USER;
+    private String phoneNumber;
 
     public Users() {
         this.id = newId++;
     }
 
-    public Users(int id, String name, String username, String password, String email, boolean status, RoleName role) {
+    public Users(int id, String name, String username, String password, String email, boolean status, RoleName role, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -29,6 +30,7 @@ public class Users implements Serializable {
         this.email = email;
         this.status = status;
         this.role = role;
+        this.phoneNumber = phoneNumber;
 
         // Đặt giá trị cho trường isAdmin dựa trên role
         this.isAdmin = role == RoleName.ADMIN;
@@ -98,6 +100,14 @@ public class Users implements Serializable {
         this.role = role;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
@@ -105,6 +115,7 @@ public class Users implements Serializable {
                 ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", status=" + (status ? "Hoạt động" : "bị khoá") +
                 ", role=" + role +

@@ -11,6 +11,9 @@ public class AdminManager {
     public void menuAdmin() {
         do {
 //            System.out.println("Hello: " + Home.userLogin.getName() + " !");
+            WriteReadFile<Users> config = new WriteReadFile<>();
+            Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
+            System.out.println("Xin chào: " + users.getName());
 
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                       --->> ADMIN MENU <<---                         |");

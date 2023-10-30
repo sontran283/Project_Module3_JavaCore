@@ -9,6 +9,8 @@ public interface IUserService extends IService<Users> {
 
     boolean existEmail(String username);
 
+    boolean existPhone(String username);
+
     Users checkLogin(String username, String password);
 
     List<Users> findByName(String name);

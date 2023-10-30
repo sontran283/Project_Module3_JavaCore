@@ -13,7 +13,6 @@ import java.util.List;
 
 import static ra.config.Color.*;
 
-
 public class userManagement {
     ICatalogService catalogService = new CatalogServiceIMPL();
     IProductService productService = new ProductServiceIMPL();

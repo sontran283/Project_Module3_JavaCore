@@ -8,6 +8,7 @@ import ra.service.IUserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserServiceIMPL implements IUserService {
 
@@ -18,7 +19,7 @@ public class UserServiceIMPL implements IUserService {
         usersList = config.readFile(Config.PATH_USER);
         if (usersList == null) {
             usersList = new ArrayList<>();
-            usersList.add(new Users(1, "ADMIN", "admin", "11111111", "admin@gmail.com", true, RoleName.ADMIN));
+            usersList.add(new Users(1, "ADMIN", "admin", "11111111", "admin@gmail.com", true, RoleName.ADMIN, "0123456789"));
             new UserServiceIMPL().updateData();
         }
     }
@@ -91,6 +92,16 @@ public class UserServiceIMPL implements IUserService {
     public boolean existEmail(String username) {
         for (Users users : usersList) {
             if (users.getEmail().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean existPhone(String username) {
+        for (Users users : usersList) {
+            if (Objects.equals(users.getPhoneNumber(), username)) {
                 return true;
             }
         }
