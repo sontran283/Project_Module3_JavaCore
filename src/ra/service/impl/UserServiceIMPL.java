@@ -2,6 +2,7 @@ package ra.service.impl;
 
 import ra.config.WriteReadFile;
 import ra.constant.RoleName;
+import ra.model.Product;
 import ra.model.Users;
 import ra.service.IUserService;
 
@@ -47,9 +48,10 @@ public class UserServiceIMPL implements IUserService {
     }
 
     @Override
-    public void delete(int id) {
+    public List<Product> delete(int id) {
         usersList.remove(findByID(id));
         updateData();
+        return null;
     }
 
     @Override

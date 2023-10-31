@@ -1,6 +1,7 @@
 package ra.view.admin;
 
-import ra.config.Config;
+
+import ra.config.Validate;
 
 import static ra.config.Color.*;
 
@@ -17,7 +18,7 @@ public class orderManagement {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Config.scanner().nextLine());
+            choice = Integer.parseInt(Validate.validateString());
             switch (choice) {
                 case 1:
                     break;

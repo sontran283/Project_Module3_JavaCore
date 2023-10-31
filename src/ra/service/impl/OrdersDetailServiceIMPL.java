@@ -1,6 +1,7 @@
 package ra.service.impl;
 
 import ra.model.OrdersDetail;
+import ra.model.Product;
 import ra.service.IOrdersDetailService;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class OrdersDetailServiceIMPL implements IOrdersDetailService {
     }
 
     @Override
-    public void delete(int id) {
+    public List<Product> delete(int id) {
 
+        return null;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ra.view.admin;
 
-import ra.config.Config;
+import ra.config.Validate;
 import ra.model.Catalog;
 import ra.service.*;
 import ra.service.impl.*;
@@ -34,7 +34,7 @@ public class catalogManagement {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Config.scanner().nextLine());
+            choice = Integer.parseInt(Validate.validateString());
             switch (choice) {
                 case 1:
                     addCatalog();
@@ -65,16 +65,16 @@ public class catalogManagement {
 
     private void addCatalog() {
         System.out.println("Nhập số lượng danh mục cần thêm: ");
-        int n = Config.validateInt();
+        int n = Validate.validateInt();
         for (int i = 0; i < n; i++) {
             System.out.println("Danh mục thứ " + (i + 1) + " ");
             Catalog catalog = new Catalog();
 
             System.out.println("Nhập tên danh mục");
-            catalog.setCatalogName(Config.scanner().nextLine());
+            catalog.setCatalogName(Validate.validateString());
 
             System.out.println("Nhập mô tả danh mục");
-            catalog.setDescription(Config.scanner().nextLine());
+            catalog.setDescription(Validate.validateString());
 
             catalogService.save(catalog);
         }
@@ -90,7 +90,7 @@ public class catalogManagement {
 
     private void searchCatalog() {
         System.out.println("Mời nhập tên danh mục cần tìm: ");
-        String searchName = Config.scanner().nextLine().toLowerCase();
+        String searchName = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println("Danh sách danh mục cần tìm kiếm: ");
         for (Catalog catalog : catalogService.findAll()) {
@@ -105,17 +105,17 @@ public class catalogManagement {
 
     private void editCatalog() {
         System.out.println("Nhập ID danh mục cần thay đổi thông tin: ");
-        int idEdit = Config.validateInt();
+        int idEdit = Validate.validateInt();
         Catalog catalogEdit = catalogService.findByID(idEdit);
         if (catalogEdit == null) {
             System.out.println("Không tìm thất danh mục có ID: " + idEdit);
         } else {
             System.out.println(catalogEdit);
             System.out.println("Nhập tên mới: ");
-            catalogEdit.setCatalogName(Config.scanner().nextLine());
+            catalogEdit.setCatalogName(Validate.validateString());
 
             System.out.println("Nhập mô tả mới: ");
-            catalogEdit.setDescription(Config.scanner().nextLine());
+            catalogEdit.setDescription(Validate.validateString());
 
             catalogService.update(catalogEdit);
         }
@@ -123,7 +123,7 @@ public class catalogManagement {
 
     private void deleteCatalog() {
         System.out.println("Mời nhập ID danh mục cần xoá: ");
-        int idDelete = Config.validateInt();
+        int idDelete = Validate.validateInt();
         Catalog catalogDelete = catalogService.findByID(idDelete);
         if (catalogDelete == null) {
             System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
@@ -135,36 +135,34 @@ public class catalogManagement {
 
     private void hideOpenCatalog() {
         System.out.println("Nhập ID danh mục cần ẩn/mở: ");
-        int catalogId = Config.validateInt();
+        int catalogId = Validate.validateInt();
         Catalog catalog = catalogService.findByID(catalogId);
 
         if (catalog != null) {
             System.out.println("1. Ẩn danh mục");
             System.out.println("2. Mở lại danh mục");
-            int choice = Config.validateInt();
+            int choice = Validate.validateInt();
 
-            switch (choice) {
-                case 1:
-                    if (catalog.isStatus()) {
-                        catalog.setStatus(false);
-                        catalogService.update(catalog);
-                        System.out.println(YELLOW + "Ẩn danh mục thành công" + RESET);
-                    } else {
-                        System.out.println(YELLOW + "Danh mục đã được ẩn trước đó" + RESET);
-                    }
-                    break;
-                case 2:
-                    if (!catalog.isStatus()) {
-                        catalog.setStatus(true);
-                        catalogService.update(catalog);
-                        System.out.println(YELLOW + "Danh mục đã được mở lại thành công" + RESET);
-                    } else {
-                        System.out.println(YELLOW + "Danh mục đã được mở lại trước đó" + RESET);
-                    }
-                    break;
-                default:
-                    System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);
-                    break;
+            if (choice == 1) {
+                // Ẩn danh mục và sản phẩm
+                if (catalog.isStatus()) {
+                    catalog.setStatus(false);
+                    productService.hideProductsByCatalogId(catalogId, false);
+                    System.out.println(YELLOW + "Ẩn danh mục và sản phẩm thành công" + RESET);
+                } else {
+                    System.out.println(YELLOW + "Danh mục đã được ẩn trước đó" + RESET);
+                }
+            } else if (choice == 2) {
+                // Mở lại danh mục và sản phẩm
+                if (!catalog.isStatus()) {
+                    catalog.setStatus(true);
+                    productService.hideProductsByCatalogId(catalogId, true);
+                    System.out.println(YELLOW + "Danh mục và sản phẩm đã được mở lại thành công" + RESET);
+                } else {
+                    System.out.println(YELLOW + "Danh mục đã được mở lại trước đó" + RESET);
+                }
+            } else {
+                System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);
             }
         } else {
             System.out.println(RED + "Không tìm thấy danh mục có mã: " + catalogId + RESET);

@@ -1,6 +1,5 @@
 package ra.view.display;
 
-import ra.config.Config;
 import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.constant.RoleName;
@@ -139,7 +138,7 @@ public class Home {
 
         System.out.print("Nhập số điện thoại: ");
         while (true) {
-            String phone = Config.validatePhone();
+            String phone = Validate.validatePhone();
             if (userService.existPhone(phone)) {
                 System.out.println(RED + "Số điện thoại đăng nhập đã tồn tại, mời nhập lại" + RESET);
             } else {

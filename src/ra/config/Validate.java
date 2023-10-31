@@ -26,7 +26,7 @@ public class Validate {
     public static String validateString() {
         String s;
         while (true) {
-            s = Config.scanner().nextLine();
+            s = Validate.scanner().nextLine();
             if (s.isEmpty()) {
                 System.out.println(RED + "Không được để trống, mời nhập lại" + RESET);
             } else {
@@ -39,7 +39,7 @@ public class Validate {
     public static String validateEmail() {
         String email;
         while (true) {
-            email = Config.scanner().nextLine();
+            email = Validate.scanner().nextLine();
             if (email.matches("[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@[a-z]+(\\.[a-z]+){1,2}")) {
                 break;
             } else {
@@ -52,7 +52,7 @@ public class Validate {
     public static String validatePhone() {
         String phoneNumber;
         while (true) {
-            phoneNumber = Config.scanner().nextLine();
+            phoneNumber = Validate.scanner().nextLine();
             if (phoneNumber.matches("(0|\\+84)\\d{9}")) {
                 break;
             } else {
@@ -66,7 +66,7 @@ public class Validate {
     public static String validateCurrency() {
         String currency;
         while (true) {
-            currency = Config.scanner().nextLine();
+            currency = Validate.scanner().nextLine();
             if (currency.matches("^[1-9]\\d{0,2}(,\\d{3})*?(\\.\\d{2})?$")) {
                 break;
             } else {

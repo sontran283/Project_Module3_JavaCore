@@ -1,14 +1,14 @@
 package ra.view.user;
 
-import ra.config.Config;
 import ra.config.Validate;
+import ra.model.Cart;
+import ra.model.Catalog;
 import ra.model.Product;
-import ra.service.ICatalogService;
-import ra.service.IProductService;
-import ra.service.impl.CatalogServiceIMPL;
-import ra.service.impl.ProductServiceIMPL;
+import ra.service.*;
+import ra.service.impl.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -17,7 +17,11 @@ import static ra.config.Color.*;
 public class homePage {
     ICatalogService catalogService = new CatalogServiceIMPL();
     IProductService productService = new ProductServiceIMPL();
+    IUserService userService = new UserServiceIMPL();
+    IOrderService orderService = new OrderServiceIMPL();
+    IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
 
+    Cart cart = new Cart();
 
     public void home() {
         int choice;
@@ -26,7 +30,7 @@ public class homePage {
             System.out.println("|                        --->> HOME PAGE <<---                         |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                1. Tìm kiếm sản phẩm theo tên                         |");
-            System.out.println("|                2. Sản phẩm nổi bật theo giá giảm dần                 |");
+            System.out.println("|                2. 10 Sản phẩm nổi bật theo tên (alpha-b)             |");
             System.out.println("|                3. Danh sách sản phẩm                                 |");
             System.out.println("|                4. Thêm vào giỏ hàng                                  |");
             System.out.println("|                5. Sắp xếp theo giá tăng/giảm dần                     |");
@@ -61,7 +65,7 @@ public class homePage {
 
     private void searchProduct() {
         System.out.println("Nhập tên sản phẩm muốn tìm: ");
-        String search = Config.scanner().nextLine().toLowerCase();
+        String search = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
         for (Product product : productService.findAll()) {
@@ -75,14 +79,16 @@ public class homePage {
     }
 
     private void showHotProduct() {
-        List<Product> hotProducts = productService.findAll();
-        hotProducts.sort(Comparator.comparing(product1 -> -product1.getUnitPrice()));
+        List<Product> hotProducts = new ArrayList<>(productService.findAll());
+
+        System.out.println("10 sản phẩm nổi bật theo thứ tự alpha-b:");
+        hotProducts.sort(Comparator.comparing(Product::getProductName));
+
         int count = 0;
-        System.out.println("Sản phẩm nổi bật theo giá giảm dần: ");
         for (Product product : hotProducts) {
             System.out.println(product);
             count++;
-            if (count == 5) {
+            if (count == 10) {
                 break;
             }
         }
@@ -98,7 +104,43 @@ public class homePage {
     }
 
     private void addToCart() {
+        // Hiển thị danh sách sản phẩm
+        System.out.println("Danh sách sản phẩm:");
+        List<Product> products = productService.findAll();
+        for (int i = 0; i < products.size(); i++) {
+            System.out.println((i + 1) + ". " + products.get(i));
+        }
 
+        // Yêu cầu người dùng chọn sản phẩm
+        System.out.print("Mời chọn sản phẩm (1-" + products.size() + "): ");
+        int choice = Validate.validateInt();
+
+        // Lấy sản phẩm đã chọn
+        Product selectedProduct = products.get(choice - 1);
+
+        // Yêu cầu người dùng nhập số lượng
+        System.out.print("Nhập số lượng: ");
+        int quantity = Validate.validateInt();
+
+        // Kiểm tra số lượng có hợp lệ
+        if (quantity <= 0) {
+            System.out.println(RED + "Số lượng không hợp lệ. Không thêm được sản phẩm vào giỏ hàng" + RESET);
+            return;
+        }
+
+        // Kiểm tra số lượng sản phẩm còn đủ để thêm vào giỏ hàng
+        if (selectedProduct.getStock() < quantity) {
+            System.out.println(RED + "Số lượng sản phẩm không đủ. Không thêm được sản phẩm vào giỏ hàng" + RESET);
+            return;
+        }
+
+        // Thêm sản phẩm vào giỏ hàng
+        cart.addProduct(selectedProduct.getProductId(), quantity);
+
+        // Cập nhật số lượng sản phẩm trong kho
+        selectedProduct.setStock(selectedProduct.getStock() - quantity);
+
+        System.out.println("Sản phẩm đã được thêm vào giỏ hàng.");
     }
 
     private void sortProduct() {

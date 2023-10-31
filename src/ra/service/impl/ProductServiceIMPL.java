@@ -41,10 +41,11 @@ public class ProductServiceIMPL implements IProductService {
     }
 
     @Override
-    public void delete(int id) {
+    public List<Product> delete(int id) {
         Product productDelete = findByID(id);
         productList.remove(productDelete);
         updateData();
+        return null;
     }
 
     @Override
@@ -70,5 +71,15 @@ public class ProductServiceIMPL implements IProductService {
     @Override
     public List<Product> findName(String name) {
         return null;
+    }
+
+    @Override
+    public void hideProductsByCatalogId(int catalogId, boolean status) {
+        for (Product product : productList) {
+            if (product.getCatalog().getCatalogId() == catalogId) {
+                product.setStatus(status);
+            }
+        }
+        updateData();
     }
 }

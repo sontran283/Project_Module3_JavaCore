@@ -1,6 +1,5 @@
 package ra.view.user;
 
-import ra.config.Config;
 import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.model.Users;

@@ -2,6 +2,7 @@ package ra.service.impl;
 
 import ra.config.WriteReadFile;
 import ra.model.Catalog;
+import ra.model.Product;
 import ra.service.ICatalogService;
 
 import java.util.ArrayList;
@@ -36,10 +37,11 @@ public class CatalogServiceIMPL implements ICatalogService {
     }
 
     @Override
-    public void delete(int id) {
+    public List<Product> delete(int id) {
         Catalog catalogDelete = findByID(id);
         catalogList.remove(catalogDelete);
         updateData();
+        return null;
     }
 
     @Override

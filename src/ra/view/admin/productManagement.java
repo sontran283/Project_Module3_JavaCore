@@ -1,6 +1,6 @@
 package ra.view.admin;
 
-import ra.config.Config;
+import ra.config.Validate;
 import ra.model.Catalog;
 import ra.model.Product;
 import ra.service.*;
@@ -31,7 +31,7 @@ public class productManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Config.scanner().nextLine());
+            choice = Integer.parseInt(Validate.validateString());
             switch (choice) {
                 case 1:
                     addProduct();
@@ -62,14 +62,14 @@ public class productManagement {
 
     private void addProduct() {
         System.out.println("Nhập số lượng sản phẩm cần thêm: ");
-        int n = Config.validateInt();
+        int n = Validate.validateInt();
         for (int i = 0; i < n; i++) {
             System.out.println("Sản phẩm thứ: " + (i + 1) + ", ");
             Product product = new Product();
 
             // tên sp
             System.out.println("Nhập tên sản phẩm: ");
-            product.setProductName(Config.scanner().nextLine());
+            product.setProductName(Validate.validateString());
 
             // danh mục sp
             System.out.println("Danh mục sản phẩm có thể chọn: ");
@@ -81,7 +81,7 @@ public class productManagement {
             }
             System.out.println("Mời lựa chọn danh mục sản phẩm: ");
             while (true) {
-                int choice = Config.validateInt();
+                int choice = Validate.validateInt();
                 if (choice >= 1 && choice <= catalogService.findAll().size()) {
                     Catalog selectedCatalog = catalogService.findAll().get(choice - 1);
                     if (selectedCatalog.isStatus()) {
@@ -96,13 +96,13 @@ public class productManagement {
             }
 
             System.out.println("Nhập mô tả sản phẩm: ");
-            product.setDescription(Config.scanner().nextLine());
+            product.setDescription(Validate.validateString());
 
             System.out.println("Nhập đơn giá: ");
-            product.setUnitPrice(Double.parseDouble(Config.scanner().nextLine()));
+            product.setUnitPrice(Double.parseDouble(Validate.validateString()));
 
             System.out.println("Nhập số lượng trong kho: ");
-            product.setStock(Integer.parseInt(Config.scanner().nextLine()));
+            product.setStock(Integer.parseInt(Validate.validateString()));
 
             productService.save(product);
         }
@@ -117,7 +117,7 @@ public class productManagement {
 
     private void editProduct() {
         System.out.println("Nhập ID sản phẩm cần thay đổi: ");
-        int idEdit = Config.validateInt();
+        int idEdit = Validate.validateInt();
         Product productedit = productService.findByID(idEdit);
 
         if (productedit != null) {
@@ -126,11 +126,11 @@ public class productManagement {
             System.out.println("3_ Sửa mô tả sản phẩm");
             System.out.println("4_ Sửa đơn giá");
             System.out.println("5_ Sửa số lượng trong kho");
-            int choice = Config.validateInt();
+            int choice = Validate.validateInt();
             switch (choice) {
                 case 1:
                     System.out.println("Nhập tên mới: ");
-                    productedit.setProductName(Config.scanner().nextLine());
+                    productedit.setProductName(Validate.validateString());
                     System.out.println("Sửa tên thành công!");
                     break;
                 case 2:
@@ -140,7 +140,7 @@ public class productManagement {
                     }
                     System.out.println("Mời chọn danh mục mới: ");
                     while (true) {
-                        int choiceEdit = Config.validateInt();
+                        int choiceEdit = Validate.validateInt();
                         if (choiceEdit >= 1 && choiceEdit <= catalogService.findAll().size()) {
                             productedit.setCatalog(catalogService.findAll().get(choiceEdit - 1));
                             break;
@@ -152,17 +152,17 @@ public class productManagement {
                     break;
                 case 3:
                     System.out.println("Nhập mô tả sản phẩm mới: ");
-                    productedit.setDescription(Config.scanner().nextLine());
+                    productedit.setDescription(Validate.validateString());
                     System.out.println("Sửa mô tả thành công!");
                     break;
                 case 4:
                     System.out.println("Nhập đơn giá mới: ");
-                    productedit.setUnitPrice(Double.parseDouble(Config.scanner().nextLine()));
+                    productedit.setUnitPrice(Double.parseDouble(Validate.validateString()));
                     System.out.println("Sửa đơn giá thành công!");
                     break;
                 case 5:
                     System.out.println("Nhập mới số lượng hàng tồn kho: ");
-                    productedit.setStock(Integer.parseInt(Config.scanner().nextLine()));
+                    productedit.setStock(Integer.parseInt(Validate.validateString()));
                     System.out.println("Sửa số lượng thành công!");
                     break;
                 default:
@@ -176,7 +176,7 @@ public class productManagement {
 
     private void deleteProduct() {
         System.out.println("Nhập ID sản phẩm cần xoá: ");
-        int idDelete = Config.validateInt();
+        int idDelete = Validate.validateInt();
         Product productDelete = productService.findByID(idDelete);
         if (productDelete != null) {
             productService.delete(idDelete);
@@ -188,7 +188,7 @@ public class productManagement {
 
     private void searchProduct() {
         System.out.println("Nhập tên sản phẩm muốn tìm: ");
-        String search = Config.scanner().nextLine().toLowerCase();
+        String search = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println("Danh sách sản phẩm cần tìm: ");
         for (Product product : productService.findAll()) {
@@ -202,14 +202,14 @@ public class productManagement {
     }
 
     private void hideOpenProduct() {
-        System.out.println("Nhập mã sản phẩm cần ẩn/mở lại: ");
-        int productId = Config.validateInt();
+        System.out.println("Nhập ID sản phẩm cần ẩn/mở lại: ");
+        int productId = Validate.validateInt();
         Product product = productService.findByID(productId);
 
         if (product != null) {
             System.out.println("1. Ẩn sản phẩm");
             System.out.println("2. Mở lại sản phẩm");
-            int choice = Config.validateInt();
+            int choice = Validate.validateInt();
 
             switch (choice) {
                 case 1:

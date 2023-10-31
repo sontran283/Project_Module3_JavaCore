@@ -1,6 +1,7 @@
 package ra.service.impl;
 
 import ra.model.Order;
+import ra.model.Product;
 import ra.service.IOrderService;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class OrderServiceIMPL implements IOrderService {
     }
 
     @Override
-    public void delete(int id) {
+    public List<Product> delete(int id) {
 
+        return null;
     }
 
     @Override

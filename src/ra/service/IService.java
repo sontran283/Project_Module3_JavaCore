@@ -1,5 +1,7 @@
 package ra.service;
 
+import ra.model.Product;
+
 import java.util.List;
 
 public interface IService<T> {
@@ -9,7 +11,7 @@ public interface IService<T> {
 
     void update(T t);
 
-    void delete(int id);
+    List<Product> delete(int id);
 
     T findByID(int id);
 

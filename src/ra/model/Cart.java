@@ -7,14 +7,14 @@ import java.util.Map;
 public class Cart implements Serializable {
     private int cartId;
     private int userId;
-    private Map<Long, Integer> products;
+    private Map<Integer, Integer> products;
 
     public Cart() {
         // khoi tao gio hang voi danh sach rong
         products = new HashMap<>();
     }
 
-    public Cart(int cartId, int userId, Map<Long, Integer> products) {
+    public Cart(int cartId, int userId, Map<Integer, Integer> products) {
         this.cartId = cartId;
         this.userId = userId;
         this.products = products;
@@ -36,21 +36,21 @@ public class Cart implements Serializable {
         this.userId = userId;
     }
 
-    public Map<Long, Integer> getProducts() {
+    public Map<Integer, Integer> getProducts() {
         return products;
     }
 
-    public void setProducts(Map<Long, Integer> products) {
+    public void setProducts(Map<Integer, Integer> products) {
         this.products = products;
     }
 
     // Thêm sản phẩm vào giỏ hàng
-    public void addProduct(Long productId, Integer quantity) {
+    public void addProduct(Integer productId, Integer quantity) {
         products.put(productId, quantity);
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
-    public void removeProduct(Long productId) {
+    public void removeProduct(Integer productId) {
         products.remove(productId);
     }
 

@@ -1,6 +1,6 @@
 package ra.view.admin;
 
-import ra.config.Config;
+import ra.config.Validate;
 import ra.constant.RoleName;
 import ra.model.Users;
 import ra.service.*;
@@ -36,7 +36,7 @@ public class userManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Config.scanner().nextLine());
+            choice = Integer.parseInt(Validate.validateString());
             switch (choice) {
                 case 1:
                     showUser();
@@ -74,7 +74,7 @@ public class userManagement {
 
     private void searchUser() {
         System.out.println("Mời nhập tên người dùng cần tìm: ");
-        String searchName = Config.scanner().nextLine().toLowerCase();
+        String searchName = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println("Danh sách người dùng cần tìm kiếm");
         for (Users users : userService.findAll()) {
@@ -89,7 +89,7 @@ public class userManagement {
 
     private void editStatus() {
         System.out.println("Nhập ID người dùng cần thay đổi trạng thái: ");
-        int userId = Integer.parseInt(Config.scanner().nextLine());
+        int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);
         if (user != null) {
@@ -115,7 +115,7 @@ public class userManagement {
 
     private void changeRole() {
         System.out.println("Nhập ID người dùng cần thay đổi Role: ");
-        int userId = Integer.parseInt(Config.scanner().nextLine());
+        int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);
         if (user != null) {
@@ -137,7 +137,7 @@ public class userManagement {
 
     private void deleteUser() {
         System.out.println("Nhập ID người dùng cần xoá: ");
-        int userId = Integer.parseInt(Config.scanner().nextLine());
+        int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);
         if (user != null) {

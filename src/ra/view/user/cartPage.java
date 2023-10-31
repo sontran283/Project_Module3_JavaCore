@@ -1,6 +1,5 @@
 package ra.view.user;
 
-import ra.config.Config;
 import ra.config.Validate;
 
 import static ra.config.Color.*;

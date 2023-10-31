@@ -1,6 +1,6 @@
 package ra.view.admin;
 
-import ra.config.Config;
+import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.model.Users;
 import ra.view.display.Home;
@@ -25,7 +25,7 @@ public class AdminManager {
             System.out.println("|                        0. Đăng xuất                                  |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                 --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Config.validateInt()) {
+            switch (Validate.validateInt()) {
                 case 1:
                     new userManagement().menuUser();
                     break;
