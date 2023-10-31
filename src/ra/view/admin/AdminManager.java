@@ -16,6 +16,7 @@ public class AdminManager {
 
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                       --->> ADMIN MENU <<---                         |");
+            System.out.println("|                       \uD83C\uDF4E    \uD83C\uDF4C     \uD83C\uDF4A     \uD83C\uDF47                        |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                        1. Quản lý người dùng                         |");
             System.out.println("|                        2. Quản lý danh mục                           |");

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cart  implements Serializable {
+public class Cart implements Serializable {
     private int cartId;
     private int userId;
     private Map<Long, Integer> products;

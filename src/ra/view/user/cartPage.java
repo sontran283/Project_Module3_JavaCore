@@ -1,6 +1,7 @@
 package ra.view.user;
 
 import ra.config.Config;
+import ra.config.Validate;
 
 import static ra.config.Color.*;
 
@@ -18,7 +19,7 @@ public class cartPage {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Config.scanner().nextLine());
+            choice = Validate.validateInt();
             switch (choice) {
                 case 1:
                     changeStock();

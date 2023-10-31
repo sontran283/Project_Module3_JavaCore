@@ -32,7 +32,7 @@ public class Home {
             System.out.println("|                            0. Thoát                                  |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Config.validateInt()) {
+            switch (Validate.validateInt()) {
                 case 1:
                     login();
                     break;
@@ -50,14 +50,15 @@ public class Home {
     }
 
     private void login() {
-        System.out.println(".======================================================================.");
+        System.out.println(BLUE + ".======================================================================.");
         System.out.println("|                        --->> FORM LOGIN <<---                        |");
-        System.out.println(".======================================================================.");
-        System.out.println("Nhập tên tài khoản: ");
-        String name = Config.validateString();
+        System.out.println(".======================================================================." + RESET);
 
-        System.out.println("Nhập mật khẩu: ");
-        String pass = Config.validateString();
+        System.out.print("Nhập tên tài khoản: ");
+        String name = Validate.validateString();
+
+        System.out.print("Nhập mật khẩu: ");
+        String pass = Validate.validateString();
 
         Users users = userService.checkLogin(name, pass);
         if (users == null) {
@@ -68,22 +69,20 @@ public class Home {
     }
 
     public void checkRoleLogin(Users users) {
-        // đúng tên tk với mk
         if (users.getRole().equals(RoleName.ADMIN)) {
             WriteReadFile<Users> config = new WriteReadFile<>();
             config.writeFile(WriteReadFile.PATH_USER_LOGIN, users);
 
-            // chuyển trang quản lí với admin
-            System.out.println(YELLOW + "Đăng nhập thành công!" + RESET);
+            // chuyen den admin
             new AdminManager().menuAdmin();
 
         } else {
             if (users.isStatus()) {
                 WriteReadFile<Users> config = new WriteReadFile<>();
-                config.writeFile(WriteReadFile.PATH_USER_LOGIN, users); // ghi doi tuong users dang dang nhap vao file
+                // ghi doi tuong users dang dang nhap vao file
+                config.writeFile(WriteReadFile.PATH_USER_LOGIN, users);
 
-                // chuyển đến trang user
-                System.out.println(YELLOW + "Đăng nhập thành công!" + RESET);
+                // chuyen den user
                 new UserManager().menuUser();
 
             } else {
@@ -93,20 +92,19 @@ public class Home {
     }
 
     public void register() {
-        System.out.println(".======================================================================.");
+        System.out.println(BLUE + ".======================================================================.");
         System.out.println("|                       --->> FORM REGISTER <<---                      |");
-        System.out.println(".======================================================================.");
+        System.out.println(".======================================================================." + RESET);
         Users users = new Users();
         users.setId(userService.getNewId());
-
         System.out.println("ID: " + users.getId());
 
-        System.out.println("Nhập họ tên: ");
-        users.setName(Config.validateString());
+        System.out.print("Nhập họ tên: ");
+        users.setName(Validate.validateString());
 
-        System.out.println("nhập tên tài khoản: ");
+        System.out.print("nhập tên tài khoản: ");
         while (true) {
-            String username = Config.validateString();
+            String username = Validate.validateString();
             if (userService.existUsername(username)) {
                 System.out.println(RED + "Tên đăng nhập đã tồn tại, mời nhập lại" + RESET);
             } else {
@@ -115,12 +113,12 @@ public class Home {
             }
         }
 
-        System.out.println("Nhập mật khẩu: ");
-        users.setPassword(Config.validateString());
+        System.out.print("Nhập mật khẩu: ");
+        users.setPassword(Validate.validateString());
 
-        System.out.println("Xác nhận mật khẩu: ");
+        System.out.print("Xác nhận mật khẩu: ");
         while (true) {
-            String repeatPass = Config.validateString();
+            String repeatPass = Validate.validateString();
             if (users.getPassword().equals(repeatPass)) {
                 break;
             } else {
@@ -128,7 +126,7 @@ public class Home {
             }
         }
 
-        System.out.println("Nhập email: ");
+        System.out.print("Nhập email: ");
         while (true) {
             String email = Validate.validateEmail();
             if (userService.existEmail(email)) {
@@ -139,7 +137,7 @@ public class Home {
             }
         }
 
-        System.out.println("Nhập số điện thoại: ");
+        System.out.print("Nhập số điện thoại: ");
         while (true) {
             String phone = Config.validatePhone();
             if (userService.existPhone(phone)) {

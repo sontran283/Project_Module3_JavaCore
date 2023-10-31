@@ -3,6 +3,9 @@ package ra.model;
 import ra.model.Catalog;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import static ra.service.impl.ProductServiceIMPL.productList;
 
@@ -111,14 +114,15 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         return "Product{" +
-                ", productId=" + productId +
+                "productId=" + productId +
                 ", productName='" + productName + '\'' +
                 ", description='" + description + '\'' +
-                ", unitPrice=" + unitPrice +
+                ", unitPrice=" + String.format(currencyFormat.format(unitPrice)) +
                 ", stock=" + stock +
                 ", catalog=" + catalog.getCatalogName() +
-                ", status=" + (status ? "Mở" : "Ẩn") +
+                ", status=" + (status ? "Mở bán" : "Ẩn") +
                 '}';
     }
 }

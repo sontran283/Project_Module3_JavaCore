@@ -1,12 +1,17 @@
 package ra.config;
 
-import static ra.config.Config.scanner;
+import java.util.Scanner;
+
 import static ra.config.Color.*;
 
 public class Validate {
+    public static Scanner scanner() {
+        return new Scanner(System.in);
+    }
+
     public static int validateInt() {
         int n;
-        System.out.println("Mời nhập: ");
+        System.out.print("Mời nhập: ");
         while (true) {
             try {
                 n = Integer.parseInt(scanner().nextLine());
@@ -42,5 +47,32 @@ public class Validate {
             }
         }
         return email;
+    }
+
+    public static String validatePhone() {
+        String phoneNumber;
+        while (true) {
+            phoneNumber = Config.scanner().nextLine();
+            if (phoneNumber.matches("(0|\\+84)\\d{9}")) {
+                break;
+            } else {
+                System.out.println(RED + "Số điện thoại không đúng định dạng, mời nhập lại" + RESET);
+            }
+        }
+        return phoneNumber;
+    }
+
+
+    public static String validateCurrency() {
+        String currency;
+        while (true) {
+            currency = Config.scanner().nextLine();
+            if (currency.matches("^[1-9]\\d{0,2}(,\\d{3})*?(\\.\\d{2})?$")) {
+                break;
+            } else {
+                System.out.println(RED + "Số tiền không đúng định dạng, mời nhập lại" + RESET);
+            }
+        }
+        return currency;
     }
 }

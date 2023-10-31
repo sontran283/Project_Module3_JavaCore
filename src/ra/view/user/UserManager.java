@@ -1,6 +1,7 @@
 package ra.view.user;
 
 import ra.config.Config;
+import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.model.Users;
 import ra.view.display.Home;
@@ -18,13 +19,13 @@ public class UserManager {
             System.out.println("|             --->> SHOP HOA QUẢ TƯƠI COGO XIN CHÀO <<---              |");
             System.out.println("|                        \uD83C\uDF4E    \uD83C\uDF4C     \uD83C\uDF4A     \uD83C\uDF47                       |");
             System.out.println("|======================================================================|");
-            System.out.println(YELLOW + "|                     1. Trang chủ                                     |");
+            System.out.println(YELLOW + "|                     1. Cửa hàng                                      |");
             System.out.println("|                     2. Giỏ hàng                                      |");
             System.out.println("|                     3. Thay đổi thông tin tài khoản                  |");
             System.out.println("|                     0. Đăng xuất                                     |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Config.validateInt()) {
+            switch (Validate.validateInt()) {
                 case 1:
                     new homePage().home();
                     break;

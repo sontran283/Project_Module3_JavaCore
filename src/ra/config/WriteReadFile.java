@@ -14,9 +14,6 @@ public class WriteReadFile<T> {
     public static final String PATH_LOGIN = "src/ra/data/login.dat";
     public static final String PATH_USER_LOGIN = "src/ra/data/userLogin.dat";
 
-    public static Scanner scanner() {
-        return new Scanner(System.in);
-    }
 
     public void writeFile(String PATH_FILE, T t) {
         File file = new File(PATH_FILE);
