@@ -49,19 +49,19 @@ public class profilePage {
 
     private void changePass() {
         Users usersEdit = userService.findByID(users.getId());
-        String currentPassword = usersEdit.getPassword();
+        String pass = usersEdit.getPassword();
 
         System.out.println("Nhập mật khẩu cũ: ");
-        String oldPassword = Validate.validateString();
+        String oldPass = Config.validateString();
 
-        while (!oldPassword.equals(currentPassword)) {
+        while (!oldPass.equals(pass)) {
             System.out.println(RED + "Mật khẩu cũ không trùng khớp, Vui lòng nhập lại" + RESET);
-            oldPassword = Validate.validateString();
+            oldPass = Config.validateString();
         }
 
         System.out.println("Nhập mật khẩu mới: ");
-        String newPassword = Validate.validateString();
-        usersEdit.setPassword(newPassword);
+        String newPass = Config.validateString();
+        usersEdit.setPassword(newPass);
         userService.save(usersEdit);
 
         System.out.println(YELLOW + "Đổi mật khẩu thành công, vui lòng đăng nhập lại!" + RESET);
@@ -70,18 +70,25 @@ public class profilePage {
     }
 
     private void showProfile() {
-        System.out.println("Thông tin tài khoản: ");
+        System.out.println(YELLOW + "Thông tin tài khoản: " + RESET);
         Users usersProfile = userService.findByID(users.getId());
-        System.out.println(usersProfile);
+
+        System.out.println("- Tên: " + usersProfile.getName());
+        System.out.println("- Email: " + usersProfile.getEmail());
+        System.out.println("- Số điện thoại: " + usersProfile.getPhoneNumber());
     }
 
     private void changeProfile() {
         Users usersProfile = userService.findByID(users.getId());
         System.out.println(usersProfile);
-        System.out.println("Sửa thông tin cá nhân: ");
-        System.out.println("1.Sửa tên");
-        System.out.println("2.Sửa email");
-        System.out.println("3.Sửa số điện thoại");
+        System.out.println(BLUE + ".=================================================.");
+        System.out.println("|        --->> Sửa thông tin cá nhân <<---        |");
+        System.out.println("|=================================================|");
+        System.out.println(YELLOW + "|               1. Sửa tên                        |");
+        System.out.println("|               2. Sửa email                      |");
+        System.out.println("|               3. Sửa số điện thoại              |");
+        System.out.println("|               0. Quay lại                       |");
+        System.out.println(".=================================================." + RESET);
         switch (Validate.validateInt()) {
             case 1:
                 System.out.println("Nhập tên cần đổi");
@@ -104,8 +111,11 @@ public class profilePage {
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi số điện thoại thành công" + RESET);
                 break;
+            case 0:
+                return;
             default:
                 System.out.println(RED + "Không đúng định dạng, mời nhập lại" + RESET);
+                break;
         }
     }
 }

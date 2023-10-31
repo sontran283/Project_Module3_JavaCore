@@ -117,8 +117,8 @@ public class Product implements Serializable {
                 ", description='" + description + '\'' +
                 ", unitPrice=" + unitPrice +
                 ", stock=" + stock +
-                ", status=" + (status ? "Mở" : "Ẩn") +
                 ", catalog=" + catalog.getCatalogName() +
+                ", status=" + (status ? "Mở" : "Ẩn") +
                 '}';
     }
 }

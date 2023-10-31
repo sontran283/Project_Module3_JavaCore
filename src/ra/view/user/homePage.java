@@ -8,6 +8,7 @@ import ra.service.impl.CatalogServiceIMPL;
 import ra.service.impl.ProductServiceIMPL;
 
 import java.util.Comparator;
+import java.util.List;
 
 import static ra.config.Color.*;
 
@@ -15,17 +16,18 @@ public class homePage {
     ICatalogService catalogService = new CatalogServiceIMPL();
     IProductService productService = new ProductServiceIMPL();
 
+
     public void home() {
         int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> HOME PAGE <<---                         |");
             System.out.println("|======================================================================|");
-            System.out.println(YELLOW + "|                    1. Tìm kiếm sản phẩm                              |");
-            System.out.println("|                    2. Hiển thị sản phẩm nổi bật                      |");
+            System.out.println(YELLOW + "|                    1. Tìm kiếm sản phẩm theo tên                     |");
+            System.out.println("|                    2. Hiển thị sản phẩm nổi bật theo giá tăng dần    |");
             System.out.println("|                    3. Danh sách sản phẩm                             |");
             System.out.println("|                    4. Thêm vào giỏ hàng                              |");
-            System.out.println("|                    5. Sắp xếp theo giá tăng dần                      |");
+            System.out.println("|                    5. Sắp xếp theo giá tăng/giảm dần                 |");
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -57,20 +59,31 @@ public class homePage {
 
     private void searchProduct() {
         System.out.println("Nhập tên sản phẩm muốn tìm: ");
-        String search = Config.scanner().nextLine();
+        String search = Config.scanner().nextLine().toLowerCase();
         int count = 0;
         System.out.println("Danh sách sản phẩm cần tìm: ");
         for (Product product : productService.findAll()) {
-            if (product.getProductName().contains(search)) {
+            if (product.getProductName().toLowerCase().contains(search)) {
                 System.out.println(product);
                 count++;
             }
         }
         System.out.printf("Tìm thấy %d sản phẩm theo từ khoá vừa nhập ", count);
+        System.out.println();
     }
 
     private void showHotProduct() {
-
+        List<Product> hotProducts = productService.findAll();
+        hotProducts.sort(Comparator.comparing(Product::getUnitPrice));
+        int count = 0;
+        System.out.println("Danh sách sản phẩm nổi bật theo giá tăng dần: ");
+        for (Product product : hotProducts) {
+            System.out.println(product);
+            count++;
+            if (count == 10) {
+                break;
+            }
+        }
     }
 
     private void listProduct() {
@@ -85,7 +98,18 @@ public class homePage {
     }
 
     private void sortProduct() {
-        productService.findAll().sort(Comparator.comparing(Product::getUnitPrice));
-        System.out.println(YELLOW + "Đã sắp xếp giá tăng dần thành công!" + RESET);
+        System.out.println("1. Sắp xếp theo giá tăng dần");
+        System.out.println("2. Sắp xếp theo giá giảm dần");
+        System.out.println("Mời lựa chọn: ");
+        int sortChoice = Integer.parseInt(Config.scanner().nextLine());
+        if (sortChoice == 1) {
+            productService.findAll().sort(Comparator.comparing(Product::getUnitPrice));
+            System.out.println(YELLOW + "Đã sắp xếp giá tăng dần thành công" + RESET);
+        } else if (sortChoice == 2) {
+            productService.findAll().sort(Comparator.comparing(Product::getUnitPrice).reversed());
+            System.out.println(YELLOW + "Đã sắp xếp giá giảm dần thành công" + RESET);
+        } else {
+            System.out.println(RED + "Lựa chọn không hợp lệ, không thực hiện sắp xếp" + RESET);
+        }
     }
 }
