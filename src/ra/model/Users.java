@@ -1,10 +1,8 @@
 package ra.model;
 
-
 import ra.constant.RoleName;
 
 import java.io.Serializable;
-
 
 public class Users implements Serializable {
     private boolean isAdmin;

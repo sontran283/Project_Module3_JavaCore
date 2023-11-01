@@ -17,7 +17,6 @@ public class profilePage {
     public Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
     public void profileHome() {
-        int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                       --->> PROFILE PAGE <<---                       |");
@@ -28,8 +27,7 @@ public class profilePage {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Validate.validateInt();
-            switch (choice) {
+            switch (Validate.validateInt()) {
                 case 1:
                     changePass();
                     break;

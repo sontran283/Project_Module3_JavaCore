@@ -17,7 +17,6 @@ public class productManagement {
     IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
 
     public void menuProduct() {
-        int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                      --->> PRODUCT MANAGER <<---                     |");
@@ -31,8 +30,7 @@ public class productManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Validate.validateString());
-            switch (choice) {
+            switch (Validate.validateInt()) {
                 case 1:
                     addProduct();
                     break;
@@ -123,15 +121,19 @@ public class productManagement {
 
         if (choiceCheck == 1) {
             System.out.println(YELLOW + "Tất cả sản phẩm" + RESET);
+            System.out.println("_______________________________________________________________________________________________________________________");
             System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
-                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
+                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+            System.out.println("_______________________________________________________________________________________________________________________");
             for (Product product : productService.findAll()) {
                 System.out.println(product);
             }
         } else if (choiceCheck == 2) {
             System.out.println(YELLOW + "Sản phẩm mở bán" + RESET);
+            System.out.println("_______________________________________________________________________________________________________________________");
             System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
-                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
+                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+            System.out.println("_______________________________________________________________________________________________________________________");
             for (Product product : productService.findAll()) {
                 if (product.isStatus()) {
                     System.out.println(product);
@@ -139,8 +141,10 @@ public class productManagement {
             }
         } else if (choiceCheck == 3) {
             System.out.println(YELLOW + "Sản phẩm không mở bán" + RESET);
+            System.out.println("_______________________________________________________________________________________________________________________");
             System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
-                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
+                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+            System.out.println("_______________________________________________________________________________________________________________________");
             for (Product product : productService.findAll()) {
                 if (!product.isStatus()) {
                     System.out.println(product);
@@ -168,7 +172,7 @@ public class productManagement {
                 case 1:
                     System.out.println("Nhập tên mới: ");
                     productedit.setProductName(Validate.validateString());
-                    System.out.println("Sửa tên thành công!");
+                    System.out.println(YELLOW + "Sửa tên thành công" + RESET);
                     break;
                 case 2:
                     System.out.println("Danh sách danh mục sản phẩm cần chọn: ");
@@ -185,22 +189,22 @@ public class productManagement {
                             System.out.println(RED + "Không có danh mục theo lựa chọn, mời nhập lại" + RESET);
                         }
                     }
-                    System.out.println("Sửa danh mục thành công!");
+                    System.out.println(YELLOW + "Sửa danh mục thành công" + RESET);
                     break;
                 case 3:
                     System.out.println("Nhập mô tả sản phẩm mới: ");
                     productedit.setDescription(Validate.validateString());
-                    System.out.println("Sửa mô tả thành công!");
+                    System.out.println(YELLOW + "Sửa mô tả thành công" + RESET);
                     break;
                 case 4:
                     System.out.println("Nhập đơn giá mới: ");
                     productedit.setUnitPrice(Double.parseDouble(Validate.validateString()));
-                    System.out.println("Sửa đơn giá thành công!");
+                    System.out.println(YELLOW + "Sửa đơn giá thành công" + RESET);
                     break;
                 case 5:
                     System.out.println("Nhập mới số lượng hàng tồn kho: ");
                     productedit.setStock(Integer.parseInt(Validate.validateString()));
-                    System.out.println("Sửa số lượng thành công!");
+                    System.out.println(YELLOW + "Sửa số lượng thành công" + RESET);
                     break;
                 case 0:
                     return;
@@ -230,6 +234,10 @@ public class productManagement {
         String search = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println("Danh sách sản phẩm cần tìm: ");
+        System.out.println("_______________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
         for (Product product : productService.findAll()) {
             if (product.getProductName().toLowerCase().contains(search)) {
                 System.out.println(product);

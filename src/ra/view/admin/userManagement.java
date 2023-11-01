@@ -19,7 +19,6 @@ public class userManagement {
 
 
     public void menuUser() {
-        int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> USER MANAGER <<---                      |");
@@ -32,8 +31,7 @@ public class userManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Validate.validateString());
-            switch (choice) {
+            switch (Validate.validateInt()) {
                 case 1:
                     showUser();
                     break;
@@ -59,7 +57,7 @@ public class userManagement {
     }
 
     private void showUser() {
-        System.out.println("Danh sách người dùng: ");
+        System.out.println(YELLOW + "Danh sách người dùng: " + RESET);
         for (Users users : userService.findAll()) {
             System.out.println(users);
         }
@@ -69,7 +67,7 @@ public class userManagement {
         System.out.println("Mời nhập tên người dùng cần tìm: ");
         String searchName = Validate.validateString().toLowerCase();
         int count = 0;
-        System.out.println("Danh sách người dùng cần tìm kiếm");
+        System.out.println(YELLOW + "Danh sách người dùng cần tìm kiếm" + RESET);
         for (Users users : userService.findAll()) {
             if (users.getUsername().toLowerCase().contains(searchName)) {
                 System.out.println(users);
@@ -138,7 +136,7 @@ public class userManagement {
                 System.out.println(RED + "Không thể xóa tài khoản admin" + RESET);
             } else {
                 userService.delete(user.getId());
-                System.out.println("Xoá thành công!");
+                System.out.println(YELLOW + "Xoá thành công" + RESET);
             }
         } else {
             System.out.println(RED + "Không tìm thấy người dùng với ID đã nhập" + RESET);

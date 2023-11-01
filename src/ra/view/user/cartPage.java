@@ -6,7 +6,6 @@ import static ra.config.Color.*;
 
 public class cartPage {
     public void cartHome() {
-        int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> CART PAGE <<---                         |");
@@ -18,8 +17,7 @@ public class cartPage {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Validate.validateInt();
-            switch (choice) {
+            switch (Validate.validateInt()) {
                 case 1:
                     changeStock();
                     break;

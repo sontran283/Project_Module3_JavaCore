@@ -18,7 +18,6 @@ public class catalogManagement {
 
 
     public void menuCatalog() {
-        int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                      --->> CATALOG MANAGER <<---                     |");
@@ -32,8 +31,7 @@ public class catalogManagement {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Integer.parseInt(Validate.validateString());
-            switch (choice) {
+            switch (Validate.validateInt()) {
                 case 1:
                     addCatalog();
                     break;
@@ -139,7 +137,7 @@ public class catalogManagement {
         System.out.println(catalogEdit);
 
         if (catalogEdit == null) {
-            System.out.println("Không tìm thất danh mục có ID: " + idEdit);
+            System.out.println("Không tìm thấy danh mục có ID: " + idEdit);
         } else {
             System.out.println("Sửa thông tin danh mục");
             System.out.println("1. Sửa tên danh mục");
@@ -152,6 +150,17 @@ public class catalogManagement {
                     catalogEdit.setCatalogName(Validate.validateString());
                     catalogService.update(catalogEdit);
                     System.out.println(YELLOW + "Sửa tên danh mục thành công" + RESET);
+
+                    // Lấy tên danh mục mới
+                    String newCatalogName = catalogEdit.getCatalogName();
+
+                    // Cập nhật tên danh mục mới cho các sản phẩm có cùng mã danh mục
+                    for (Product product : productService.findAll()) {
+                        if (product.getCatalog().getCatalogId() == idEdit) {
+                            product.getCatalog().setCatalogName(newCatalogName);
+                            productService.update(product);
+                        }
+                    }
                     break;
                 case 2:
                     System.out.println("Nhập mới mô tả danh mục: ");
@@ -177,7 +186,7 @@ public class catalogManagement {
         } else {
             for (Product product : productService.findAll()) {
                 if (product.getCatalog().getCatalogId() == idDelete) {
-                    System.out.println(RED + "Không thể xoá do danh mục đã có sản phẩm" + RESET);
+                    System.out.println(RED + "Không thể xoá, do danh mục đã có sản phẩm" + RESET);
                     return;
                 }
             }

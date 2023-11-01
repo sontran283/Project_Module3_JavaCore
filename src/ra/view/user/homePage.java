@@ -2,13 +2,11 @@ package ra.view.user;
 
 import ra.config.Validate;
 import ra.model.Cart;
-import ra.model.Catalog;
 import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class homePage {
     Cart cart = new Cart();
 
     public void home() {
-        int choice;
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> HOME PAGE <<---                         |");
@@ -37,8 +34,7 @@ public class homePage {
             System.out.println("|                0. Quay lại                                           |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            choice = Validate.validateInt();
-            switch (choice) {
+            switch (Validate.validateInt()) {
                 case 1:
                     searchProduct();
                     break;
@@ -68,8 +64,10 @@ public class homePage {
         String search = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
+        System.out.println("_______________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
-                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
         for (Product product : productService.findAll()) {
             if (product.getProductName().toLowerCase().contains(search)) {
                 System.out.println(product);
@@ -84,8 +82,10 @@ public class homePage {
         List<Product> hotProducts = new ArrayList<>(productService.findAll());
 
         System.out.println(YELLOW + "10 sản phẩm nổi bật theo thứ tự alpha-b:" + RESET);
+        System.out.println("_______________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
-                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
         hotProducts.sort(Comparator.comparing(Product::getProductName));
 
         int count = 0;
@@ -100,8 +100,10 @@ public class homePage {
 
     private void listProduct() {
         System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
+        System.out.println("_______________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
-                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
         for (Product product : productService.findAll()) {
             if (product.isStatus()) {
                 System.out.println(product);
@@ -164,6 +166,10 @@ public class homePage {
             System.out.println(RED + "Lựa chọn không hợp lệ, không thực hiện sắp xếp" + RESET);
         }
         System.out.println(YELLOW + "Danh sách sản phẩm sau khi sắp xếp: " + RESET);
+        System.out.println("_______________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
         for (Product product : productService.findAll()) {
             if (product.isStatus()) {
                 System.out.println(product);
