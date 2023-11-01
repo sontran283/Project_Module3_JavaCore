@@ -6,10 +6,6 @@ import ra.model.Users;
 import ra.service.*;
 import ra.service.impl.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import static ra.config.Color.*;
 
@@ -31,7 +27,7 @@ public class userManagement {
             System.out.println(YELLOW + "|                   1. Hiển thị danh sách người dùng                   |");
             System.out.println("|                   2. Tìm kiếm người dùng theo tên                    |");
             System.out.println("|                   3. Block/Unblock tài khoản người dùng              |");
-            System.out.println("|                   4. Phân quyền Admin/User                           |");
+            System.out.println("|                   4. Phân quyền ADMIN/USER                           |");
             System.out.println("|                   5. Xoá người dùng                                  |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
@@ -63,11 +59,8 @@ public class userManagement {
     }
 
     private void showUser() {
-        List<Users> userList = new ArrayList<>(userService.findAll());
-        Collections.sort(userList, Comparator.comparing(Users::getUsername));
-
         System.out.println("Danh sách người dùng: ");
-        for (Users users : userList) {
+        for (Users users : userService.findAll()) {
             System.out.println(users);
         }
     }
@@ -123,15 +116,15 @@ public class userManagement {
                 user.setRole(RoleName.USER);
                 user.setAdmin(false);
                 userService.update(user);
-                System.out.println(YELLOW + "Phân quyền đã được thay đổi từ ADMIN thành USER." + RESET);
+                System.out.println(YELLOW + "Đã thay đổi từ ADMIN thành USER" + RESET);
             } else {
                 user.setRole(RoleName.ADMIN);
                 user.setAdmin(true);
                 userService.update(user);
-                System.out.println(YELLOW + "Phân quyền đã được thay đổi từ USER thành ADMIN." + RESET);
+                System.out.println(YELLOW + "Đã thay đổi từ USER thành ADMIN" + RESET);
             }
         } else {
-            System.out.println(RED + "___ Không tìm thấy người dùng với ID đã nhập ___" + RESET);
+            System.out.println(RED + "Không tìm thấy người dùng với ID đã nhập" + RESET);
         }
     }
 

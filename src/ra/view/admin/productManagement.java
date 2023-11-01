@@ -70,6 +70,12 @@ public class productManagement {
             // tên sp
             System.out.println("Nhập tên sản phẩm: ");
             product.setProductName(Validate.validateString());
+            for (Product checkName : productService.findAll()) {
+                if (checkName.getProductName().equalsIgnoreCase(product.getProductName())) {
+                    System.out.println(RED + "Sản phẩm đã tồn tại, mời nhập lại" + RESET);
+                    return;
+                }
+            }
 
             // danh mục sp
             System.out.println("Danh mục sản phẩm có thể chọn: ");
@@ -113,16 +119,19 @@ public class productManagement {
         System.out.println("1. Tất cả sản phẩm");
         System.out.println("2. Sản phẩm mở bán");
         System.out.println("3. Sản phẩm không mở bán");
-        System.out.println("0. Quay lại");
         int choiceCheck = Validate.validateInt();
 
         if (choiceCheck == 1) {
             System.out.println(YELLOW + "Tất cả sản phẩm" + RESET);
+            System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
             for (Product product : productService.findAll()) {
                 System.out.println(product);
             }
         } else if (choiceCheck == 2) {
             System.out.println(YELLOW + "Sản phẩm mở bán" + RESET);
+            System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
             for (Product product : productService.findAll()) {
                 if (product.isStatus()) {
                     System.out.println(product);
@@ -130,6 +139,8 @@ public class productManagement {
             }
         } else if (choiceCheck == 3) {
             System.out.println(YELLOW + "Sản phẩm không mở bán" + RESET);
+            System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                    "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
             for (Product product : productService.findAll()) {
                 if (!product.isStatus()) {
                     System.out.println(product);
@@ -146,11 +157,12 @@ public class productManagement {
         Product productedit = productService.findByID(idEdit);
 
         if (productedit != null) {
-            System.out.println("1_ Sửa tên sản phẩm");
-            System.out.println("2_ Sửa danh mục sản phẩm");
-            System.out.println("3_ Sửa mô tả sản phẩm");
-            System.out.println("4_ Sửa đơn giá");
-            System.out.println("5_ Sửa số lượng trong kho");
+            System.out.println("1. Sửa tên sản phẩm");
+            System.out.println("2. Sửa danh mục sản phẩm");
+            System.out.println("3. Sửa mô tả sản phẩm");
+            System.out.println("4. Sửa đơn giá");
+            System.out.println("5. Sửa số lượng trong kho");
+            System.out.println("0. Quay lại");
             int choice = Validate.validateInt();
             switch (choice) {
                 case 1:
@@ -190,6 +202,8 @@ public class productManagement {
                     productedit.setStock(Integer.parseInt(Validate.validateString()));
                     System.out.println("Sửa số lượng thành công!");
                     break;
+                case 0:
+                    return;
                 default:
                     System.err.println(RED + "Nhập không hợp lệ, mời nhập lại" + RESET);
                     break;

@@ -1,6 +1,7 @@
 package ra.view.user;
 
 //import ra.config.Config;
+
 import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.model.Users;
@@ -93,24 +94,39 @@ public class profilePage {
             case 1:
                 System.out.println("Nhập tên cần đổi");
                 String newName = Validate.validateString();
-                usersProfile.setName(newName);
-                userService.save(usersProfile);
-                System.out.println(YELLOW + "Đổi tên thành công" + RESET);
-                break;
+                if (newName.equals(usersProfile.getName())) {
+                    System.out.println(RED + "Tên giống tên ban đầu" + RESET);
+                    return;
+                } else {
+                    usersProfile.setName(newName);
+                    userService.save(usersProfile);
+                    System.out.println(YELLOW + "Đổi tên thành công" + RESET);
+                    break;
+                }
             case 2:
                 System.out.println("Nhập email cần đổi");
                 String newEmail = Validate.validateEmail();
-                usersProfile.setEmail(newEmail);
-                userService.save(usersProfile);
-                System.out.println(YELLOW + "Đổi email thành công" + RESET);
-                break;
+                if (newEmail.equals(usersProfile.getEmail())) {
+                    System.out.println(RED + "Email giống email ban đầu" + RESET);
+                    return;
+                } else {
+                    usersProfile.setEmail(newEmail);
+                    userService.save(usersProfile);
+                    System.out.println(YELLOW + "Đổi email thành công" + RESET);
+                    break;
+                }
             case 3:
                 System.out.println("Nhập số điện thoại cần đổi");
                 String newPhone = Validate.validatePhone();
-                usersProfile.setPhoneNumber(newPhone);
-                userService.save(usersProfile);
-                System.out.println(YELLOW + "Đổi số điện thoại thành công" + RESET);
-                break;
+                if (newPhone.equals(usersProfile.getPhoneNumber())) {
+                    System.out.println(RED + "Số điện thoại giống số điện thoại ban đầu" + RESET);
+                    return;
+                } else {
+                    usersProfile.setPhoneNumber(newPhone);
+                    userService.save(usersProfile);
+                    System.out.println(YELLOW + "Đổi số điện thoại thành công" + RESET);
+                    break;
+                }
             case 0:
                 return;
             default:

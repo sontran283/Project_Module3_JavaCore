@@ -2,10 +2,9 @@ package ra.view.admin;
 
 import ra.config.Validate;
 import ra.model.Catalog;
+import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
-
-import java.util.List;
 
 import static ra.config.Color.*;
 
@@ -73,8 +72,8 @@ public class catalogManagement {
             catalog.setCatalogName(Validate.validateString());
 
             for (Catalog checkName : catalogService.findAll()) {
-                if (checkName.getCatalogName().equals(catalog.getCatalogName())) {
-                    System.out.println(RED + "Danh mục đã tồn tại" + RESET);
+                if (checkName.getCatalogName().equalsIgnoreCase(catalog.getCatalogName())) {
+                    System.out.println(RED + "Danh mục đã tồn tại, mời nhập lại" + RESET);
                     return;
                 }
             }
@@ -91,7 +90,6 @@ public class catalogManagement {
         System.out.println("1. Tất cả danh mục");
         System.out.println("2. Danh mục đang mở");
         System.out.println("3. Danh mục đang đóng");
-        System.out.println("0. Quay lại");
         int choiceCheck = Validate.validateInt();
 
         if (choiceCheck == 1) {
@@ -136,18 +134,37 @@ public class catalogManagement {
     private void editCatalog() {
         System.out.println("Nhập ID danh mục cần thay đổi thông tin: ");
         int idEdit = Validate.validateInt();
+
         Catalog catalogEdit = catalogService.findByID(idEdit);
+        System.out.println(catalogEdit);
+
         if (catalogEdit == null) {
             System.out.println("Không tìm thất danh mục có ID: " + idEdit);
         } else {
-            System.out.println(catalogEdit);
-            System.out.println("Nhập tên mới: ");
-            catalogEdit.setCatalogName(Validate.validateString());
+            System.out.println("Sửa thông tin danh mục");
+            System.out.println("1. Sửa tên danh mục");
+            System.out.println("2. Sửa mô tả danh mục");
+            System.out.println("0. Quay lại");
 
-            System.out.println("Nhập mô tả mới: ");
-            catalogEdit.setDescription(Validate.validateString());
-
-            catalogService.update(catalogEdit);
+            switch (Validate.validateInt()) {
+                case 1:
+                    System.out.println("Nhập mới tên danh mục: ");
+                    catalogEdit.setCatalogName(Validate.validateString());
+                    catalogService.update(catalogEdit);
+                    System.out.println(YELLOW + "Sửa tên danh mục thành công" + RESET);
+                    break;
+                case 2:
+                    System.out.println("Nhập mới mô tả danh mục: ");
+                    catalogEdit.setDescription(Validate.validateString());
+                    catalogService.update(catalogEdit);
+                    System.out.println(YELLOW + "Sửa mô tả danh mục thành công" + RESET);
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println(RED + "Không đúng định dạng" + RESET);
+                    break;
+            }
         }
     }
 
@@ -158,6 +175,12 @@ public class catalogManagement {
         if (catalogDelete == null) {
             System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
         } else {
+            for (Product product : productService.findAll()) {
+                if (product.getCatalog().getCatalogId() == idDelete) {
+                    System.out.println(RED + "Không thể xoá do danh mục đã có sản phẩm" + RESET);
+                    return;
+                }
+            }
             catalogService.delete(idDelete);
             System.out.println(YELLOW + "Xóa danh mục thành công!" + RESET);
         }
