@@ -104,14 +104,39 @@ public class productManagement {
             System.out.println("Nhập số lượng trong kho: ");
             product.setStock(Integer.parseInt(Validate.validateString()));
 
+            System.out.println(YELLOW + "Thêm sản phẩm thành công" + RESET);
             productService.save(product);
         }
     }
 
     private void showProduct() {
-        System.out.println("Danh sách sản phẩm: ");
-        for (Product product : productService.findAll()) {
-            System.out.println(product);
+        System.out.println("1. Tất cả sản phẩm");
+        System.out.println("2. Sản phẩm mở bán");
+        System.out.println("3. Sản phẩm không mở bán");
+        System.out.println("0. Quay lại");
+        int choiceCheck = Validate.validateInt();
+
+        if (choiceCheck == 1) {
+            System.out.println(YELLOW + "Tất cả sản phẩm" + RESET);
+            for (Product product : productService.findAll()) {
+                System.out.println(product);
+            }
+        } else if (choiceCheck == 2) {
+            System.out.println(YELLOW + "Sản phẩm mở bán" + RESET);
+            for (Product product : productService.findAll()) {
+                if (product.isStatus()) {
+                    System.out.println(product);
+                }
+            }
+        } else if (choiceCheck == 3) {
+            System.out.println(YELLOW + "Sản phẩm không mở bán" + RESET);
+            for (Product product : productService.findAll()) {
+                if (!product.isStatus()) {
+                    System.out.println(product);
+                }
+            }
+        } else {
+            System.out.println("Không hợp lệ");
         }
     }
 

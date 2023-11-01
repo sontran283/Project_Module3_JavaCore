@@ -9,7 +9,6 @@ import java.util.List;
 
 import static ra.config.Color.*;
 
-
 public class catalogManagement {
 
     ICatalogService catalogService = new CatalogServiceIMPL();
@@ -73,18 +72,49 @@ public class catalogManagement {
             System.out.println("Nhập tên danh mục");
             catalog.setCatalogName(Validate.validateString());
 
+            for (Catalog checkName : catalogService.findAll()) {
+                if (checkName.getCatalogName().equals(catalog.getCatalogName())) {
+                    System.out.println(RED + "Danh mục đã tồn tại" + RESET);
+                    return;
+                }
+            }
+
             System.out.println("Nhập mô tả danh mục");
             catalog.setDescription(Validate.validateString());
 
+            System.out.println(YELLOW + "Thêm danh mục thành công" + RESET);
             catalogService.save(catalog);
         }
     }
 
     private void showCatalog() {
-        System.out.println("Danh sách các danh mục: ");
-        List<Catalog> catalogList = catalogService.findAll();
-        for (Catalog subject : catalogList) {
-            System.out.println(subject);
+        System.out.println("1. Tất cả danh mục");
+        System.out.println("2. Danh mục đang mở");
+        System.out.println("3. Danh mục đang đóng");
+        System.out.println("0. Quay lại");
+        int choiceCheck = Validate.validateInt();
+
+        if (choiceCheck == 1) {
+            System.out.println(YELLOW + "Tất cả danh mục" + RESET);
+            for (Catalog subject : catalogService.findAll()) {
+                System.out.println(subject);
+            }
+        } else if (choiceCheck == 2) {
+            System.out.println(YELLOW + "Danh mục đang mở" + RESET);
+            for (Catalog subject : catalogService.findAll()) {
+                if (subject.isStatus()) {
+                    System.out.println(subject);
+                }
+            }
+        } else if (choiceCheck == 3) {
+            System.out.println(YELLOW + "Danh mục đang đóng" + RESET);
+            for (Catalog subject : catalogService.findAll()) {
+                if (!subject.isStatus()) {
+                    System.out.println(subject);
+                }
+            }
+        } else {
+            System.out.println("Không hợp lệ");
         }
     }
 
@@ -147,6 +177,7 @@ public class catalogManagement {
                 // Ẩn danh mục và sản phẩm
                 if (catalog.isStatus()) {
                     catalog.setStatus(false);
+                    catalogService.updateData();
                     productService.hideProductsByCatalogId(catalogId, false);
                     System.out.println(YELLOW + "Ẩn danh mục và sản phẩm thành công" + RESET);
                 } else {
@@ -156,6 +187,7 @@ public class catalogManagement {
                 // Mở lại danh mục và sản phẩm
                 if (!catalog.isStatus()) {
                     catalog.setStatus(true);
+                    catalogService.updateData();
                     productService.hideProductsByCatalogId(catalogId, true);
                     System.out.println(YELLOW + "Danh mục và sản phẩm đã được mở lại thành công" + RESET);
                 } else {

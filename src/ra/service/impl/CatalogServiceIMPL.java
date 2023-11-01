@@ -63,4 +63,5 @@ public class CatalogServiceIMPL implements ICatalogService {
     public int getNewId() {
         return 0;
     }
+
 }

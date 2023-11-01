@@ -65,7 +65,7 @@ public class Catalog implements Serializable {
                 "catalogId=" + catalogId +
                 ", catalogName='" + catalogName + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + (status ? "Mở" : "Ẩn") +
+                ", status=" + (status ? "Mở" : "Đóng") +
                 '}';
     }
 }

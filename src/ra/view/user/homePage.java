@@ -68,6 +68,8 @@ public class homePage {
         String search = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
         for (Product product : productService.findAll()) {
             if (product.getProductName().toLowerCase().contains(search)) {
                 System.out.println(product);
@@ -81,7 +83,9 @@ public class homePage {
     private void showHotProduct() {
         List<Product> hotProducts = new ArrayList<>(productService.findAll());
 
-        System.out.println("10 sản phẩm nổi bật theo thứ tự alpha-b:");
+        System.out.println(YELLOW + "10 sản phẩm nổi bật theo thứ tự alpha-b:" + RESET);
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
         hotProducts.sort(Comparator.comparing(Product::getProductName));
 
         int count = 0;
@@ -95,7 +99,9 @@ public class homePage {
     }
 
     private void listProduct() {
-        System.out.println("Danh sách sản phẩm: ");
+        System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog", "Status");
         for (Product product : productService.findAll()) {
             if (product.isStatus()) {
                 System.out.println(product);
