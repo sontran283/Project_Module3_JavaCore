@@ -3,6 +3,8 @@ package ra.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import static ra.config.Color.*;
+
 
 public class Order  implements Serializable {
     private static final long serialVersionUID = 1L;

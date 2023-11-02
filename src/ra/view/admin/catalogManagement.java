@@ -219,7 +219,7 @@ public class catalogManagement {
                     productService.hideProductsByCatalogId(catalogId, false);
                     System.out.println(YELLOW + "Ẩn danh mục và sản phẩm thành công" + RESET);
                 } else {
-                    System.out.println(YELLOW + "Danh mục đã được ẩn trước đó" + RESET);
+                    System.out.println(YELLOW + "Danh mục đang ở trạng thái ẩn" + RESET);
                 }
             } else if (choice == 2) {
                 // Mở lại danh mục và sản phẩm
@@ -229,7 +229,7 @@ public class catalogManagement {
                     productService.hideProductsByCatalogId(catalogId, true);
                     System.out.println(YELLOW + "Danh mục và sản phẩm đã được mở lại thành công" + RESET);
                 } else {
-                    System.out.println(YELLOW + "Danh mục đã được mở lại trước đó" + RESET);
+                    System.out.println(YELLOW + "Danh mục đang ở trạng thái mở" + RESET);
                 }
             } else {
                 System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);

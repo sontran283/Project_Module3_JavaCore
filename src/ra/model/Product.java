@@ -1,11 +1,12 @@
 package ra.model;
 
-import ra.model.Catalog;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
+
+import static ra.config.Color.*;
+
 
 import static ra.service.impl.ProductServiceIMPL.productList;
 
@@ -118,6 +119,6 @@ public class Product implements Serializable {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String format = "%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n";
         System.out.println();
-        return String.format(format, productId, productName, description, String.format(currencyFormat.format(unitPrice)), stock, catalog.getCatalogName(), (status ? "Mở bán" : "Không mở bán"));
+        return String.format(format, productId, productName, description, String.format(currencyFormat.format(unitPrice)), stock, catalog.getCatalogName(), (status ? GREEN + "Mở bán" + RESET : RED + "Không mở bán" + RESET));
     }
 }

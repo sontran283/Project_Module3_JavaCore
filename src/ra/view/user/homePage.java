@@ -61,21 +61,39 @@ public class homePage {
     }
 
     private void searchProduct() {
-        System.out.println("Nhập tên sản phẩm muốn tìm: ");
-        String search = Validate.validateString().toLowerCase();
-        int count = 0;
-        System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
+        System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
         System.out.println("_______________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
                 "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
         System.out.println("_______________________________________________________________________________________________________________________");
         for (Product product : productService.findAll()) {
-            if (product.getProductName().toLowerCase().contains(search)) {
+            if (product.isStatus()) {
                 System.out.println(product);
-                count++;
             }
         }
-        System.out.printf("Tìm thấy %d sản phẩm theo từ khoá vừa nhập ", count);
+
+        System.out.print("Nhập tên sản phẩm muốn tìm: ");
+        String search = Validate.validateString().toLowerCase();
+        int count = 0;
+        boolean found = false;
+        System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
+        System.out.println("_______________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
+
+        for (Product product : productService.findAll()) {
+            if (product.getProductName().toLowerCase().contains(search) && product.isStatus()) {
+                System.out.println(product);
+                count++;
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println(RED + "Không tìm thấy sản phẩm theo tên vừa nhập" + RESET);
+        } else {
+            System.out.printf("Tìm thấy %d sản phẩm theo từ khoá vừa nhập", count, search);
+        }
         System.out.println();
     }
 

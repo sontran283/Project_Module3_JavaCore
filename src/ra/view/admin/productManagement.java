@@ -25,7 +25,7 @@ public class productManagement {
             System.out.println("|                   2. Hiển thị danh sách sản phẩm                     |");
             System.out.println("|                   3. Chỉnh sửa thông tin sản phẩm                    |");
             System.out.println("|                   4. Xoá sản phẩm theo mã sản phẩm                   |");
-            System.out.println("|                   5. Tìm kiếm sản phẩm theo tên                      |");
+            System.out.println("|                   5. Tìm kiếm sản phẩm theo tên sản phẩm             |");
             System.out.println("|                   6. Ẩn/Mở sản phẩm theo mã sản phẩm                 |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
@@ -60,8 +60,8 @@ public class productManagement {
 
     private void addProduct() {
         System.out.println("Nhập số lượng sản phẩm cần thêm: ");
-        int n = Validate.validateInt();
-        for (int i = 0; i < n; i++) {
+        int number = Validate.validateInt();
+        for (int i = 0; i < number; i++) {
             System.out.println("Sản phẩm thứ: " + (i + 1) + ", ");
             Product product = new Product();
 
@@ -233,12 +233,13 @@ public class productManagement {
             System.out.println(YELLOW + "Xoá thành công" + RESET);
             return;
         }
-        System.out.println(RED + "Không tìm thấy sản phẩm có ID: " + idDelete + " ___" + RESET);
+        System.out.println(RED + "Không tìm thấy sản phẩm có ID: " + idDelete + RESET);
     }
 
     private void searchProduct() {
         System.out.println("Nhập tên sản phẩm muốn tìm: ");
         String search = Validate.validateString().toLowerCase();
+
         int count = 0;
         System.out.println("Danh sách sản phẩm cần tìm: ");
         System.out.println("_______________________________________________________________________________________________________________________");
@@ -270,18 +271,18 @@ public class productManagement {
                     if (product.isStatus()) {
                         product.setStatus(false);
                         productService.update(product);
-                        System.out.println(YELLOW + "Sản phẩm đã được ẩn thành công" + RESET);
+                        System.out.println(YELLOW + "Sản phẩm đã ẩn thành công" + RESET);
                     } else {
-                        System.out.println(YELLOW + "Sản phẩm đã được ẩn trước đó" + RESET);
+                        System.out.println(YELLOW + "Sản phẩm đang ở trạng thái ẩn" + RESET);
                     }
                     break;
                 case 2:
                     if (!product.isStatus()) {
                         product.setStatus(true);
                         productService.update(product);
-                        System.out.println(YELLOW + "Sản phẩm đã được mở lại thành công" + RESET);
+                        System.out.println(YELLOW + "Sản phẩm đã mở thành công" + RESET);
                     } else {
-                        System.out.println(YELLOW + "Sản phẩm đã được mở lại trước đó" + RESET);
+                        System.out.println(YELLOW + "Sản phẩm đang ở trạng thái mở" + RESET);
                     }
                     break;
                 default:

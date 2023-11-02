@@ -94,17 +94,19 @@ public class profilePage {
         System.out.println(".=================================================." + RESET);
         switch (Validate.validateInt()) {
             case 1:
-                System.out.println("Nhập tên cần đổi");
-                String newName = Validate.validateString();
-                if (newName.equals(usersProfile.getName())) {
-                    System.out.println(RED + "Tên giống tên ban đầu" + RESET);
-                    return;
-                } else {
-                    usersProfile.setName(newName);
-                    userService.save(usersProfile);
-                    System.out.println(YELLOW + "Đổi tên thành công" + RESET);
-                    break;
+                System.out.println("Nhập tên cần đổi: ");
+                String newName;
+                while (true) {
+                    newName = Validate.validateString();
+                    if (newName.equals(usersProfile.getName())) {
+                        System.out.println(RED + "Tên giống tên ban đầu, mời nhập lại" + RESET);
+                    } else {
+                        break;
+                    }
                 }
+                usersProfile.setName(newName);
+                userService.save(usersProfile);
+                System.out.println(YELLOW + "Đổi tên thành công" + RESET);
             case 2:
                 System.out.println("Nhập email cần đổi");
                 String newEmail = Validate.validateEmail();

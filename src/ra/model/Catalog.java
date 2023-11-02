@@ -2,6 +2,9 @@ package ra.model;
 
 import java.io.Serializable;
 
+import static ra.config.Color.*;
+
+
 import static ra.service.impl.CatalogServiceIMPL.catalogList;
 
 public class Catalog implements Serializable {
@@ -65,7 +68,7 @@ public class Catalog implements Serializable {
                 "catalogId=" + catalogId +
                 ", catalogName='" + catalogName + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + (status ? "Mở" : "Đóng") +
+                ", status=" + (status ? GREEN + "Mở" + RESET : RED + "Đóng" + RESET) +
                 '}';
     }
 }

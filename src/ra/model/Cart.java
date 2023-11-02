@@ -3,6 +3,8 @@ package ra.model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import static ra.config.Color.*;
+
 
 public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -4,6 +4,9 @@ import ra.constant.RoleName;
 
 import java.io.Serializable;
 
+import static ra.config.Color.*;
+
+
 public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     private boolean isAdmin;
@@ -116,7 +119,7 @@ public class Users implements Serializable {
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", status=" + (status ? "Hoạt động" : "Bị khoá") +
+                ", status=" + (status ? GREEN + "Hoạt động" + RESET : RED + "Bị khoá" + RESET) +
                 ", role=" + role +
                 '}';
     }

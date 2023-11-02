@@ -98,10 +98,19 @@ public class Home {
         users.setId(userService.getNewId());
         System.out.println("ID: " + users.getId());
 
-        System.out.print("Nhập họ tên: ");
-        users.setName(Validate.validateString());
+        System.out.print("Nhập họ tên (ví dụ_tran van a):  ");
+        String fullName;
+        while (true) {
+            fullName = Validate.validateString();
+            if (!fullName.matches("[a-zA-Z\\p{L}\\s]+")) {
+                System.out.println(RED + "Họ tên không hợp lệ, mời nhập lại" + RESET);
+            } else {
+                break;
+            }
+        }
+        users.setName(fullName);
 
-        System.out.print("nhập tên tài khoản: ");
+        System.out.print("Nhập tên tài khoản: ");
         while (true) {
             String username = Validate.validateString();
             if (userService.existUsername(username)) {
