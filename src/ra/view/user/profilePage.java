@@ -1,6 +1,5 @@
 package ra.view.user;
 
-//import ra.config.Config;
 
 import ra.config.Validate;
 import ra.config.WriteReadFile;
@@ -54,7 +53,7 @@ public class profilePage {
         Users usersEdit = userService.findByID(users.getId());
         String pass = usersEdit.getPassword();
 
-        System.out.println("Nhập mật khẩu cũ: ");
+        System.out.print("Nhập mật khẩu cũ: ");
         String oldPass = Validate.validateString();
 
         while (!oldPass.equals(pass)) {
@@ -62,7 +61,7 @@ public class profilePage {
             oldPass = Validate.validateString();
         }
 
-        System.out.println("Nhập mật khẩu mới: ");
+        System.out.print("Nhập mật khẩu mới: ");
         String newPass = Validate.validateString();
         usersEdit.setPassword(newPass);
         userService.save(usersEdit);
@@ -94,7 +93,7 @@ public class profilePage {
         System.out.println(".=================================================." + RESET);
         switch (Validate.validateInt()) {
             case 1:
-                System.out.println("Nhập tên cần đổi: ");
+                System.out.print("Nhập tên cần đổi: ");
                 String newName;
                 while (true) {
                     newName = Validate.validateString();
@@ -108,7 +107,7 @@ public class profilePage {
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi tên thành công" + RESET);
             case 2:
-                System.out.println("Nhập email cần đổi");
+                System.out.print("Nhập email cần đổi");
                 String newEmail = Validate.validateEmail();
                 if (newEmail.equals(usersProfile.getEmail())) {
                     System.out.println(RED + "Email giống email ban đầu" + RESET);
@@ -120,7 +119,7 @@ public class profilePage {
                     break;
                 }
             case 3:
-                System.out.println("Nhập số điện thoại cần đổi");
+                System.out.print("Nhập số điện thoại cần đổi");
                 String newPhone = Validate.validatePhone();
                 if (newPhone.equals(usersProfile.getPhoneNumber())) {
                     System.out.println(RED + "Số điện thoại giống số điện thoại ban đầu" + RESET);

@@ -74,6 +74,7 @@ public class homePage {
 
         System.out.print("Nhập tên sản phẩm muốn tìm: ");
         String search = Validate.validateString().toLowerCase();
+
         int count = 0;
         boolean found = false;
         System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
@@ -133,20 +134,24 @@ public class homePage {
     private void addToCart() {
         // Hiển thị danh sách sản phẩm
         System.out.println("Danh sách sản phẩm:");
+        System.out.println("_____________________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_____________________________________________________________________________________________________________________________");
         List<Product> products = productService.findAll();
         for (int i = 0; i < products.size(); i++) {
             System.out.println((i + 1) + ". " + products.get(i));
         }
 
         // Yêu cầu người dùng chọn sản phẩm
-        System.out.print("Mời chọn sản phẩm (1-" + products.size() + "): ");
+        System.out.print("Mời chọn sản phẩm (1_" + products.size() + "), ");
         int choice = Validate.validateInt();
 
         // Lấy sản phẩm đã chọn
         Product selectedProduct = products.get(choice - 1);
 
         // Yêu cầu người dùng nhập số lượng
-        System.out.print("Nhập số lượng: ");
+        System.out.print("Nhập số lượng muốn mua, ");
         int quantity = Validate.validateInt();
 
         // Kiểm tra số lượng có hợp lệ
@@ -167,13 +172,13 @@ public class homePage {
         // Cập nhật số lượng sản phẩm trong kho
         selectedProduct.setStock(selectedProduct.getStock() - quantity);
 
-        System.out.println("Sản phẩm đã được thêm vào giỏ hàng.");
+        System.out.println(YELLOW + "Sản phẩm đã được thêm vào giỏ hàng" + RESET);
     }
 
     private void sortProduct() {
         System.out.println("1. Sắp xếp theo giá tăng dần");
         System.out.println("2. Sắp xếp theo giá giảm dần");
-        System.out.println("Mời lựa chọn: ");
+
         int sortChoice = Validate.validateInt();
         if (sortChoice == 1) {
             productService.findAll().sort(Comparator.comparing(Product::getUnitPrice));

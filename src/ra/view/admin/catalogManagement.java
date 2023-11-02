@@ -60,14 +60,14 @@ public class catalogManagement {
     }
 
     private void addCatalog() {
-        System.out.println("Nhập số lượng danh mục cần thêm: ");
+        System.out.print("Nhập số lượng danh mục cần thêm: ");
         int n = Validate.validateInt();
         for (int i = 0; i < n; i++) {
             System.out.println("Danh mục thứ " + (i + 1) + " ");
             Catalog catalog = new Catalog();
 
             while (true) {
-                System.out.println("Nhập tên danh mục");
+                System.out.print("Nhập tên danh mục");
                 catalog.setCatalogName(Validate.validateString());
                 boolean check = false;
 
@@ -79,7 +79,7 @@ public class catalogManagement {
                     }
                 }
                 if (!check) {
-                    System.out.println("Nhập mô tả danh mục");
+                    System.out.print("Nhập mô tả danh mục");
                     catalog.setDescription(Validate.validateString());
 
                     System.out.println(YELLOW + "Thêm danh mục thành công" + RESET);
@@ -121,7 +121,7 @@ public class catalogManagement {
     }
 
     private void searchCatalog() {
-        System.out.println("Mời nhập tên danh mục cần tìm: ");
+        System.out.print("Mời nhập tên danh mục cần tìm: ");
         String searchName = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println("Danh sách danh mục cần tìm kiếm: ");
@@ -136,7 +136,7 @@ public class catalogManagement {
     }
 
     private void editCatalog() {
-        System.out.println("Nhập ID danh mục cần thay đổi thông tin: ");
+        System.out.print("Nhập ID danh mục cần thay đổi thông tin: ");
         int idEdit = Validate.validateInt();
 
         Catalog catalogEdit = catalogService.findByID(idEdit);
@@ -152,7 +152,7 @@ public class catalogManagement {
 
             switch (Validate.validateInt()) {
                 case 1:
-                    System.out.println("Nhập mới tên danh mục: ");
+                    System.out.print("Nhập mới tên danh mục: ");
                     catalogEdit.setCatalogName(Validate.validateString());
                     catalogService.update(catalogEdit);
                     System.out.println(YELLOW + "Sửa tên danh mục thành công" + RESET);
@@ -169,7 +169,7 @@ public class catalogManagement {
                     }
                     break;
                 case 2:
-                    System.out.println("Nhập mới mô tả danh mục: ");
+                    System.out.print("Nhập mới mô tả danh mục: ");
                     catalogEdit.setDescription(Validate.validateString());
                     catalogService.update(catalogEdit);
                     System.out.println(YELLOW + "Sửa mô tả danh mục thành công" + RESET);
@@ -184,7 +184,7 @@ public class catalogManagement {
     }
 
     private void deleteCatalog() {
-        System.out.println("Mời nhập ID danh mục cần xoá: ");
+        System.out.print("Mời nhập ID danh mục cần xoá: ");
         int idDelete = Validate.validateInt();
         Catalog catalogDelete = catalogService.findByID(idDelete);
         if (catalogDelete == null) {
@@ -202,7 +202,7 @@ public class catalogManagement {
     }
 
     private void hideOpenCatalog() {
-        System.out.println("Nhập ID danh mục cần ẩn/mở: ");
+        System.out.print("Nhập ID danh mục cần ẩn/mở: ");
         int catalogId = Validate.validateInt();
         Catalog catalog = catalogService.findByID(catalogId);
 

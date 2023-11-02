@@ -1,7 +1,7 @@
 package ra.view.user;
 
 import ra.config.Validate;
-import ra.model.Product;
+import ra.model.Cart;
 import ra.service.*;
 import ra.service.impl.*;
 
@@ -14,6 +14,7 @@ public class cartPage {
     IOrderService orderService = new OrderServiceIMPL();
     IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
     ICartService cartService = new CartServiceIMPL();
+
 
     public void cartHome() {
         do {
@@ -62,6 +63,7 @@ public class cartPage {
     }
 
     private void showListOrder() {
-
+        Cart cart = new Cart();
+        System.out.println(cart);
     }
 }

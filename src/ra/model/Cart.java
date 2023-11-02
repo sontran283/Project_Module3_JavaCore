@@ -3,11 +3,14 @@ package ra.model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 import static ra.config.Color.*;
 
 
 public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static int newCartId = 1;
+    private static int newUserId = 1;
     private int cartId;
     private int userId;
     private Map<Integer, Integer> products;
@@ -15,6 +18,8 @@ public class Cart implements Serializable {
     public Cart() {
         // khoi tao gio hang voi danh sach rong
         products = new HashMap<>();
+        this.cartId = newCartId++;
+        this.userId = newUserId++;
     }
 
     public Cart(int cartId, int userId, Map<Integer, Integer> products) {

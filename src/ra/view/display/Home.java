@@ -9,6 +9,8 @@ import ra.service.impl.UserServiceIMPL;
 import ra.view.admin.AdminManager;
 import ra.view.user.UserManager;
 
+import java.util.Objects;
+
 import static ra.config.Color.*;
 
 public class Home {
@@ -24,7 +26,8 @@ public class Home {
                 System.out.println(users);
             }
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                    --->> HELLO, WELCOME BACK <<---                   |");
+            System.out.println("|                  --->> HELLO, COGO WELCOME BACK <<---                |");
+            System.out.println("|                       \uD83C\uDF4E    \uD83C\uDF4C     \uD83C\uDF4A     \uD83C\uDF47                        |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                            1. Đăng nhập                              |");
             System.out.println("|                            2. Đăng ký                                |");
@@ -115,6 +118,8 @@ public class Home {
             String username = Validate.validateString();
             if (userService.existUsername(username)) {
                 System.out.println(RED + "Tên đăng nhập đã tồn tại, mời nhập lại" + RESET);
+            } else if (username.equals(fullName)) {
+                System.out.println(RED + "Họ tên và tên tài khoản không được trùng" + RESET);
             } else {
                 users.setUsername(username);
                 break;

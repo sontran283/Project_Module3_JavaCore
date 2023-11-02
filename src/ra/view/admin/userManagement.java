@@ -64,7 +64,7 @@ public class userManagement {
     }
 
     private void searchUser() {
-        System.out.println("Mời nhập tên người dùng cần tìm: ");
+        System.out.print("Mời nhập tên người dùng cần tìm: ");
         String searchName = Validate.validateString().toLowerCase();
         int count = 0;
         System.out.println(YELLOW + "Danh sách người dùng cần tìm kiếm" + RESET);
@@ -79,7 +79,7 @@ public class userManagement {
     }
 
     private void editStatus() {
-        System.out.println("Nhập ID người dùng cần thay đổi trạng thái: ");
+        System.out.print("Nhập ID người dùng cần thay đổi trạng thái: ");
         int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);
@@ -105,7 +105,7 @@ public class userManagement {
     }
 
     private void changeRole() {
-        System.out.println("Nhập ID người dùng cần thay đổi Role: ");
+        System.out.print("Nhập ID người dùng cần thay đổi Role: ");
         int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);
@@ -127,7 +127,7 @@ public class userManagement {
     }
 
     private void deleteUser() {
-        System.out.println("Nhập ID người dùng cần xoá: ");
+        System.out.print("Nhập ID người dùng cần xoá: ");
         int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);

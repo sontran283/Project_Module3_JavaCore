@@ -59,7 +59,7 @@ public class productManagement {
     }
 
     private void addProduct() {
-        System.out.println("Nhập số lượng sản phẩm cần thêm: ");
+        System.out.print("Nhập số lượng sản phẩm cần thêm: ");
         int number = Validate.validateInt();
         for (int i = 0; i < number; i++) {
             System.out.println("Sản phẩm thứ: " + (i + 1) + ", ");
@@ -67,7 +67,7 @@ public class productManagement {
 
             while (true) {
                 // tên sp
-                System.out.println("Nhập tên sản phẩm: ");
+                System.out.print("Nhập tên sản phẩm: ");
                 product.setProductName(Validate.validateString());
                 boolean check = false;
 
@@ -87,7 +87,7 @@ public class productManagement {
                             System.out.println((j + 1) + ", " + catalog.getCatalogName());
                         }
                     }
-                    System.out.println("Mời lựa chọn danh mục sản phẩm: ");
+                    System.out.print("Mời lựa chọn danh mục sản phẩm: ");
                     while (true) {
                         int choice = Validate.validateInt();
                         if (choice >= 1 && choice <= catalogService.findAll().size()) {
@@ -103,13 +103,13 @@ public class productManagement {
                         }
                     }
 
-                    System.out.println("Nhập mô tả sản phẩm: ");
+                    System.out.print("Nhập mô tả sản phẩm: ");
                     product.setDescription(Validate.validateString());
 
-                    System.out.println("Nhập đơn giá: ");
+                    System.out.print("Nhập đơn giá: ");
                     product.setUnitPrice(Validate.validatePositiveDouble());
 
-                    System.out.println("Nhập số lượng trong kho: ");
+                    System.out.print("Nhập số lượng trong kho: ");
                     product.setStock(Validate.validatePositiveInt());
 
                     System.out.println(YELLOW + "Thêm sản phẩm thành công" + RESET);
@@ -237,11 +237,19 @@ public class productManagement {
     }
 
     private void searchProduct() {
-        System.out.println("Nhập tên sản phẩm muốn tìm: ");
+        System.out.println("_______________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
+        for (Product product : productService.findAll()) {
+            System.out.println(product);
+        }
+
+        System.out.print("Nhập tên sản phẩm muốn tìm: ");
         String search = Validate.validateString().toLowerCase();
 
         int count = 0;
-        System.out.println("Danh sách sản phẩm cần tìm: ");
+        System.out.println(YELLOW + "Danh sách sản phẩm cần tìm: " + RESET);
         System.out.println("_______________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
                 "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
