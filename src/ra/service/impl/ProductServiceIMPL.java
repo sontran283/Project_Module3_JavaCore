@@ -82,4 +82,15 @@ public class ProductServiceIMPL implements IProductService {
         }
         updateData();
     }
+
+    @Override
+    public List<Product> findByCatalog(int catalogId, List<Product> productList) {
+        List<Product> result = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getCatalog().getCatalogId() == catalogId) {
+                result.add(product);
+            }
+        }
+        return result;
+    }
 }

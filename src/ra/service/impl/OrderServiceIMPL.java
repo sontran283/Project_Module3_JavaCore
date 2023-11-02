@@ -1,16 +1,25 @@
 package ra.service.impl;
 
+import ra.config.WriteReadFile;
 import ra.model.Order;
 import ra.model.Product;
 import ra.service.IOrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderServiceIMPL implements IOrderService {
+    static WriteReadFile<List<Order>> writeReadFile = new WriteReadFile<List<Order>>();
+    public static List<Order> orderList;
+
+    static {
+        orderList = writeReadFile.readFile(WriteReadFile.PATH_ORDER);
+        orderList = (orderList == null) ? new ArrayList<>() : orderList;
+    }
 
     @Override
     public List<Order> findAll() {
-        return null;
+        return orderList;
     }
 
     @Override
@@ -42,5 +51,10 @@ public class OrderServiceIMPL implements IOrderService {
     @Override
     public int getNewId() {
         return 0;
+    }
+
+    @Override
+    public void address(Order order) {
+
     }
 }

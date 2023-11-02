@@ -24,8 +24,6 @@ public class Cart implements Serializable {
 
     public Cart(int cartId, int userId, Map<Integer, Integer> products) {
         this.cartId = cartId;
-        this.userId = userId;
-        this.products = products;
     }
 
     public int getCartId() {

@@ -74,3 +74,4 @@ public class OrdersDetail  implements Serializable {
                 '}';
     }
 }
+

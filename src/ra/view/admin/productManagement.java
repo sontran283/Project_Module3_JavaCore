@@ -179,6 +179,7 @@ public class productManagement {
                 case 1:
                     System.out.println("Nhập tên mới: ");
                     productedit.setProductName(Validate.validateString());
+                    productService.update(productedit);
                     System.out.println(YELLOW + "Sửa tên thành công" + RESET);
                     break;
                 case 2:
@@ -196,21 +197,25 @@ public class productManagement {
                             System.out.println(RED + "Không có danh mục theo lựa chọn, mời nhập lại" + RESET);
                         }
                     }
+                    productService.update(productedit);
                     System.out.println(YELLOW + "Sửa danh mục thành công" + RESET);
                     break;
                 case 3:
                     System.out.println("Nhập mô tả sản phẩm mới: ");
                     productedit.setDescription(Validate.validateString());
+                    productService.update(productedit);
                     System.out.println(YELLOW + "Sửa mô tả thành công" + RESET);
                     break;
                 case 4:
                     System.out.println("Nhập đơn giá mới: ");
                     productedit.setUnitPrice(Validate.validatePositiveDouble());
+                    productService.update(productedit);
                     System.out.println(YELLOW + "Sửa đơn giá thành công" + RESET);
                     break;
                 case 5:
                     System.out.println("Nhập mới số lượng hàng tồn kho: ");
                     productedit.setStock(Validate.validatePositiveInt());
+                    productService.update(productedit);
                     System.out.println(YELLOW + "Sửa số lượng thành công" + RESET);
                     break;
                 case 0:

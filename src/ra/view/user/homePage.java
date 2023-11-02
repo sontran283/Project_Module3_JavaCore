@@ -2,6 +2,7 @@ package ra.view.user;
 
 import ra.config.Validate;
 import ra.model.Cart;
+import ra.model.Catalog;
 import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
@@ -23,6 +24,7 @@ public class homePage {
     Cart cart = new Cart();
 
     public void home() {
+
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> HOME PAGE <<---                         |");
@@ -32,6 +34,7 @@ public class homePage {
             System.out.println("|                3. Danh sách sản phẩm                                 |");
             System.out.println("|                4. Thêm vào giỏ hàng                                  |");
             System.out.println("|                5. Sắp xếp theo giá tăng/giảm dần                     |");
+            System.out.println("|                6. Hiển thị từng nhóm sản phẩm theo danh mục          |");
             System.out.println("|                0. Quay lại                                           |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -51,6 +54,9 @@ public class homePage {
                 case 5:
                     sortProduct();
                     break;
+                case 6:
+                    showProductByCatalog();
+                    break;
                 case 0:
                     return;
                 default:
@@ -59,6 +65,7 @@ public class homePage {
             }
         } while (true);
     }
+
 
     private void searchProduct() {
         System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
@@ -198,6 +205,38 @@ public class homePage {
             if (product.isStatus()) {
                 System.out.println(product);
             }
+        }
+    }
+
+    public void showProductByCatalog() {
+        List<Catalog> catalogs = catalogService.findAll();
+
+        System.out.println("Danh sách danh mục sản phẩm:");
+        for (Catalog catalog : catalogs) {
+            System.out.println(catalog.getCatalogId() + ". " + catalog.getCatalogName());
+        }
+
+        System.out.print("Nhập ID danh mục, ");
+        int catalogId = Validate.validateInt();
+
+        Catalog selectedCatalog = null;
+        for (Catalog catalog : catalogs) {
+            if (catalog.getCatalogId() == catalogId) {
+                selectedCatalog = catalog;
+                break;
+            }
+        }
+
+        if (selectedCatalog == null) {
+            System.out.println("Danh mục không hợp lệ");
+            return;
+        }
+
+        List<Product> products = productService.findByCatalog(catalogId, productService.findAll());
+
+        System.out.println(YELLOW + "Danh sách sản phẩm thuộc danh mục '" + selectedCatalog.getCatalogName() + "':" + RESET);
+        for (Product product : products) {
+            System.out.println(product.getProductId() + ". " + product.getProductName());
         }
     }
 }
