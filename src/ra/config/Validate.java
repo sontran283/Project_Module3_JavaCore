@@ -75,4 +75,40 @@ public class Validate {
         }
         return currency;
     }
+
+    public static int validatePositiveDouble() {
+        Scanner scanner = new Scanner(System.in);
+        int value;
+        while (true) {
+            try {
+                value = Integer.parseInt(scanner.nextLine());
+                if (value >= 0) {
+                    break;
+                } else {
+                    System.out.println(RED + "Giá trị không hợp lệ, mời nhập lại" + RESET);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(RED + "Giá trị không hợp lệ, mời nhập lại" + RESET);
+            }
+        }
+        return value;
+    }
+
+    public static int validatePositiveInt() {
+        Scanner scanner = new Scanner(System.in);
+        int value;
+        while (true) {
+            try {
+                value = Integer.parseInt(scanner.nextLine());
+                if (value >= 0) {
+                    break;
+                } else {
+                    System.out.println(RED + "Giá trị không hợp lệ, mời nhập lại" + RESET);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(RED + "Giá trị không hợp lệ, mời nhập lại" + RESET);
+            }
+        }
+        return value;
+    }
 }

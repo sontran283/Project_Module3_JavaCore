@@ -1,10 +1,20 @@
 package ra.view.user;
 
 import ra.config.Validate;
+import ra.model.Product;
+import ra.service.*;
+import ra.service.impl.*;
 
 import static ra.config.Color.*;
 
 public class cartPage {
+    ICatalogService catalogService = new CatalogServiceIMPL();
+    IProductService productService = new ProductServiceIMPL();
+    IUserService userService = new UserServiceIMPL();
+    IOrderService orderService = new OrderServiceIMPL();
+    IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
+    ICartService cartService = new CartServiceIMPL();
+
     public void cartHome() {
         do {
             System.out.println(BLUE + ".======================================================================.");

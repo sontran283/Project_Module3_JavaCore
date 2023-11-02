@@ -5,6 +5,7 @@ import java.io.Serializable;
 import static ra.service.impl.CatalogServiceIMPL.catalogList;
 
 public class Catalog implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int newID = 1;
     private int catalogId;
     private String catalogName;

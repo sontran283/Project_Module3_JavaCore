@@ -5,7 +5,9 @@ package ra.view.user;
 import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.model.Users;
+import ra.service.ICartService;
 import ra.service.IUserService;
+import ra.service.impl.CartServiceIMPL;
 import ra.service.impl.UserServiceIMPL;
 import ra.view.display.Home;
 
@@ -14,6 +16,8 @@ import static ra.view.display.Home.config;
 
 public class profilePage {
     IUserService userService = new UserServiceIMPL();
+    ICartService cartService = new CartServiceIMPL();
+
     public Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
     public void profileHome() {

@@ -148,7 +148,7 @@ public class Home {
         }
 
         userService.save(users);
-        System.out.println(YELLOW + "Tạo tài khoản thành công!" + RESET);
+        System.out.println(YELLOW + "Tạo tài khoản thành công" + RESET);
         login();
     }
 }

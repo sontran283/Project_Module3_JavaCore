@@ -11,6 +11,7 @@ import static ra.service.impl.ProductServiceIMPL.productList;
 
 
 public class Product implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static int newId = 1;
     private int productId;
     private String productName;

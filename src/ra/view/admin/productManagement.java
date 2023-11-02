@@ -65,51 +65,58 @@ public class productManagement {
             System.out.println("Sản phẩm thứ: " + (i + 1) + ", ");
             Product product = new Product();
 
-            // tên sp
-            System.out.println("Nhập tên sản phẩm: ");
-            product.setProductName(Validate.validateString());
-            for (Product checkName : productService.findAll()) {
-                if (checkName.getProductName().equalsIgnoreCase(product.getProductName())) {
-                    System.out.println(RED + "Sản phẩm đã tồn tại, mời nhập lại" + RESET);
+            while (true) {
+                // tên sp
+                System.out.println("Nhập tên sản phẩm: ");
+                product.setProductName(Validate.validateString());
+                boolean check = false;
+
+                for (Product checkName : productService.findAll()) {
+                    if (checkName.getProductName().equalsIgnoreCase(product.getProductName())) {
+                        System.out.println(RED + "Sản phẩm đã tồn tại, mời nhập lại" + RESET);
+                        check = true;
+                        break;
+                    }
+                }
+                if (!check) {
+                    // danh mục sp
+                    System.out.println("Danh mục sản phẩm có thể chọn: ");
+                    for (int j = 0; j < catalogService.findAll().size(); j++) {
+                        Catalog catalog = catalogService.findAll().get(j);
+                        if (catalog.isStatus()) {
+                            System.out.println((j + 1) + ", " + catalog.getCatalogName());
+                        }
+                    }
+                    System.out.println("Mời lựa chọn danh mục sản phẩm: ");
+                    while (true) {
+                        int choice = Validate.validateInt();
+                        if (choice >= 1 && choice <= catalogService.findAll().size()) {
+                            Catalog selectedCatalog = catalogService.findAll().get(choice - 1);
+                            if (selectedCatalog.isStatus()) {
+                                product.setCatalog(selectedCatalog);
+                                break;
+                            } else {
+                                System.out.println(RED + "Danh mục đã bị ẩn, mời chọn lại" + RESET);
+                            }
+                        } else {
+                            System.out.println(RED + "Lựa chọn không hợp lệ, mời nhập lại" + RESET);
+                        }
+                    }
+
+                    System.out.println("Nhập mô tả sản phẩm: ");
+                    product.setDescription(Validate.validateString());
+
+                    System.out.println("Nhập đơn giá: ");
+                    product.setUnitPrice(Validate.validatePositiveDouble());
+
+                    System.out.println("Nhập số lượng trong kho: ");
+                    product.setStock(Validate.validatePositiveInt());
+
+                    System.out.println(YELLOW + "Thêm sản phẩm thành công" + RESET);
+                    productService.save(product);
                     return;
                 }
             }
-
-            // danh mục sp
-            System.out.println("Danh mục sản phẩm có thể chọn: ");
-            for (int j = 0; j < catalogService.findAll().size(); j++) {
-                Catalog catalog = catalogService.findAll().get(j);
-                if (catalog.isStatus()) {
-                    System.out.println((j + 1) + ", " + catalog.getCatalogName());
-                }
-            }
-            System.out.println("Mời lựa chọn danh mục sản phẩm: ");
-            while (true) {
-                int choice = Validate.validateInt();
-                if (choice >= 1 && choice <= catalogService.findAll().size()) {
-                    Catalog selectedCatalog = catalogService.findAll().get(choice - 1);
-                    if (selectedCatalog.isStatus()) {
-                        product.setCatalog(selectedCatalog);
-                        break;
-                    } else {
-                        System.out.println(RED + "Danh mục đã bị ẩn, mời chọn lại" + RESET);
-                    }
-                } else {
-                    System.out.println(RED + "Lựa chọn không hợp lệ, mời nhập lại" + RESET);
-                }
-            }
-
-            System.out.println("Nhập mô tả sản phẩm: ");
-            product.setDescription(Validate.validateString());
-
-            System.out.println("Nhập đơn giá: ");
-            product.setUnitPrice(Double.parseDouble(Validate.validateString()));
-
-            System.out.println("Nhập số lượng trong kho: ");
-            product.setStock(Integer.parseInt(Validate.validateString()));
-
-            System.out.println(YELLOW + "Thêm sản phẩm thành công" + RESET);
-            productService.save(product);
         }
     }
 
@@ -198,12 +205,12 @@ public class productManagement {
                     break;
                 case 4:
                     System.out.println("Nhập đơn giá mới: ");
-                    productedit.setUnitPrice(Double.parseDouble(Validate.validateString()));
+                    productedit.setUnitPrice(Validate.validatePositiveDouble());
                     System.out.println(YELLOW + "Sửa đơn giá thành công" + RESET);
                     break;
                 case 5:
                     System.out.println("Nhập mới số lượng hàng tồn kho: ");
-                    productedit.setStock(Integer.parseInt(Validate.validateString()));
+                    productedit.setStock(Validate.validatePositiveInt());
                     System.out.println(YELLOW + "Sửa số lượng thành công" + RESET);
                     break;
                 case 0:

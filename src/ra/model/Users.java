@@ -5,6 +5,7 @@ import ra.constant.RoleName;
 import java.io.Serializable;
 
 public class Users implements Serializable {
+    private static final long serialVersionUID = 1L;
     private boolean isAdmin;
     private int newId = 1;
     private int id;
