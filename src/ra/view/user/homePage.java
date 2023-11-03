@@ -141,8 +141,9 @@ public class homePage {
     private void addToCart() {
         WriteReadFile<Users> config = new WriteReadFile<>();
         Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
+        
         // Hiển thị danh sách sản phẩm
-        System.out.println("Danh sách sản phẩm:");
+        System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
         System.out.println("_____________________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
                 "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
@@ -160,8 +161,13 @@ public class homePage {
         }
 
         // chon san pham
-        System.out.print("Mời chọn sản phẩm (1_" + products.size() + "), ");
+        System.out.print("-Mời chọn sản phẩm (1_" + products.size() + ") " + "\n");
+        System.out.println("-Nhập 0 để quay lại ");
         int choice = Validate.validateInt();
+
+        if (choice == 0) {
+            return;
+        }
 
         // lay ra sp da chon
         Product selectedProduct = products.get(choice - 1);
@@ -186,11 +192,12 @@ public class homePage {
         cart.addProduct(selectedProduct.getProductId(), quantity);
 
         // Cập nhật số lượng sản phẩm trong kho
-//        selectedProduct.setStock(selectedProduct.getStock() - quantity);
+        // selectedProduct.setStock(selectedProduct.getStock() - quantity);
 
         cartService.save(cart);
         productService.update(selectedProduct);
         System.out.println(YELLOW + "Sản phẩm đã được thêm vào giỏ hàng" + RESET);
+        addToCart();
     }
 
     private void sortProduct() {
@@ -222,7 +229,7 @@ public class homePage {
     public void showProductByCatalog() {
         List<Catalog> catalogs = catalogService.findAll();
 
-        System.out.println("Danh sách danh mục sản phẩm:");
+        System.out.println(YELLOW + "Danh sách danh mục sản phẩm:" + RESET);
         for (Catalog catalog : catalogs) {
             System.out.println(catalog.getCatalogId() + ". " + catalog.getCatalogName());
         }
@@ -246,8 +253,12 @@ public class homePage {
         List<Product> products = productService.findByCatalog(catalogId, productService.findAll());
 
         System.out.println(YELLOW + "Danh sách sản phẩm thuộc danh mục '" + selectedCatalog.getCatalogName() + "':" + RESET);
+        System.out.println("_______________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
         for (Product product : products) {
-            System.out.println(product.getProductId() + ". " + product.getProductName());
+            System.out.println(product);
         }
     }
 }

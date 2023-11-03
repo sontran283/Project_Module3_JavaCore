@@ -80,7 +80,7 @@ public class productManagement {
                 }
                 if (!check) {
                     // danh mục sp
-                    System.out.println("Danh mục sản phẩm có thể chọn: ");
+                    System.out.println(YELLOW + "Danh mục sản phẩm có thể chọn: " + RESET);
                     for (int j = 0; j < catalogService.findAll().size(); j++) {
                         Catalog catalog = catalogService.findAll().get(j);
                         if (catalog.isStatus()) {
@@ -114,10 +114,11 @@ public class productManagement {
 
                     System.out.println(YELLOW + "Thêm sản phẩm thành công" + RESET);
                     productService.save(product);
-                    return;
+                    break;
                 }
             }
         }
+        System.out.println(BLUE + "Đã thêm " + number + " sản phẩm" + RESET);
     }
 
     private void showProduct() {

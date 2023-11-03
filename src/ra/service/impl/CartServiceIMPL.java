@@ -13,7 +13,7 @@ public class CartServiceIMPL implements ICartService {
     static WriteReadFile<List<Cart>> writeReadFile = new WriteReadFile<List<Cart>>();  // doc list ghi trong file
     public static List<Cart> cartList;
 
-    static { // check
+    static {
         cartList = writeReadFile.readFile(WriteReadFile.PATH_CART);
         cartList = (cartList == null) ? new ArrayList<>() : cartList;
     }

@@ -63,11 +63,11 @@ public class catalogManagement {
         System.out.print("Nhập số lượng danh mục cần thêm: ");
         int n = Validate.validateInt();
         for (int i = 0; i < n; i++) {
-            System.out.println("Danh mục thứ " + (i + 1) + " ");
+            System.out.println("Danh mục thứ " + (i + 1) + ", ");
             Catalog catalog = new Catalog();
 
             while (true) {
-                System.out.print("Nhập tên danh mục");
+                System.out.print("Nhập tên danh mục: ");
                 catalog.setCatalogName(Validate.validateString());
                 boolean check = false;
 
@@ -79,15 +79,16 @@ public class catalogManagement {
                     }
                 }
                 if (!check) {
-                    System.out.print("Nhập mô tả danh mục");
+                    System.out.print("Nhập mô tả danh mục: ");
                     catalog.setDescription(Validate.validateString());
 
                     System.out.println(YELLOW + "Thêm danh mục thành công" + RESET);
                     catalogService.save(catalog);
-                    return;
+                    break;
                 }
             }
         }
+        System.out.println(BLUE + "Đã thêm " + n + " danh mục" + RESET);
     }
 
     private void showCatalog() {

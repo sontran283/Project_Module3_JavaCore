@@ -1,10 +1,11 @@
 package ra.model;
 
 import java.io.Serializable;
+
 import static ra.config.Color.*;
 
 
-public class OrdersDetail  implements Serializable {
+public class OrdersDetail implements Serializable {
     private static final long serialVersionUID = 1L;
     private int productId;
     private int orderId;

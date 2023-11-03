@@ -2,7 +2,10 @@ package ra.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import static ra.config.Color.*;
 
 
@@ -16,9 +19,9 @@ public class Order  implements Serializable {
     private String address;
     private double total;
 
-    private enum orderStatus {WAITING, CONFIRM, DELIVERY, SUCCESS, CANCEL}
+    private OrderStatus orderStatus = OrderStatus.WAITING;
 
-    private List<OrdersDetail> ordersDetails;
+    private Map<Integer, Integer> ordersDetails= new HashMap<>();
     private LocalDateTime orderAt;
     private LocalDateTime deliverAt;
 
@@ -26,17 +29,6 @@ public class Order  implements Serializable {
         this.orderId = newId++;
     }
 
-    public Order(int orderId, int userId, String name, String phoneNumber, String address, double total, List<OrdersDetail> ordersDetails, LocalDateTime orderAt, LocalDateTime deliverAt) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.total = total;
-        this.ordersDetails = ordersDetails;
-        this.orderAt = orderAt;
-        this.deliverAt = deliverAt;
-    }
 
     public int getOrderId() {
         return orderId;
@@ -86,11 +78,11 @@ public class Order  implements Serializable {
         this.total = total;
     }
 
-    public List<OrdersDetail> getOrdersDetails() {
+    public Map<Integer, Integer> getOrdersDetails() {
         return ordersDetails;
     }
 
-    public void setOrdersDetails(List<OrdersDetail> ordersDetails) {
+    public void setOrdersDetails(Map<Integer, Integer> ordersDetails) {
         this.ordersDetails = ordersDetails;
     }
 
@@ -108,6 +100,14 @@ public class Order  implements Serializable {
 
     public void setDeliverAt(LocalDateTime deliverAt) {
         this.deliverAt = deliverAt;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override

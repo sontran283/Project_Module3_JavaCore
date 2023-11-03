@@ -25,28 +25,43 @@ public class OrdersDetailServiceIMPL implements IOrdersDetailService {
 
     @Override
     public void save(OrdersDetail ordersDetail) {
-
+        ordersDetailList.add(ordersDetail);
+        writeReadFile.writeFile(WriteReadFile.PATH_ORDERSDETAIL, findAll());
+        updateData();
     }
 
     @Override
     public void update(OrdersDetail ordersDetail) {
-
+        for (OrdersDetail detail : ordersDetailList) {
+            if (detail.getOrderId() == ordersDetail.getOrderId() && detail.getProductId() == ordersDetail.getProductId()) {
+                detail.setQuantity(ordersDetail.getQuantity());
+                break;
+            }
+        }
+        updateData();
     }
 
     @Override
     public List<Product> delete(int id) {
-
+        OrdersDetail ordersDetailDelete = findByID(id);
+        ordersDetailList.remove(ordersDetailDelete);
+        updateData();
         return null;
     }
 
     @Override
     public OrdersDetail findByID(int id) {
+        for (OrdersDetail ordersDetail : ordersDetailList) {
+            if (ordersDetail.getOrderId() == id) {
+                return ordersDetail;
+            }
+        }
         return null;
     }
 
     @Override
     public void updateData() {
-
+        writeReadFile.writeFile(WriteReadFile.PATH_ORDERSDETAIL, findAll());
     }
 
     @Override
