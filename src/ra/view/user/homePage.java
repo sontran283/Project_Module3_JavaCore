@@ -1,9 +1,11 @@
 package ra.view.user;
 
 import ra.config.Validate;
+import ra.config.WriteReadFile;
 import ra.model.Cart;
 import ra.model.Catalog;
 import ra.model.Product;
+import ra.model.Users;
 import ra.service.*;
 import ra.service.impl.*;
 
@@ -24,7 +26,6 @@ public class homePage {
     Cart cart = new Cart();
 
     public void home() {
-
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> HOME PAGE <<---                         |");
@@ -65,7 +66,6 @@ public class homePage {
             }
         } while (true);
     }
-
 
     private void searchProduct() {
         System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
@@ -139,35 +139,44 @@ public class homePage {
     }
 
     private void addToCart() {
+        WriteReadFile<Users> config = new WriteReadFile<>();
+        Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
         // Hiển thị danh sách sản phẩm
         System.out.println("Danh sách sản phẩm:");
         System.out.println("_____________________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
                 "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
         System.out.println("_____________________________________________________________________________________________________________________________");
+
         List<Product> products = productService.findAll();
+        Cart cart = cartService.findCartByUserLogin();
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUserId(userLogin.getId());
+        }
+
         for (int i = 0; i < products.size(); i++) {
             System.out.println((i + 1) + ". " + products.get(i));
         }
 
-        // Yêu cầu người dùng chọn sản phẩm
+        // chon san pham
         System.out.print("Mời chọn sản phẩm (1_" + products.size() + "), ");
         int choice = Validate.validateInt();
 
-        // Lấy sản phẩm đã chọn
+        // lay ra sp da chon
         Product selectedProduct = products.get(choice - 1);
 
-        // Yêu cầu người dùng nhập số lượng
+        // nhap so luong
         System.out.print("Nhập số lượng muốn mua, ");
         int quantity = Validate.validateInt();
 
-        // Kiểm tra số lượng có hợp lệ
+        // kiem tra xem co hop le
         if (quantity <= 0) {
             System.out.println(RED + "Số lượng không hợp lệ. Không thêm được sản phẩm vào giỏ hàng" + RESET);
             return;
         }
 
-        // Kiểm tra số lượng sản phẩm còn đủ để thêm vào giỏ hàng
+        //kiem tra trong kho co du so luong hay ko
         if (selectedProduct.getStock() < quantity) {
             System.out.println(RED + "Số lượng sản phẩm không đủ. Không thêm được sản phẩm vào giỏ hàng" + RESET);
             return;
@@ -177,8 +186,10 @@ public class homePage {
         cart.addProduct(selectedProduct.getProductId(), quantity);
 
         // Cập nhật số lượng sản phẩm trong kho
-        selectedProduct.setStock(selectedProduct.getStock() - quantity);
+//        selectedProduct.setStock(selectedProduct.getStock() - quantity);
 
+        cartService.save(cart);
+        productService.update(selectedProduct);
         System.out.println(YELLOW + "Sản phẩm đã được thêm vào giỏ hàng" + RESET);
     }
 

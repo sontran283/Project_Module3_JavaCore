@@ -6,6 +6,7 @@ import ra.service.IProductService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProductServiceIMPL implements IProductService {
     static WriteReadFile<List<Product>> writeReadFile = new WriteReadFile<List<Product>>();
@@ -70,6 +71,11 @@ public class ProductServiceIMPL implements IProductService {
 
     @Override
     public List<Product> findName(String name) {
+        return null;
+    }
+
+    @Override
+    public Map<Integer, Integer> getProducts() {
         return null;
     }
 

@@ -9,21 +9,21 @@ import static ra.config.Color.*;
 
 public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static int newCartId = 1;
-    private static int newUserId = 1;
     private int cartId;
     private int userId;
-    private Map<Integer, Integer> products;
+    private Map<Integer, Integer> products = new HashMap<>();
+    private boolean status;
 
     public Cart() {
         // khoi tao gio hang voi danh sach rong
         products = new HashMap<>();
-        this.cartId = newCartId++;
-        this.userId = newUserId++;
     }
 
-    public Cart(int cartId, int userId, Map<Integer, Integer> products) {
+    public Cart(int cartId, int userId, Map<Integer, Integer> products, boolean status) {
         this.cartId = cartId;
+        this.userId = userId;
+        this.products = products;
+        this.status = status;
     }
 
     public int getCartId() {
@@ -60,12 +60,21 @@ public class Cart implements Serializable {
         products.remove(productId);
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
                 "cartId=" + cartId +
                 ", userId=" + userId +
                 ", products=" + products +
+                ", status=" + (status ? GREEN + "Đã thanh toán" + RESET : RED + "Chưa thanh toán" + RESET) +
                 '}';
     }
 }

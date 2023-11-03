@@ -56,17 +56,25 @@ public class cartPage {
     }
 
     private void changeStock() {
-        System.out.println("Nhập ID sản phẩm cần thay đổi Stock: ");
-        int productID = Validate.validateInt();
-
-        System.out.println("Nhập số lượng mới:");
-        int newQuantity = Validate.validateInt();
-
-        Cart cart = new Cart();
+        Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
 
+        System.out.print("Nhập ID sản phẩm cần thay đổi Stock: ");
+        int productID = Validate.validateInt();
+
+        System.out.print("Nhập số lượng mới:");
+        int newQuantity = Validate.validateInt();
+
+        Product product1 = productService.findByID(productID);
         if (products.containsKey(productID)) {
+            if (newQuantity > product1.getStock()) {
+                System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + RESET);
+                return;
+            } else if (newQuantity < 1) {
+                System.out.println(RED + "Số lượng không hợp lệ, mời nhập lệ" + RESET);
+            }
             products.put(productID, newQuantity);
+            cartService.update(cart);
             System.out.println(YELLOW + "Thay đổi số lượng thành công" + RESET);
         } else {
             System.out.println(RED + "Sản phẩm không tồn tại trong giỏ hàng" + RESET);
@@ -74,14 +82,15 @@ public class cartPage {
     }
 
     private void deleteProduct() {
-        System.out.println("Nhập ID sản phẩm cần xoá");
-        int productId = Validate.validateInt();
-
-        Cart cart = new Cart();
+        Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
+
+        System.out.print("Nhập ID sản phẩm cần xoá");
+        int productId = Validate.validateInt();
 
         if (products.containsKey(productId)) {
             products.remove(productId);
+            cartService.update(cart);
             System.out.println(YELLOW + "Xoá sản phẩm thành công" + RESET);
         } else {
             System.out.println(RED + "Sản phẩm không tồn tại trong giỏ hàng" + RESET);
@@ -89,7 +98,7 @@ public class cartPage {
     }
 
     private void order() {
-        Cart cart = new Cart();
+        Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
 
         if (products.isEmpty()) {
@@ -100,9 +109,9 @@ public class cartPage {
                 int productId = entry.getKey();
                 int quantity = entry.getValue();
 
-                System.out.println("Sản phẩm ID: " + productId);
+                System.out.println("ID: " + productId);
                 System.out.println("Số lượng: " + quantity);
-                System.out.println("-----");
+                System.out.println("------------------------");
             }
 
             System.out.println("Bạn có muốn đặt hàng? (1: Đồng ý, 0: Hủy bỏ)");
@@ -129,15 +138,19 @@ public class cartPage {
                 // Xóa sản phẩm khỏi giỏ hàng sau khi đặt hàng thành công
                 cart.removeProduct(1);
 
-                System.out.println("Đặt hàng thành công.");
+                System.out.println(YELLOW + "Đặt hàng thành công" + RESET);
             } else {
-                System.out.println("Đặt hàng bị hủy bỏ.");
+                System.out.println(YELLOW + "Đặt hàng bị hủy bỏ" + RESET);
             }
         }
     }
 
     private void showListOrder() {
-        Cart cart = new Cart();
+        Cart cart = cartService.findCartByUserLogin();
+        if (cart == null) {
+            System.out.println(RED + "Giỏ hàng trống" + RESET);
+            return;
+        }
         Map<Integer, Integer> products = cart.getProducts();
 
         if (products.isEmpty()) {
@@ -151,15 +164,10 @@ public class cartPage {
                 // Lấy thông tin sản phẩm từ productService bằng productId
                 Product product = productService.findByID(productId);
 
-                // Hiển thị thông tin sản phẩm và số lượng
-                System.out.println("Sản phẩm: " + product.getProductName());
+                System.out.println("ID: " + productId);
+                System.out.println("Tên sản phẩm: " + product.getProductName());
                 System.out.println("Số lượng: " + quantity);
-                System.out.println("-----");
-
-                // hiển thị id sản phẩm và số lượng
-                System.out.println("Sản phẩm ID: " + productId);
-                System.out.println("Số lượng: " + quantity);
-                System.out.println("-----");
+                System.out.println("------------------------");
             }
         }
     }
