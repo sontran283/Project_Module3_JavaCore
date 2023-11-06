@@ -6,9 +6,7 @@ import ra.model.*;
 import ra.service.*;
 import ra.service.impl.*;
 
-import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Map;
 
 import static ra.config.Color.*;
@@ -21,6 +19,8 @@ public class cartPage {
     IOrderService orderService = new OrderServiceIMPL();
     IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
     ICartService cartService = new CartServiceIMPL();
+    WriteReadFile<Users> config = new WriteReadFile<>();
+    Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
 
     public void cartHome() {
@@ -52,7 +52,10 @@ public class cartPage {
                     showListOrder();
                     break;
                 case 5:
-                    orderHistory(order);
+                    orderHistory();
+                    break;
+                case 6:
+                    showListOrderAll();
                     break;
                 case 0:
                     return;
@@ -61,6 +64,12 @@ public class cartPage {
                     break;
             }
         } while (true);
+    }
+
+    private void showListOrderAll() {
+        for (Order order : orderService.findAll()) {
+            System.out.println(order);
+        }
     }
 
     private void changeStock() {
@@ -76,7 +85,7 @@ public class cartPage {
         Product product1 = productService.findByID(productID);
         if (products.containsKey(productID)) {
             if (newQuantity > product1.getStock()) {
-                System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + RESET);
+                System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + " sản phẩm " + RESET);
                 return;
             } else if (newQuantity < 1) {
                 System.out.println(RED + "Số lượng không hợp lệ, mời nhập lại" + RESET);
@@ -113,9 +122,24 @@ public class cartPage {
         Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
 
+        double total = 0;
         if (products.isEmpty()) {
             System.out.println(RED + "Giỏ hàng trống, không thể đặt hàng" + RESET);
         } else {
+
+            for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
+                int productId = entry.getKey();
+                int quantity = entry.getValue();
+
+                // Lấy thông tin sản phẩm từ productService bằng productId
+                Product product = productService.findByID(productId);
+
+
+                // Tính tổng tiền
+                double productTotal = product.getUnitPrice() * quantity;
+                total += productTotal;
+            }
+
             System.out.println("Thông tin đơn hàng");
             for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
                 int productId = entry.getKey();
@@ -126,16 +150,30 @@ public class cartPage {
                 System.out.println("------------------------");
             }
 
+            System.out.println("Nhập họ tên: ");
+            String orderName = Validate.validateString();
+            System.out.println("Nhập số điện thoại: ");
+            String orserPhoneNumber = Validate.validatePhone();
+            System.out.println("Nhập địa chỉ: ");
+            String orderAddress = Validate.validateString();
+
+
             System.out.println(YELLOW + "Bạn có muốn đặt hàng? (1: Đồng ý, 0: Hủy bỏ)" + RESET);
             int choice = Validate.validateInt();
             if (choice == 1) {
                 // Tạo đơn hàng
                 Order order = new Order();
                 order.setUserId(userLogin.getId());
-                order.setOrdersDetails(products);
-                order.setOrderStatus(OrderStatus.WAITING);
+                order.setOrderId(orderService.getNewId());
 
-                // Lưu đơn hàng
+//                order.setOrdersDetails(products);
+                order.setOrderStatus(OrderStatus.WAITING);
+                order.setName(orderName);
+                order.setPhoneNumber(orserPhoneNumber);
+                order.setAddress(orderAddress);
+                order.setTotal(total);
+
+                // Lưu đơn hàng vào cơ sở dữ liệu
                 orderService.save(order);
 
                 // Cập nhật số lượng sản phẩm trong danh sách sản phẩm
@@ -152,11 +190,12 @@ public class cartPage {
                 }
 
                 // Cập nhật giỏ hàng
+                cartService.update(cart);
                 cart.removeProduct();
                 cartService.save(cart);
 
-                // Cập nhật biến order với đơn hàng mới được tạo
-                order = orderService.findByID(order.getOrderId());
+                // Thêm đơn hàng vào lịch sử đơn hàng
+                orderService.address(order);
 
                 System.out.println(YELLOW + "Đặt hàng thành công" + RESET);
             } else if (choice == 0) {
@@ -181,6 +220,9 @@ public class cartPage {
         } else {
             double total = 0;
             System.out.println(YELLOW + "Danh sách sản phẩm trong giỏ hàng:" + RESET);
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("| %-4s | %-20s | %-10s | %-8s |\n", "ID", "Tên sản phẩm", "Giá tiền", "Số lượng");
+            System.out.println("-------------------------------------------------------");
             for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
                 int productId = entry.getKey();
                 int quantity = entry.getValue();
@@ -188,53 +230,65 @@ public class cartPage {
                 // Lấy thông tin sản phẩm từ productService bằng productId
                 Product product = productService.findByID(productId);
 
-                System.out.println("ID: " + productId);
-                System.out.println("Tên sản phẩm: " + product.getProductName());
-                System.out.println("Giá tiền: " + formatCurrency(product.getUnitPrice()));
-                System.out.println("Số lượng: " + quantity);
-                System.out.println("------------------------");
+                String formattedPrice = formatCurrency(product.getUnitPrice());
+
+                System.out.printf("| %-4s | %-20s | %-10s | %-8s |\n", productId, product.getProductName(), formattedPrice, quantity);
 
                 // Tính tổng tiền
                 double productTotal = product.getUnitPrice() * quantity;
                 total += productTotal;
             }
+            System.out.println("-------------------------------------------------------");
             System.out.println("Tổng tiền: " + formatCurrency(total));
-            System.out.println("------------------------");
+            System.out.println("--------------------");
         }
     }
+
 
     private String formatCurrency(double amount) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         return decimalFormat.format(amount) + " đ";
     }
 
-    private void orderHistory(Order order) {
-        WriteReadFile<Users> config = new WriteReadFile<>();
-        Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
+    private void orderHistory() {
 
-        System.out.println(YELLOW + "Thông tin đơn hàng" + RESET);
-        System.out.println("-ID đơn hàng: " + order.getOrderId());
-        System.out.println("-Người đặt hàng: " + userLogin.getName());
-        System.out.println("-Số điện thoại: " + userLogin.getPhoneNumber());
-        System.out.println("-Trạng thái: " + order.getOrderStatus());
+        if (orderService.findAll() == null || orderService.findAll().isEmpty()) {
 
-        System.out.println(YELLOW + "Chi tiết đơn hàng:" + RESET);
-        Map<Integer, Integer> orderDetails = order.getOrdersDetails();
-        for (Map.Entry<Integer, Integer> entry : orderDetails.entrySet()) {
-            int productId = entry.getKey();
-            int quantity = entry.getValue();
+            System.out.println("Khong co don hang");
+        }
+        for (Order order : orderService.findAll()) {
+            if (order.getUserId() == userLogin.getId()) {
+                System.out.println(order);
+            }
+        }
+        System.out.println("Moi nhap ID de chon don hang can huy: ");
+        int orderId = Validate.validatePositiveInt();
+        Order order = orderService.findByID(orderId);
+        if (order == null) {
+            System.out.println("khong ton tai trong danh sáh");
+            return;
+        }
 
-            // Lấy thông tin sản phẩm từ productService bằng productId
-            Product product = productService.findByID(productId);
-            Order order1  = orderService.findByID(order.getOrdersDetails().get(order));
-
-            System.out.println("Tên sản phẩm: " + order1.getOrdersDetails());
-            System.out.println("Tên sản phẩm: " + order1.getOrderAt());
-            System.out.println("Tên sản phẩm: " + order1.getOrderStatus());
-            System.out.println("Tên sản phẩm: " + order1.getName());
-            System.out.println("Giá tiền: " + formatCurrency(product.getUnitPrice()));
-            System.out.println("Số lượng: " + quantity);
-            System.out.println("------------------------");
+        if (order.getOrderStatus() == OrderStatus.WAITING) {
+            System.out.println("1. Huỷ đơn hàng: ");
+            System.out.println("O. THOAT");
+            int choiceCheck = Validate.validateInt();
+            switch (choiceCheck) {
+                case 1:
+                    order.setOrderStatus(OrderStatus.CANCEL);
+                    orderService.update(order);
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Nhap k hop le");
+            }
+        } else if (order.getOrderStatus() == OrderStatus.CANCEL) {
+            System.out.println("don hang da bi huy");
+        } else if (order.getOrderStatus() == OrderStatus.CONFIRM) {
+            System.out.println("DA XAC NHAN");
+        } else {
+            System.out.println("ko hop le");
         }
     }
 }

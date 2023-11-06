@@ -18,9 +18,9 @@ import static ra.config.Color.*;
 public class homePage {
     ICatalogService catalogService = new CatalogServiceIMPL();
     IProductService productService = new ProductServiceIMPL();
-    IUserService userService = new UserServiceIMPL();
-    IOrderService orderService = new OrderServiceIMPL();
-    IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
+//    IUserService userService = new UserServiceIMPL();
+//    IOrderService orderService = new OrderServiceIMPL();
+//    IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
     ICartService cartService = new CartServiceIMPL();
 
     Cart cart = new Cart();
@@ -31,7 +31,7 @@ public class homePage {
             System.out.println("|                        --->> HOME PAGE <<---                         |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                1. Tìm kiếm sản phẩm theo tên                         |");
-            System.out.println("|                2. 10 Sản phẩm nổi bật theo tên (alpha-b)             |");
+            System.out.println("|                2. 10 Sản phẩm theo tên (alpha-b)                     |");
             System.out.println("|                3. Danh sách sản phẩm                                 |");
             System.out.println("|                4. Thêm vào giỏ hàng                                  |");
             System.out.println("|                5. Sắp xếp theo giá tăng/giảm dần                     |");
@@ -108,7 +108,7 @@ public class homePage {
     private void showHotProduct() {
         List<Product> hotProducts = new ArrayList<>(productService.findAll());
 
-        System.out.println(YELLOW + "10 sản phẩm nổi bật theo thứ tự alpha-b:" + RESET);
+        System.out.println(YELLOW + "10 sản phẩm theo thứ tự alpha-b:" + RESET);
         System.out.println("_______________________________________________________________________________________________________________________");
         System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
                 "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
@@ -141,7 +141,7 @@ public class homePage {
     private void addToCart() {
         WriteReadFile<Users> config = new WriteReadFile<>();
         Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
-        
+
         // Hiển thị danh sách sản phẩm
         System.out.println(YELLOW + "Danh sách sản phẩm: " + RESET);
         System.out.println("_____________________________________________________________________________________________________________________________");

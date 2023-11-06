@@ -52,7 +52,7 @@ public class Home {
 
     private void login() {
         System.out.println(BLUE + ".======================================================================.");
-        System.out.println("|                        --->> FORM LOGIN <<---                        |");
+        System.out.println("|                         --->> ĐĂNG NHẬP <<---                        |");
         System.out.println(".======================================================================." + RESET);
 
         System.out.print("Nhập tên tài khoản: ");
@@ -94,7 +94,7 @@ public class Home {
 
     public void register() {
         System.out.println(BLUE + ".======================================================================.");
-        System.out.println("|                       --->> FORM REGISTER <<---                      |");
+        System.out.println("|                          --->> ĐĂNG KÝ <<---                         |");
         System.out.println(".======================================================================." + RESET);
         Users users = new Users();
         users.setId(userService.getNewId());
@@ -161,7 +161,7 @@ public class Home {
         }
 
         userService.save(users);
-        System.out.println(YELLOW + "Tạo tài khoản thành công" + RESET);
+        System.out.println(YELLOW + "Đăng ký thành công" + RESET);
         login();
     }
 }

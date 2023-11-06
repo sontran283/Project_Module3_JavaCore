@@ -51,6 +51,8 @@ public class ProductServiceIMPL implements IProductService {
 
     @Override
     public Product findByID(int id) {
+        // duyệt qua danh sách productList để tìm sản phẩm có productId tương ứng
+        // Nếu tìm thấy, nó trả về sản phẩm đó. Nếu không tìm thấy, nó trả về null
         for (Product product : productList) {
             if (product.getProductId() == id) {
                 return product;

@@ -9,9 +9,8 @@ import java.util.Map;
 import static ra.config.Color.*;
 
 
-public class Order  implements Serializable {
+public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int newId = 1;
     private int orderId;
     private int userId;
     private String name;
@@ -21,12 +20,12 @@ public class Order  implements Serializable {
 
     private OrderStatus orderStatus = OrderStatus.WAITING;
 
-    private Map<Integer, Integer> ordersDetails= new HashMap<>();
+    private Map<Integer, Integer> ordersDetails = new HashMap<>();
     private LocalDateTime orderAt;
     private LocalDateTime deliverAt;
 
     public Order() {
-        this.orderId = newId++;
+
     }
 
 
@@ -113,15 +112,14 @@ public class Order  implements Serializable {
     @Override
     public String toString() {
         return "Order{" +
-                "orderId=" + orderId +
+                ", orderId=" + orderId +
                 ", userId=" + userId +
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
                 ", total=" + total +
+                ", orderStatus=" + orderStatus +
                 ", ordersDetails=" + ordersDetails +
-                ", orderAt=" + orderAt +
-                ", deliverAt=" + deliverAt +
                 '}';
     }
 }

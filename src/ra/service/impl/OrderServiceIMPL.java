@@ -59,7 +59,7 @@ public class OrderServiceIMPL implements IOrderService {
 
     @Override
     public Order findByID(int id) {
-        for (Order order :orderList) {
+        for (Order order : orderList) {
             if (order.getOrderId() == id) {
                 return order;
             }
@@ -84,7 +84,20 @@ public class OrderServiceIMPL implements IOrderService {
         return maxId + 1;
     }
 
+    private List<Order> orderHistory;
+
     @Override
-    public void address(Order order) {
+    public List<Order> address(Order order) {
+        this.orderHistory = new ArrayList<>();
+        orderHistory.add(order);
+        return orderHistory;
+    }
+
+    private List<Order> orders;
+
+    @Override
+    public List<Order> getOrderHistory() {
+        this.orders = new ArrayList<>();
+        return orders;
     }
 }
