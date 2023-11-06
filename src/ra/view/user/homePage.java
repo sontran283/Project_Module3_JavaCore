@@ -18,9 +18,9 @@ import static ra.config.Color.*;
 public class homePage {
     ICatalogService catalogService = new CatalogServiceIMPL();
     IProductService productService = new ProductServiceIMPL();
-//    IUserService userService = new UserServiceIMPL();
-//    IOrderService orderService = new OrderServiceIMPL();
-//    IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
+    IUserService userService = new UserServiceIMPL();
+    IOrderService orderService = new OrderServiceIMPL();
+    IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
     ICartService cartService = new CartServiceIMPL();
 
     Cart cart = new Cart();

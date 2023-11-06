@@ -7,6 +7,8 @@ import ra.model.OrderStatus;
 import ra.service.*;
 import ra.service.impl.*;
 
+import java.sql.SQLOutput;
+
 import static ra.config.Color.*;
 
 public class orderManagement {
@@ -84,7 +86,14 @@ public class orderManagement {
     }
 
     private void showListOrder() {
+        if (orderService.findAll() == null || orderService.findAll().isEmpty()) {
+            System.out.println(RED + "Danh sách trống" + RESET);
+            return;
+        }
+
         System.out.println(YELLOW + "Danh sách đơn hàng" + RESET);
+        System.out.printf("| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n ",
+                "Order ID", "User ID", "Name", "Phone Number", "Address", "Total", "Order Status", "Order Details");
         for (Order order : orderService.findAll()) {
             System.out.println(order);
         }

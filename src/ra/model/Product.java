@@ -118,7 +118,6 @@ public class Product implements Serializable {
     public String toString() {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String format = "%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n";
-        System.out.println();
         return String.format(format, productId, productName, description, String.format(currencyFormat.format(unitPrice)), stock, catalog.getCatalogName(), (status ? GREEN + "Mở bán" + RESET : RED + "Không mở bán" + RESET));
     }
 }

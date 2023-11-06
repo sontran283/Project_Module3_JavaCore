@@ -91,7 +91,7 @@ public class profilePage {
         System.out.println("|               3. Sửa số điện thoại              |");
         System.out.println("|               0. Quay lại                       |");
         System.out.println(".=================================================." + RESET);
-        switch (Validate.validateInt()) {
+        switch (Validate.validatePositiveInt()) {
             case 1:
                 System.out.print("Nhập tên cần đổi: ");
                 String newName;

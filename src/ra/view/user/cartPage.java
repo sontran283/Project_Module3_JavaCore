@@ -25,8 +25,6 @@ public class cartPage {
 
 
     public void cartHome() {
-        Order order = new Order();
-
         do {
             System.out.println(BLUE + ".======================================================================.");
             System.out.println("|                        --->> CART PAGE <<---                         |");
@@ -181,13 +179,8 @@ public class cartPage {
                 }
 
                 // Cập nhật giỏ hàng
-                cart.removeProduct();
+                cart = null;
                 cartService.save(cart);
-                cartService.update(cart);
-
-
-                // Thêm đơn hàng vào lịch sử đơn hàng
-                orderService.address(order);
 
                 System.out.println(YELLOW + "Đặt hàng thành công" + RESET);
             } else if (choice == 0) {
@@ -245,8 +238,12 @@ public class cartPage {
     private void orderHistory() {
         List<Order> oders = orderService.findAll();
         if (oders == null || oders.isEmpty()) {
-            System.out.println(YELLOW + "Không có đơn hàng nào" + RESET);
+            System.out.println(RED + "Không có đơn hàng nào" + RESET);
+            return;
         }
+
+        System.out.printf("| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n ",
+                "Order ID", "User ID", "Name", "Phone Number", "Address", "Total", "Order Status", "Order Details");
         for (Order order : oders) {
             if (order.getUserId() == userLogin.getId()) {
                 System.out.println(order);

@@ -1,7 +1,6 @@
 package ra.config;
 
 import java.io.*;
-import java.util.Scanner;
 
 import static ra.config.Color.*;
 

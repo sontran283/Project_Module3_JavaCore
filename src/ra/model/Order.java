@@ -1,9 +1,9 @@
 package ra.model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static ra.config.Color.*;
@@ -17,17 +17,13 @@ public class Order implements Serializable {
     private String phoneNumber;
     private String address;
     private double total;
-
     private OrderStatus orderStatus = OrderStatus.WAITING;
-
     private Map<Integer, Integer> ordersDetails = new HashMap<>();
     private LocalDateTime orderAt;
     private LocalDateTime deliverAt;
 
     public Order() {
-
     }
-
 
     public int getOrderId() {
         return orderId;
@@ -109,17 +105,16 @@ public class Order implements Serializable {
         this.orderStatus = orderStatus;
     }
 
+
     @Override
     public String toString() {
-        return "Order{" +
-                ", orderId=" + orderId +
-                ", userId=" + userId +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", total=" + total +
-                ", orderStatus=" + orderStatus +
-                ", ordersDetails=" + ordersDetails +
-                '}';
+        String format = "| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n";
+        DecimalFormat decimalFormat = new DecimalFormat("#,### đ");
+        StringBuilder sb = new StringBuilder();
+
+        System.out.println("___________________________________________________________________________________________________________________________________________________________________");
+        sb.append(String.format(format, orderId, userId, name, phoneNumber, address, decimalFormat.format(total), orderStatus, ordersDetails));
+
+        return sb.toString();
     }
 }
