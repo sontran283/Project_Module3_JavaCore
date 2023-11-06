@@ -30,7 +30,7 @@ public class productManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     addProduct();
                     break;
@@ -60,7 +60,7 @@ public class productManagement {
 
     private void addProduct() {
         System.out.print("Nhập số lượng sản phẩm cần thêm: ");
-        int number = Validate.validateInt();
+        int number = Validate.validatePositiveInt();
         for (int i = 0; i < number; i++) {
             System.out.println("Sản phẩm thứ: " + (i + 1) + ", ");
             Product product = new Product();
@@ -89,7 +89,7 @@ public class productManagement {
                     }
                     System.out.print("Mời lựa chọn danh mục sản phẩm: ");
                     while (true) {
-                        int choice = Validate.validateInt();
+                        int choice = Validate.validatePositiveInt();
                         if (choice >= 1 && choice <= catalogService.findAll().size()) {
                             Catalog selectedCatalog = catalogService.findAll().get(choice - 1);
                             if (selectedCatalog.isStatus()) {
@@ -125,7 +125,7 @@ public class productManagement {
         System.out.println("1. Tất cả sản phẩm");
         System.out.println("2. Sản phẩm mở bán");
         System.out.println("3. Sản phẩm không mở bán");
-        int choiceCheck = Validate.validateInt();
+        int choiceCheck = Validate.validatePositiveInt();
 
         if (choiceCheck == 1) {
             System.out.println(YELLOW + "Tất cả sản phẩm" + RESET);
@@ -159,13 +159,13 @@ public class productManagement {
                 }
             }
         } else {
-            System.out.println("Không hợp lệ");
+            System.out.println(RED + "Không hợp lệ, mời nhập lại" + YELLOW);
         }
     }
 
     private void editProduct() {
         System.out.println("Nhập ID sản phẩm cần thay đổi: ");
-        int idEdit = Validate.validateInt();
+        int idEdit = Validate.validatePositiveInt();
         Product productedit = productService.findByID(idEdit);
 
         if (productedit != null) {
@@ -175,7 +175,7 @@ public class productManagement {
             System.out.println("4. Sửa đơn giá");
             System.out.println("5. Sửa số lượng trong kho");
             System.out.println("0. Quay lại");
-            int choice = Validate.validateInt();
+            int choice = Validate.validatePositiveInt();
             switch (choice) {
                 case 1:
                     System.out.println("Nhập tên mới: ");
@@ -190,7 +190,7 @@ public class productManagement {
                     }
                     System.out.println("Mời chọn danh mục mới: ");
                     while (true) {
-                        int choiceEdit = Validate.validateInt();
+                        int choiceEdit = Validate.validatePositiveInt();
                         if (choiceEdit >= 1 && choiceEdit <= catalogService.findAll().size()) {
                             productedit.setCatalog(catalogService.findAll().get(choiceEdit - 1));
                             break;
@@ -232,7 +232,7 @@ public class productManagement {
 
     private void deleteProduct() {
         System.out.println("Nhập ID sản phẩm cần xoá: ");
-        int idDelete = Validate.validateInt();
+        int idDelete = Validate.validatePositiveInt();
         Product productDelete = productService.findByID(idDelete);
         if (productDelete != null) {
             productService.delete(idDelete);
@@ -272,13 +272,14 @@ public class productManagement {
 
     private void hideOpenProduct() {
         System.out.println("Nhập ID sản phẩm cần ẩn/mở lại: ");
-        int productId = Validate.validateInt();
+        int productId = Validate.validatePositiveInt();
         Product product = productService.findByID(productId);
 
         if (product != null) {
             System.out.println("1. Ẩn sản phẩm");
             System.out.println("2. Mở lại sản phẩm");
-            int choice = Validate.validateInt();
+            System.out.println("0. Quay lại");
+            int choice = Validate.validatePositiveInt();
 
             switch (choice) {
                 case 1:
@@ -299,6 +300,8 @@ public class productManagement {
                         System.out.println(YELLOW + "Sản phẩm đang ở trạng thái mở" + RESET);
                     }
                     break;
+                case 0:
+                    return;
                 default:
                     System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);
                     break;

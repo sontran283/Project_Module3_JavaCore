@@ -28,7 +28,7 @@ public class orderManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     showListOrder();
                     break;
@@ -46,7 +46,7 @@ public class orderManagement {
 
     private void changeStatus() {
         System.out.print("Nhập ID đơn hàng muốn thay đổi trạng thái, ");
-        int orderId = Validate.validateInt();
+        int orderId = Validate.validatePositiveInt();
         Order order = orderService.findByID(orderId);
 
         if (order == null) {
@@ -59,7 +59,7 @@ public class orderManagement {
                 System.out.println("1. Duyệt đơn hàng");
                 System.out.println("2. Huỷ đơn hàng");
                 System.out.println("0. Quay lại");
-                int choiceCheck = Validate.validateInt();
+                int choiceCheck = Validate.validatePositiveInt();
                 switch (choiceCheck) {
                     case 1:
                         order.setOrderStatus(OrderStatus.CONFIRM);

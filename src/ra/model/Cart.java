@@ -57,7 +57,7 @@ public class Cart implements Serializable {
 
     // Xóa sản phẩm khỏi giỏ hàng
     public void removeProduct() {
-        products.clear();;
+        products.clear();
     }
 
     public boolean isStatus() {

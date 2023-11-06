@@ -37,7 +37,7 @@ public class cartPage {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     changeStock();
                     break;
@@ -66,11 +66,11 @@ public class cartPage {
         Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
 
-        System.out.print("Nhập ID sản phẩm cần thay đổi Stock: ");
-        int productID = Validate.validateInt();
+        System.out.print("Nhập ID sản phẩm cần thay đổi số lượng: ");
+        int productID = Validate.validatePositiveInt();
 
-        System.out.print("Nhập số lượng mới:");
-        int newQuantity = Validate.validateInt();
+        System.out.print("Nhập số lượng mới: ");
+        int newQuantity = Validate.validatePositiveInt();
 
         Product product1 = productService.findByID(productID);
         if (products.containsKey(productID)) {
@@ -94,7 +94,7 @@ public class cartPage {
         Map<Integer, Integer> products = cart.getProducts();
 
         System.out.print("Nhập ID sản phẩm cần xoá, ");
-        int productId = Validate.validateInt();
+        int productId = Validate.validatePositiveInt();
 
         if (products.containsKey(productId)) {
             products.remove(productId);
@@ -140,16 +140,16 @@ public class cartPage {
                 System.out.println("------------------------");
             }
 
-            System.out.println("Nhập họ tên: ");
+            System.out.print("Nhập họ tên: ");
             String orderName = Validate.validateString();
-            System.out.println("Nhập số điện thoại: ");
+            System.out.print("Nhập số điện thoại: ");
             String orserPhoneNumber = Validate.validatePhone();
-            System.out.println("Nhập địa chỉ: ");
+            System.out.print("Nhập địa chỉ: ");
             String orderAddress = Validate.validateString();
 
 
             System.out.println(YELLOW + "Bạn có muốn đặt hàng? (1: Đồng ý, 0: Hủy bỏ)" + RESET);
-            int choice = Validate.validateInt();
+            int choice = Validate.validatePositiveInt();
             if (choice == 1) {
                 // Tạo đơn hàng
                 Order order = new Order();
@@ -204,7 +204,7 @@ public class cartPage {
             System.out.println(RED + "Giỏ hàng trống" + RESET);
         } else {
             double total = 0;
-            System.out.println(YELLOW + "Danh sách sản phẩm trong giỏ hàng:" + RESET);
+            System.out.println(YELLOW + "Danh sách sản phẩm trong giỏ hàng: " + RESET);
             System.out.println("-------------------------------------------------------");
             System.out.printf("| %-4s | %-20s | %-10s | %-8s |\n", "ID", "Tên sản phẩm", "Giá tiền", "Số lượng");
             System.out.println("-------------------------------------------------------");
@@ -237,6 +237,7 @@ public class cartPage {
 
     private void orderHistory() {
         List<Order> oders = orderService.findAll();
+        
         if (oders == null || oders.isEmpty()) {
             System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;
@@ -261,7 +262,7 @@ public class cartPage {
         if (order.getOrderStatus() == OrderStatus.WAITING) {
             System.out.println("1. Huỷ đơn hàng");
             System.out.println("O. Quay lại");
-            int choiceCheck = Validate.validateInt();
+            int choiceCheck = Validate.validatePositiveInt();
             switch (choiceCheck) {
                 case 1:
                     order.setOrderStatus(OrderStatus.CANCEL);

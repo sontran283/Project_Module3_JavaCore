@@ -25,7 +25,7 @@ public class AdminManager {
             System.out.println("|                        0. Đăng xuất                                  |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                 --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     new userManagement().menuUser();
                     break;

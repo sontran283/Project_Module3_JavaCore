@@ -31,7 +31,7 @@ public class catalogManagement {
             System.out.println("|                    0. Quay lại                                       |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     addCatalog();
                     break;
@@ -61,7 +61,7 @@ public class catalogManagement {
 
     private void addCatalog() {
         System.out.print("Nhập số lượng danh mục cần thêm: ");
-        int n = Validate.validateInt();
+        int n = Validate.validatePositiveInt();
         for (int i = 0; i < n; i++) {
             System.out.println("Danh mục thứ " + (i + 1) + ", ");
             Catalog catalog = new Catalog();
@@ -95,7 +95,7 @@ public class catalogManagement {
         System.out.println("1. Tất cả danh mục");
         System.out.println("2. Danh mục đang mở");
         System.out.println("3. Danh mục đang đóng");
-        int choiceCheck = Validate.validateInt();
+        int choiceCheck = Validate.validatePositiveInt();
 
         if (choiceCheck == 1) {
             System.out.println(YELLOW + "Tất cả danh mục" + RESET);
@@ -138,7 +138,7 @@ public class catalogManagement {
 
     private void editCatalog() {
         System.out.print("Nhập ID danh mục cần thay đổi thông tin: ");
-        int idEdit = Validate.validateInt();
+        int idEdit = Validate.validatePositiveInt();
 
         Catalog catalogEdit = catalogService.findByID(idEdit);
         System.out.println(catalogEdit);
@@ -151,7 +151,7 @@ public class catalogManagement {
             System.out.println("2. Sửa mô tả danh mục");
             System.out.println("0. Quay lại");
 
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     System.out.print("Nhập mới tên danh mục: ");
                     catalogEdit.setCatalogName(Validate.validateString());
@@ -186,7 +186,7 @@ public class catalogManagement {
 
     private void deleteCatalog() {
         System.out.print("Mời nhập ID danh mục cần xoá: ");
-        int idDelete = Validate.validateInt();
+        int idDelete = Validate.validatePositiveInt();
         Catalog catalogDelete = catalogService.findByID(idDelete);
         if (catalogDelete == null) {
             System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
@@ -204,13 +204,13 @@ public class catalogManagement {
 
     private void hideOpenCatalog() {
         System.out.print("Nhập ID danh mục cần ẩn/mở: ");
-        int catalogId = Validate.validateInt();
+        int catalogId = Validate.validatePositiveInt();
         Catalog catalog = catalogService.findByID(catalogId);
 
         if (catalog != null) {
             System.out.println("1. Ẩn danh mục");
             System.out.println("2. Mở lại danh mục");
-            int choice = Validate.validateInt();
+            int choice = Validate.validatePositiveInt();
 
             if (choice == 1) {
                 // Ẩn danh mục và sản phẩm

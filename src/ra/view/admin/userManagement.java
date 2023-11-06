@@ -31,7 +31,7 @@ public class userManagement {
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     showUser();
                     break;
@@ -105,7 +105,7 @@ public class userManagement {
     }
 
     private void changeRole() {
-        System.out.print("Nhập ID người dùng cần thay đổi Role: ");
+        System.out.print("Nhập ID người dùng cần thay đổi trạng thái: ");
         int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);

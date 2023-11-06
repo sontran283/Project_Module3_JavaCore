@@ -39,7 +39,7 @@ public class homePage {
             System.out.println("|                0. Quay lại                                           |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
-            switch (Validate.validateInt()) {
+            switch (Validate.validatePositiveInt()) {
                 case 1:
                     searchProduct();
                     break;
@@ -163,7 +163,7 @@ public class homePage {
         // chon san pham
         System.out.print("-Mời chọn sản phẩm (1_" + products.size() + ") " + "\n");
         System.out.println("-Nhập 0 để quay lại ");
-        int choice = Validate.validateInt();
+        int choice = Validate.validatePositiveInt();
 
         if (choice == 0) {
             return;
@@ -174,7 +174,7 @@ public class homePage {
 
         // nhap so luong
         System.out.print("Nhập số lượng muốn mua, ");
-        int quantity = Validate.validateInt();
+        int quantity = Validate.validatePositiveInt();
 
         // kiem tra xem co hop le
         if (quantity <= 0) {
@@ -204,7 +204,7 @@ public class homePage {
         System.out.println("1. Sắp xếp theo giá tăng dần");
         System.out.println("2. Sắp xếp theo giá giảm dần");
 
-        int sortChoice = Validate.validateInt();
+        int sortChoice = Validate.validatePositiveInt();
         if (sortChoice == 1) {
             productService.findAll().sort(Comparator.comparing(Product::getUnitPrice));
             System.out.println(YELLOW + "Đã sắp xếp giá tăng dần thành công" + RESET);
@@ -229,13 +229,13 @@ public class homePage {
     public void showProductByCatalog() {
         List<Catalog> catalogs = catalogService.findAll();
 
-        System.out.println(YELLOW + "Danh sách danh mục sản phẩm:" + RESET);
+        System.out.println(YELLOW + "Danh sách danh mục sản phẩm: " + RESET);
         for (Catalog catalog : catalogs) {
             System.out.println(catalog.getCatalogId() + ". " + catalog.getCatalogName());
         }
 
         System.out.print("Nhập ID danh mục, ");
-        int catalogId = Validate.validateInt();
+        int catalogId = Validate.validatePositiveInt();
 
         Catalog selectedCatalog = null;
         for (Catalog catalog : catalogs) {
@@ -246,7 +246,7 @@ public class homePage {
         }
 
         if (selectedCatalog == null) {
-            System.out.println("Danh mục không hợp lệ");
+            System.out.println(RED + "Danh mục không hợp lệ" + RESET);
             return;
         }
 
