@@ -7,6 +7,7 @@ import ra.service.*;
 import ra.service.impl.*;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Map;
 
 import static ra.config.Color.*;
@@ -54,9 +55,6 @@ public class cartPage {
                 case 5:
                     orderHistory();
                     break;
-                case 6:
-                    showListOrderAll();
-                    break;
                 case 0:
                     return;
                 default:
@@ -64,12 +62,6 @@ public class cartPage {
                     break;
             }
         } while (true);
-    }
-
-    private void showListOrderAll() {
-        for (Order order : orderService.findAll()) {
-            System.out.println(order);
-        }
     }
 
     private void changeStock() {
@@ -165,8 +157,7 @@ public class cartPage {
                 Order order = new Order();
                 order.setUserId(userLogin.getId());
                 order.setOrderId(orderService.getNewId());
-
-//                order.setOrdersDetails(products);
+                order.setOrdersDetails(products);
                 order.setOrderStatus(OrderStatus.WAITING);
                 order.setName(orderName);
                 order.setPhoneNumber(orserPhoneNumber);
@@ -190,9 +181,10 @@ public class cartPage {
                 }
 
                 // Cập nhật giỏ hàng
-                cartService.update(cart);
                 cart.removeProduct();
                 cartService.save(cart);
+                cartService.update(cart);
+
 
                 // Thêm đơn hàng vào lịch sử đơn hàng
                 orderService.address(order);
@@ -251,27 +243,27 @@ public class cartPage {
     }
 
     private void orderHistory() {
-
-        if (orderService.findAll() == null || orderService.findAll().isEmpty()) {
-
-            System.out.println("Khong co don hang");
+        List<Order> oders = orderService.findAll();
+        if (oders == null || oders.isEmpty()) {
+            System.out.println(YELLOW + "Không có đơn hàng nào" + RESET);
         }
-        for (Order order : orderService.findAll()) {
+        for (Order order : oders) {
             if (order.getUserId() == userLogin.getId()) {
                 System.out.println(order);
             }
         }
-        System.out.println("Moi nhap ID de chon don hang can huy: ");
+
+        System.out.print("Mời nhập ID để chọn đơn hàng cần huỷ: ");
         int orderId = Validate.validatePositiveInt();
         Order order = orderService.findByID(orderId);
         if (order == null) {
-            System.out.println("khong ton tai trong danh sáh");
+            System.out.println(RED + "Không tồn tại trong danh sách" + RESET);
             return;
         }
 
         if (order.getOrderStatus() == OrderStatus.WAITING) {
-            System.out.println("1. Huỷ đơn hàng: ");
-            System.out.println("O. THOAT");
+            System.out.println("1. Huỷ đơn hàng");
+            System.out.println("O. Quay lại");
             int choiceCheck = Validate.validateInt();
             switch (choiceCheck) {
                 case 1:
@@ -281,14 +273,15 @@ public class cartPage {
                 case 0:
                     return;
                 default:
-                    System.out.println("Nhap k hop le");
+                    System.out.println(RED + "Không hợp lệ, mời nhập lại" + RESET);
+                    break;
             }
         } else if (order.getOrderStatus() == OrderStatus.CANCEL) {
-            System.out.println("don hang da bi huy");
+            System.out.println(YELLOW + "Đơn hàng đã bị huỷ" + RESET);
         } else if (order.getOrderStatus() == OrderStatus.CONFIRM) {
-            System.out.println("DA XAC NHAN");
+            System.out.println(YELLOW + "Đã xác nhận" + RESET);
         } else {
-            System.out.println("ko hop le");
+            System.out.println(RED + "Không hợp lệ" + RESET);
         }
     }
 }

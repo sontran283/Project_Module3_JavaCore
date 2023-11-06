@@ -28,7 +28,7 @@ public class orderManagement {
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
             switch (Validate.validateInt()) {
                 case 1:
-                    showListOrder111();
+                    showListOrder();
                     break;
                 case 2:
                     changeStatus();
@@ -43,13 +43,20 @@ public class orderManagement {
     }
 
     private void changeStatus() {
-        System.out.println("Nhập ID đơn hàng muốn thay đổi trạng thái: ");
+        System.out.print("Nhập ID đơn hàng muốn thay đổi trạng thái, ");
         int orderId = Validate.validateInt();
         Order order = orderService.findByID(orderId);
+
+        if (order == null) {
+            System.out.println(RED + "Không có đơn hàng theo ID vừa nhập" + RESET);
+            return;
+        }
+
         if (order.getOrderStatus() == OrderStatus.WAITING) {
             if (order != null) {
-                System.out.println("1. Duyệt đơn hàng: ");
-                System.out.println("2. Huỷ đơn hàng: ");
+                System.out.println("1. Duyệt đơn hàng");
+                System.out.println("2. Huỷ đơn hàng");
+                System.out.println("0. Quay lại");
                 int choiceCheck = Validate.validateInt();
                 switch (choiceCheck) {
                     case 1:
@@ -60,21 +67,24 @@ public class orderManagement {
                         order.setOrderStatus(OrderStatus.CANCEL);
                         orderService.update(order);
                         break;
+                    case 0:
+                        return;
                     default:
-                        System.out.println("Nhap k hop le");
+                        System.out.println(RED + "Không hợp lệ, mời nhập lại" + RESET);
+                        break;
                 }
             }
         } else if (order.getOrderStatus() == OrderStatus.CONFIRM) {
-            System.out.println("Đã xác nhận đơn hàng");
+            System.out.println(YELLOW + "Đã xác nhận đơn hàng" + RESET);
         } else if (order.getOrderStatus() == OrderStatus.CANCEL) {
-            System.out.println("không thể huỷ đơn hàng");
+            System.out.println(RED + "Không thể huỷ đơn hàng" + RESET);
         } else {
-            System.out.println("ko hoop le");
+            System.out.println(RED + "Không hợp lệ" + RESET);
         }
     }
 
-    private void showListOrder111() {
-        System.out.println("Danh sách đơn hàng");
+    private void showListOrder() {
+        System.out.println(YELLOW + "Danh sách đơn hàng" + RESET);
         for (Order order : orderService.findAll()) {
             System.out.println(order);
         }
