@@ -2,12 +2,16 @@ package ra.view.admin;
 
 
 import ra.config.Validate;
+import ra.config.WriteReadFile;
 import ra.model.Order;
 import ra.model.OrderStatus;
+import ra.model.Users;
 import ra.service.*;
 import ra.service.impl.*;
 
 import java.sql.SQLOutput;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ra.config.Color.*;
 
@@ -17,6 +21,8 @@ public class orderManagement {
     IUserService userService = new UserServiceIMPL();
     IOrderService orderService = new OrderServiceIMPL();
     IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
+    WriteReadFile<Users> config = new WriteReadFile<>();
+    Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
     public void menuOrder() {
         do {
@@ -44,10 +50,29 @@ public class orderManagement {
         } while (true);
     }
 
+    private void showListOrder() {
+        if (orderService.findAll() == null || orderService.findAll().isEmpty()) {
+            System.out.println(RED + "Danh sách trống" + RESET);
+            return;
+        }
+
+        System.out.println(YELLOW + "Danh sách đơn hàng" + RESET);
+        System.out.printf("| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n ",
+                "Order ID", "User ID", "Name", "Phone Number", "Address", "Total", "Order Status", "Order Details");
+        for (Order order : orderService.findAll()) {
+            System.out.println(order);
+        }
+    }
+
     private void changeStatus() {
-        System.out.print("Nhập ID đơn hàng muốn thay đổi trạng thái, ");
+        System.out.print("Nhập ID đơn hàng muốn thay đổi trạng thái, Hoặc ");
+        System.out.print("nhập 0 để quay lại:  ");
         int orderId = Validate.validatePositiveInt();
         Order order = orderService.findByID(orderId);
+
+        if (orderId == 0) {
+            return;
+        }
 
         if (order == null) {
             System.out.println(RED + "Không có đơn hàng theo ID vừa nhập" + RESET);
@@ -63,10 +88,12 @@ public class orderManagement {
                 switch (choiceCheck) {
                     case 1:
                         order.setOrderStatus(OrderStatus.CONFIRM);
+                        System.out.println(YELLOW + "Duyệt đơn hàng thành công" + RESET);
                         orderService.update(order);
                         break;
                     case 2:
                         order.setOrderStatus(OrderStatus.CANCEL);
+                        System.out.println(YELLOW + "Huỷ đơn hàng thành công" + RESET);
                         orderService.update(order);
                         break;
                     case 0:
@@ -82,20 +109,6 @@ public class orderManagement {
             System.out.println(RED + "Không thể huỷ đơn hàng" + RESET);
         } else {
             System.out.println(RED + "Không hợp lệ" + RESET);
-        }
-    }
-
-    private void showListOrder() {
-        if (orderService.findAll() == null || orderService.findAll().isEmpty()) {
-            System.out.println(RED + "Danh sách trống" + RESET);
-            return;
-        }
-
-        System.out.println(YELLOW + "Danh sách đơn hàng" + RESET);
-        System.out.printf("| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n ",
-                "Order ID", "User ID", "Name", "Phone Number", "Address", "Total", "Order Status", "Order Details");
-        for (Order order : orderService.findAll()) {
-            System.out.println(order);
         }
     }
 }

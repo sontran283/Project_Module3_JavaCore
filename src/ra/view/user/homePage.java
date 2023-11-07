@@ -11,6 +11,7 @@ import ra.service.impl.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import static ra.config.Color.*;
@@ -152,17 +153,15 @@ public class homePage {
         List<Product> products = productService.findAll();
         Cart cart = cartService.findCartByUserLogin();
         if (cart == null) {
-            cart = new Cart();
-            cart.setUserId(userLogin.getId());
+            cart = new Cart(cartService.getNewId(), userLogin.getId(), new HashMap<>());
         }
 
         for (int i = 0; i < products.size(); i++) {
-            System.out.println((i + 1) + ". " + products.get(i));
+            System.out.println(products.get(i));
         }
 
         // chon san pham
-        System.out.print("-Mời chọn sản phẩm (1_" + products.size() + ") " + "\n");
-        System.out.println("-Nhập 0 để quay lại ");
+        System.out.print(YELLOW + "Nhập ID sản phẩm để mua hàng, Hoặc nhập 0 để quay lại: " + RESET);
         int choice = Validate.validatePositiveInt();
 
         if (choice == 0) {
@@ -173,7 +172,7 @@ public class homePage {
         Product selectedProduct = products.get(choice - 1);
 
         // nhap so luong
-        System.out.print("Nhập số lượng muốn mua, ");
+        System.out.print("Nhập số lượng muốn mua: ");
         int quantity = Validate.validatePositiveInt();
 
         // kiem tra xem co hop le
@@ -203,6 +202,7 @@ public class homePage {
     private void sortProduct() {
         System.out.println("1. Sắp xếp theo giá tăng dần");
         System.out.println("2. Sắp xếp theo giá giảm dần");
+        System.out.println("0. Quay lại");
 
         int sortChoice = Validate.validatePositiveInt();
         if (sortChoice == 1) {
@@ -211,6 +211,8 @@ public class homePage {
         } else if (sortChoice == 2) {
             productService.findAll().sort(Comparator.comparing(Product::getUnitPrice).reversed());
             System.out.println(YELLOW + "Đã sắp xếp giá giảm dần thành công" + RESET);
+        } else if (sortChoice == 0) {
+            return;
         } else {
             System.out.println(RED + "Lựa chọn không hợp lệ, không thực hiện sắp xếp" + RESET);
         }

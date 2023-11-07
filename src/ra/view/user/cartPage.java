@@ -7,8 +7,10 @@ import ra.service.*;
 import ra.service.impl.*;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ra.config.Color.*;
 
@@ -22,7 +24,6 @@ public class cartPage {
     ICartService cartService = new CartServiceIMPL();
     WriteReadFile<Users> config = new WriteReadFile<>();
     Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
-
 
     public void cartHome() {
         do {
@@ -93,7 +94,7 @@ public class cartPage {
         Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
 
-        System.out.print("Nhập ID sản phẩm cần xoá, ");
+        System.out.print("Nhập ID sản phẩm cần xoá: ");
         int productId = Validate.validatePositiveInt();
 
         if (products.containsKey(productId)) {
@@ -116,14 +117,12 @@ public class cartPage {
         if (products.isEmpty()) {
             System.out.println(RED + "Giỏ hàng trống, không thể đặt hàng" + RESET);
         } else {
-
             for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
                 int productId = entry.getKey();
                 int quantity = entry.getValue();
 
                 // Lấy thông tin sản phẩm từ productService bằng productId
                 Product product = productService.findByID(productId);
-
 
                 // Tính tổng tiền
                 double productTotal = product.getUnitPrice() * quantity;
@@ -138,12 +137,12 @@ public class cartPage {
                 System.out.println("ID: " + productId);
                 System.out.println("Số lượng: " + quantity);
                 System.out.println("------------------------");
-            }
 
+            }
             System.out.print("Nhập họ tên: ");
             String orderName = Validate.validateString();
             System.out.print("Nhập số điện thoại: ");
-            String orserPhoneNumber = Validate.validatePhone();
+            String orderPhoneNumber = Validate.validatePhone();
             System.out.print("Nhập địa chỉ: ");
             String orderAddress = Validate.validateString();
 
@@ -158,7 +157,7 @@ public class cartPage {
                 order.setOrdersDetails(products);
                 order.setOrderStatus(OrderStatus.WAITING);
                 order.setName(orderName);
-                order.setPhoneNumber(orserPhoneNumber);
+                order.setPhoneNumber(orderPhoneNumber);
                 order.setAddress(orderAddress);
                 order.setTotal(total);
 
@@ -179,8 +178,8 @@ public class cartPage {
                 }
 
                 // Cập nhật giỏ hàng
-                cart = null;
-                cartService.save(cart);
+                cart.setProducts(new HashMap<>());
+                cartService.update(cart);
 
                 System.out.println(YELLOW + "Đặt hàng thành công" + RESET);
             } else if (choice == 0) {
@@ -193,12 +192,12 @@ public class cartPage {
 
     private void showListOrder() {
         Cart cart = cartService.findCartByUserLogin();
-        Map<Integer, Integer> products = cart.getProducts();
 
         if (cart == null) {
             System.out.println(RED + "Giỏ hàng trống" + RESET);
             return;
         }
+        Map<Integer, Integer> products = cart.getProducts();
 
         if (products.isEmpty()) {
             System.out.println(RED + "Giỏ hàng trống" + RESET);
@@ -237,23 +236,45 @@ public class cartPage {
 
     private void orderHistory() {
         List<Order> oders = orderService.findAll();
-        
+        List<Order> orderUser = oders.stream().filter(o -> o.getUserId() == userLogin.getId()).collect(Collectors.toList());
+
         if (oders == null || oders.isEmpty()) {
             System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;
         }
-
-        System.out.printf("| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n ",
-                "Order ID", "User ID", "Name", "Phone Number", "Address", "Total", "Order Status", "Order Details");
-        for (Order order : oders) {
-            if (order.getUserId() == userLogin.getId()) {
-                System.out.println(order);
-            }
+        if (orderUser == null || orderUser.isEmpty()) {
+            System.out.println(RED + "Không có đơn hàng nào" + RESET);
+            return;
         }
 
-        System.out.print("Mời nhập ID để chọn đơn hàng cần huỷ: ");
+        System.out.println("________________________________________________");
+        for (Order order : oders) {
+            if (order.getUserId() == userLogin.getId()) {
+                System.out.println("-Order ID: " + order.getOrderId());
+                System.out.println("-User ID: " + order.getUserId());
+                System.out.println("-Name: " + order.getName());
+                System.out.println("-Phone Number: " + order.getPhoneNumber());
+                System.out.println("-Address: " + order.getAddress());
+                String formattedTotal = formatCurrency(order.getTotal());
+                System.out.println("-Total: " + formattedTotal);
+                System.out.println("-Order Status: " + order.getOrderStatus());
+                for (Integer id : order.getOrdersDetails().keySet()) {
+                    System.out.println("-Tên sản phẩm: " + productService.findByID(id).getProductName());
+                    System.out.println("-Số lượng: " + order.getOrdersDetails().get(id));
+                }
+            }
+            System.out.println("________________________________________________");
+        }
+
+        System.out.print("Mời nhập ID để chọn đơn hàng cần huỷ, Hoặc ");
+        System.out.print("nhập 0 để quay lại: ");
         int orderId = Validate.validatePositiveInt();
         Order order = orderService.findByID(orderId);
+
+        if (orderId == 0) {
+            return;
+        }
+
         if (order == null) {
             System.out.println(RED + "Không tồn tại trong danh sách" + RESET);
             return;
@@ -266,6 +287,7 @@ public class cartPage {
             switch (choiceCheck) {
                 case 1:
                     order.setOrderStatus(OrderStatus.CANCEL);
+                    System.out.println(YELLOW + "Huỷ đơn hàng thành công" + RESET);
                     orderService.update(order);
                     break;
                 case 0:
@@ -275,9 +297,9 @@ public class cartPage {
                     break;
             }
         } else if (order.getOrderStatus() == OrderStatus.CANCEL) {
-            System.out.println(YELLOW + "Đơn hàng đã bị huỷ" + RESET);
+            System.out.println(YELLOW + "Đơn hàng đã ở trạng thái bị huỷ" + RESET);
         } else if (order.getOrderStatus() == OrderStatus.CONFIRM) {
-            System.out.println(YELLOW + "Đã xác nhận" + RESET);
+            System.out.println(YELLOW + "Đơn hàng đang ở trạng thái xác nhận, không thể huỷ" + RESET);
         } else {
             System.out.println(RED + "Không hợp lệ" + RESET);
         }

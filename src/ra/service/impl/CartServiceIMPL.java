@@ -74,7 +74,7 @@ public class CartServiceIMPL implements ICartService {
     public Cart findCartByUserLogin() {
         Users userLogin = new WriteReadFile<Users>().readFile(WriteReadFile.PATH_USER_LOGIN);
         for (Cart cart : cartList) {
-            if (cart.getUserId() == userLogin.getId() && !cart.isStatus()) {
+            if (cart.getUserId() == userLogin.getId()) {
                 return cart;
             }
         }

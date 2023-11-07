@@ -129,7 +129,6 @@ public class userManagement {
     private void deleteUser() {
         System.out.print("Nhập ID người dùng cần xoá: ");
         int userId = Integer.parseInt(Validate.validateString());
-
         Users user = userService.findByID(userId);
         if (user != null) {
             if (user.isAdmin()) {

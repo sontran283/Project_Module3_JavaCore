@@ -11,19 +11,18 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
     private int cartId;
     private int userId;
-    private Map<Integer, Integer> products = new HashMap<>();
+    private Map<Integer, Integer> products ;
     private boolean status;
 
     public Cart() {
-        // khoi tao gio hang voi danh sach rong
-        products = new HashMap<>();
+
     }
 
-    public Cart(int cartId, int userId, Map<Integer, Integer> products, boolean status) {
+    public Cart(int cartId, int userId, Map<Integer, Integer> products) {
         this.cartId = cartId;
         this.userId = userId;
         this.products = products;
-        this.status = status;
+
     }
 
     public int getCartId() {
