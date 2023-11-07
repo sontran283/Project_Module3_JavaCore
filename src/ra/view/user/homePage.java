@@ -156,8 +156,11 @@ public class homePage {
             cart = new Cart(cartService.getNewId(), userLogin.getId(), new HashMap<>());
         }
 
+        // danh sach san pham
         for (int i = 0; i < products.size(); i++) {
-            System.out.println(products.get(i));
+            if (products.get(i).isStatus()) {
+                System.out.println(products.get(i));
+            }
         }
 
         // chon san pham
@@ -170,6 +173,10 @@ public class homePage {
 
         // lay ra sp da chon
         Product selectedProduct = products.get(choice - 1);
+        if (!selectedProduct.isStatus()) {
+            System.out.println(RED + "Không thêm được vào giỏ hàng, do không còn mở bán" + RESET);
+            return;
+        }
 
         // nhap so luong
         System.out.print("Nhập số lượng muốn mua: ");
@@ -233,10 +240,12 @@ public class homePage {
 
         System.out.println(YELLOW + "Danh sách danh mục sản phẩm: " + RESET);
         for (Catalog catalog : catalogs) {
-            System.out.println(catalog.getCatalogId() + ". " + catalog.getCatalogName());
+            if (catalog.isStatus()) {
+                System.out.println(catalog.getCatalogId() + ". " + catalog.getCatalogName());
+            }
         }
 
-        System.out.print(YELLOW +"Nhập ID danh mục cần tìm, Hoặc nhập 0 để quay lại: "+ RESET);
+        System.out.print(YELLOW + "Nhập ID danh mục cần tìm, Hoặc nhập 0 để quay lại: " + RESET);
         int catalogId = Validate.validatePositiveInt();
         if (catalogId == 0) {
             return;
@@ -245,8 +254,10 @@ public class homePage {
         Catalog selectedCatalog = null;
         for (Catalog catalog : catalogs) {
             if (catalog.getCatalogId() == catalogId) {
-                selectedCatalog = catalog;
-                break;
+                if (catalog.isStatus()) {
+                    selectedCatalog = catalog;
+                    break;
+                }
             }
         }
 

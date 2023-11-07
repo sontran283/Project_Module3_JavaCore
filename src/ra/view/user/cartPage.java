@@ -63,6 +63,32 @@ public class cartPage {
         } while (true);
     }
 
+    //    private void changeStock() {
+//        Cart cart = cartService.findCartByUserLogin();
+//        Map<Integer, Integer> products = cart.getProducts();
+//
+//        System.out.print("Nhập ID sản phẩm cần thay đổi số lượng: ");
+//        int productID = Validate.validatePositiveInt();
+//
+//        System.out.print("Nhập số lượng mới: ");
+//        int newQuantity = Validate.validatePositiveInt();
+//
+//        Product product1 = productService.findByID(productID);
+//        if (products.containsKey(productID)) {
+//            if (newQuantity > product1.getStock()) {
+//                System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + " sản phẩm " + RESET);
+//                return;
+//            } else if (newQuantity < 1) {
+//                System.out.println(RED + "Số lượng không hợp lệ, mời nhập lại" + RESET);
+//                return;
+//            }
+//            products.put(productID, newQuantity);
+//            cartService.update(cart);
+//            System.out.println(YELLOW + "Thay đổi số lượng thành công" + RESET);
+//        } else {
+//            System.out.println(RED + "Sản phẩm không tồn tại trong giỏ hàng" + RESET);
+//        }
+//    }
     private void changeStock() {
         Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
@@ -70,25 +96,30 @@ public class cartPage {
         System.out.print("Nhập ID sản phẩm cần thay đổi số lượng: ");
         int productID = Validate.validatePositiveInt();
 
+        // kiem tra sp co ton tai trong gio hang hay ko
+        if (!products.containsKey(productID)) {
+            System.out.println(RED + "Sản phẩm không tồn tại trong giỏ hàng" + RESET);
+            return;
+        }
+
         System.out.print("Nhập số lượng mới: ");
         int newQuantity = Validate.validatePositiveInt();
 
         Product product1 = productService.findByID(productID);
-        if (products.containsKey(productID)) {
-            if (newQuantity > product1.getStock()) {
-                System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + " sản phẩm " + RESET);
-                return;
-            } else if (newQuantity < 1) {
-                System.out.println(RED + "Số lượng không hợp lệ, mời nhập lại" + RESET);
-                return;
-            }
-            products.put(productID, newQuantity);
-            cartService.update(cart);
-            System.out.println(YELLOW + "Thay đổi số lượng thành công" + RESET);
-        } else {
-            System.out.println(RED + "Sản phẩm không tồn tại trong giỏ hàng" + RESET);
+
+        if (newQuantity > product1.getStock()) {
+            System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + " sản phẩm " + RESET);
+            return;
+        } else if (newQuantity < 1) {
+            System.out.println(RED + "Số lượng không hợp lệ, mời nhập lại" + RESET);
+            return;
         }
+
+        products.put(productID, newQuantity);
+        cartService.update(cart);
+        System.out.println(YELLOW + "Thay đổi số lượng thành công" + RESET);
     }
+
 
     private void deleteProduct() {
         Cart cart = cartService.findCartByUserLogin();
@@ -197,6 +228,7 @@ public class cartPage {
             System.out.println(RED + "Giỏ hàng trống" + RESET);
             return;
         }
+
         Map<Integer, Integer> products = cart.getProducts();
 
         if (products.isEmpty()) {
@@ -286,9 +318,23 @@ public class cartPage {
             int choiceCheck = Validate.validatePositiveInt();
             switch (choiceCheck) {
                 case 1:
+                    // truoc khi huy don hang, lay so luong sp ban dau tu kho hang
+                    Map<Integer, Integer> initialQuantities = order.getOrdersDetails();
+
                     order.setOrderStatus(OrderStatus.CANCEL);
                     System.out.println(YELLOW + "Huỷ đơn hàng thành công" + RESET);
                     orderService.update(order);
+
+                    // sau khi huy don hang,cap nhat lai so luong sp trong kho
+                    for (Integer productId : initialQuantities.keySet()) {
+                        int quantity = initialQuantities.get(productId);
+                        Product product = productService.findByID(productId);
+                        if (product != null) {
+                            // tra lai so luong sp ban dau
+                            product.setStock(product.getStock() + quantity);
+                            productService.update(product);
+                        }
+                    }
                     break;
                 case 0:
                     return;

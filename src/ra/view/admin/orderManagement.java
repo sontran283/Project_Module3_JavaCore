@@ -5,12 +5,14 @@ import ra.config.Validate;
 import ra.config.WriteReadFile;
 import ra.model.Order;
 import ra.model.OrderStatus;
+import ra.model.Product;
 import ra.model.Users;
 import ra.service.*;
 import ra.service.impl.*;
 
 import java.sql.SQLOutput;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ra.config.Color.*;
@@ -91,9 +93,23 @@ public class orderManagement {
                         orderService.update(order);
                         break;
                     case 2:
+                        // truoc khi huy don hang, lay so luong sp ban dau tu kho hang
+                        Map<Integer, Integer> initialQuantities = order.getOrdersDetails();
+
                         order.setOrderStatus(OrderStatus.CANCEL);
                         System.out.println(YELLOW + "Huỷ đơn hàng thành công" + RESET);
                         orderService.update(order);
+
+                        // sau khi huy don hang,cap nhat lai so luong sp trong kho
+                        for (Integer productId : initialQuantities.keySet()) {
+                            int quantity = initialQuantities.get(productId);
+                            Product product = productService.findByID(productId);
+                            if (product != null) {
+                                // tra lai so luong sp ban dau
+                                product.setStock(product.getStock() + quantity);
+                                productService.update(product);
+                            }
+                        }
                         break;
                     case 0:
                         return;
