@@ -63,32 +63,6 @@ public class cartPage {
         } while (true);
     }
 
-    //    private void changeStock() {
-//        Cart cart = cartService.findCartByUserLogin();
-//        Map<Integer, Integer> products = cart.getProducts();
-//
-//        System.out.print("Nhập ID sản phẩm cần thay đổi số lượng: ");
-//        int productID = Validate.validatePositiveInt();
-//
-//        System.out.print("Nhập số lượng mới: ");
-//        int newQuantity = Validate.validatePositiveInt();
-//
-//        Product product1 = productService.findByID(productID);
-//        if (products.containsKey(productID)) {
-//            if (newQuantity > product1.getStock()) {
-//                System.out.println(RED + "Số lượng trong kho không đủ, trong kho còn: " + product1.getStock() + " sản phẩm " + RESET);
-//                return;
-//            } else if (newQuantity < 1) {
-//                System.out.println(RED + "Số lượng không hợp lệ, mời nhập lại" + RESET);
-//                return;
-//            }
-//            products.put(productID, newQuantity);
-//            cartService.update(cart);
-//            System.out.println(YELLOW + "Thay đổi số lượng thành công" + RESET);
-//        } else {
-//            System.out.println(RED + "Sản phẩm không tồn tại trong giỏ hàng" + RESET);
-//        }
-//    }
     private void changeStock() {
         Cart cart = cartService.findCartByUserLogin();
         Map<Integer, Integer> products = cart.getProducts();
@@ -142,6 +116,12 @@ public class cartPage {
         Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
         Cart cart = cartService.findCartByUserLogin();
+
+        if (cart == null) {
+            System.out.println(RED + "Không có sản phẩm trong giỏ hàng, không thể đặt hàng" + RESET);
+            return;
+        }
+
         Map<Integer, Integer> products = cart.getProducts();
 
         double total = 0;
@@ -268,13 +248,13 @@ public class cartPage {
 
     private void orderHistory() {
         List<Order> oders = orderService.findAll();
-        List<Order> orderUser = oders.stream().filter(o -> o.getUserId() == userLogin.getId()).collect(Collectors.toList());
 
         if (oders == null || oders.isEmpty()) {
             System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;
         }
 
+        List<Order> orderUser = oders.stream().filter(o -> o.getUserId() == userLogin.getId()).collect(Collectors.toList());
         if (orderUser == null || orderUser.isEmpty()) {
             System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;

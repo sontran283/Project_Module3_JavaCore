@@ -27,7 +27,7 @@ public class Validate {
         String s;
         while (true) {
             s = Validate.scanner().nextLine();
-            if (s.isEmpty()) {
+            if (s.trim().isEmpty()) {
                 System.out.println(RED + "Không được để trống, mời nhập lại" + RESET);
             } else {
                 break;

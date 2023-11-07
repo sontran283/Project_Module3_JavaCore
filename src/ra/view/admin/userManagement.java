@@ -27,7 +27,6 @@ public class userManagement {
             System.out.println("|                   2. Tìm kiếm người dùng theo tên                    |");
             System.out.println("|                   3. Block/Unblock tài khoản người dùng              |");
             System.out.println("|                   4. Phân quyền ADMIN/USER                           |");
-            System.out.println("|                   5. Xoá người dùng                                  |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -43,9 +42,6 @@ public class userManagement {
                     break;
                 case 4:
                     changeRole();
-                    break;
-                case 5:
-                    deleteUser();
                     break;
                 case 0:
                     return;
@@ -111,36 +107,12 @@ public class userManagement {
         Users user = userService.findByID(userId);
         if (user != null) {
             if (user.isAdmin()) {
-                user.setRole(RoleName.USER);
-                user.setAdmin(false);
-                userService.update(user);
-                System.out.println(YELLOW + "Đã thay đổi từ ADMIN thành USER" + RESET);
+                System.out.println(RED + "Không thể thay đổi tài khoản admin" + RESET);
             } else {
                 user.setRole(RoleName.ADMIN);
                 user.setAdmin(true);
                 userService.update(user);
                 System.out.println(YELLOW + "Đã thay đổi từ USER thành ADMIN" + RESET);
-            }
-        } else {
-            System.out.println(RED + "Không tìm thấy người dùng với ID đã nhập" + RESET);
-        }
-    }
-
-    private void deleteUser() {
-        System.out.print(YELLOW + "Nhập ID người dùng cần xoá, Hoặc nhập 0 để quay lại: " + RESET);
-        int userId = Integer.parseInt(Validate.validateString());
-        Users user = userService.findByID(userId);
-
-        if (userId == 0) {
-            return;
-        }
-
-        if (user != null) {
-            if (user.isAdmin()) {
-                System.out.println(RED + "Không thể xóa tài khoản admin" + RESET);
-            } else {
-                userService.delete(user.getId());
-                System.out.println(YELLOW + "Xoá thành công" + RESET);
             }
         } else {
             System.out.println(RED + "Không tìm thấy người dùng với ID đã nhập" + RESET);
