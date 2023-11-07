@@ -18,10 +18,10 @@ public class UserManager {
             System.out.println("|           --->> CỬA HÀNG HOA QUẢ TƯƠI COGO XIN CHÀO <<---            |");
             System.out.println("|                        \uD83C\uDF4E    \uD83C\uDF4C     \uD83C\uDF4A     \uD83C\uDF47                       |");
             System.out.println("|======================================================================|");
-            System.out.println(YELLOW + "|                     1. Cửa hàng                                      |");
-            System.out.println("|                     2. Giỏ hàng                                      |");
-            System.out.println("|                     3. Thông tin cá nhân                             |");
-            System.out.println("|                     0. Đăng xuất                                     |");
+            System.out.println(YELLOW + "|                         1. Cửa hàng                                  |");
+            System.out.println("|                         2. Giỏ hàng                                  |");
+            System.out.println("|                         3. Thông tin cá nhân                         |");
+            System.out.println("|                         0. Đăng xuất                                 |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
             switch (Validate.validatePositiveInt()) {

@@ -11,6 +11,7 @@ import ra.service.*;
 import ra.service.impl.*;
 
 import java.sql.SQLOutput;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class orderManagement {
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                   1. Danh sách đơn hàng                              |");
             System.out.println("|                   2. Thay đổi trạng thái                             |");
+            System.out.println("|                   3. Tìm kiếm đơn hàng theo UserID                   |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -42,6 +44,9 @@ public class orderManagement {
                     break;
                 case 2:
                     changeStatus();
+                    break;
+                case 3:
+                    searchOrder();
                     break;
                 case 0:
                     return;
@@ -53,17 +58,34 @@ public class orderManagement {
     }
 
     private void showListOrder() {
-        if (orderService.findAll() == null || orderService.findAll().isEmpty()) {
-            System.out.println(RED + "Danh sách trống" + RESET);
+        List<Order> oders = orderService.findAll();
+        if (oders == null || oders.isEmpty()) {
+            System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;
         }
+        List<Order> orderUser = oders.stream().filter(o -> o.getUserId() == userLogin.getId()).collect(Collectors.toList());
 
-        System.out.println(YELLOW + "Danh sách đơn hàng" + RESET);
-        System.out.printf("| %-10s | %-10s | %-20s | %-15s | %-30s | %-10s | %-15s | %-30s |%n ",
-                "Order ID", "User ID", "Name", "Phone Number", "Address", "Total", "Order Status", "Order Details");
-        for (Order order : orderService.findAll()) {
-            System.out.println(order);
+        System.out.println("__________________________________");
+        for (Order order : oders) {
+            System.out.println("-Order ID: " + order.getOrderId());
+            System.out.println("-User ID: " + order.getUserId());
+            System.out.println("-Name: " + order.getName());
+            System.out.println("-Phone Number: " + order.getPhoneNumber());
+            System.out.println("-Address: " + order.getAddress());
+            String formattedTotal = formatCurrency(order.getTotal());
+            System.out.println("-Total: " + formattedTotal);
+            System.out.println("-Order Status: " + order.getOrderStatus());
+            for (Integer id : order.getOrdersDetails().keySet()) {
+                System.out.println("-Tên sản phẩm: " + productService.findByID(id).getProductName());
+                System.out.println("-Số lượng: " + order.getOrdersDetails().get(id));
+            }
+            System.out.println("__________________________________");
         }
+    }
+
+    private String formatCurrency(double amount) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(amount) + " đ";
     }
 
     private void changeStatus() {
@@ -125,5 +147,40 @@ public class orderManagement {
         } else {
             System.out.println(RED + "Không hợp lệ" + RESET);
         }
+    }
+
+    private void searchOrder() {
+        System.out.println("Nhập UserID cần tìm kiếm: ");
+        int UserID = Validate.validatePositiveInt();
+        int count = 0;
+        System.out.println(YELLOW + "Danh sách đơn hàng cần tìm " + RESET);
+        System.out.println("__________________________________");
+        for (Order order : orderService.findAll()) {
+            if (order.getUserId() == UserID) {
+                System.out.println("Order ID: " + order.getOrderId());
+                System.out.println("User ID: " + order.getUserId());
+                System.out.println("Name: " + order.getName());
+                System.out.println("Phone Number: " + order.getPhoneNumber());
+                System.out.println("Address: " + order.getAddress());
+                String formattedTotal = formatCurrency(order.getTotal());
+                System.out.println("Total: " + formattedTotal);
+                System.out.println("Order Status: " + order.getOrderStatus());
+                System.out.println("Chi tiết đơn hàng:");
+
+                for (Integer productId : order.getOrdersDetails().keySet()) {
+                    Product product = productService.findByID(productId);
+                    if (product != null) {
+                        int quantity = order.getOrdersDetails().get(productId);
+                        System.out.println("Tên sản phẩm: " + product.getProductName());
+                        System.out.println("Số lượng: " + quantity);
+                    }
+                }
+
+                System.out.println("__________________________________");
+                count++;
+            }
+        }
+        System.out.printf("Tìm thấy %d đơn hàng theo UserID vừa nhập ", count);
+        System.out.println();
     }
 }

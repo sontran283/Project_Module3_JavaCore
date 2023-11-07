@@ -9,20 +9,6 @@ public class Validate {
         return new Scanner(System.in);
     }
 
-    public static int validateInt() {
-        int n;
-        System.out.print("Mời nhập: ");
-        while (true) {
-            try {
-                n = Integer.parseInt(scanner().nextLine());
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println(RED + "Sai định dạng, mời nhập lại" + RESET);
-            }
-        }
-        return n;
-    }
-
     public static String validateString() {
         String s;
         while (true) {
@@ -51,29 +37,16 @@ public class Validate {
 
     public static String validatePhone() {
         String phoneNumber;
+        Scanner scanner = Validate.scanner();
         while (true) {
-            phoneNumber = Validate.scanner().nextLine();
-            if (phoneNumber.matches("(0|\\+84)\\d{9}")) {
+            phoneNumber = scanner.nextLine();
+            if (phoneNumber.matches("0[0-9]{9}") || phoneNumber.matches("\\+840[0-9]{9}")) {
                 break;
             } else {
                 System.out.println(RED + "Số điện thoại không đúng định dạng, mời nhập lại" + RESET);
             }
         }
         return phoneNumber;
-    }
-
-
-    public static String validateCurrency() {
-        String currency;
-        while (true) {
-            currency = Validate.scanner().nextLine();
-            if (currency.matches("^[1-9]\\d{0,2}(,\\d{3})*?(\\.\\d{2})?$")) {
-                break;
-            } else {
-                System.out.println(RED + "Số tiền không đúng định dạng, mời nhập lại" + RESET);
-            }
-        }
-        return currency;
     }
 
     public static int validatePositiveDouble() {

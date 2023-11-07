@@ -118,7 +118,7 @@ public class cartPage {
         Cart cart = cartService.findCartByUserLogin();
 
         if (cart == null) {
-            System.out.println(RED + "Không có sản phẩm trong giỏ hàng, không thể đặt hàng" + RESET);
+            System.out.println(RED + "Giỏ hàng trống, không thể đặt hàng" + RESET);
             return;
         }
 
@@ -260,7 +260,7 @@ public class cartPage {
             return;
         }
 
-        System.out.println("_____________________________________________");
+        System.out.println("__________________________________");
         for (Order order : oders) {
             if (order.getUserId() == userLogin.getId()) {
                 System.out.println("-Order ID: " + order.getOrderId());
@@ -276,7 +276,7 @@ public class cartPage {
                     System.out.println("-Số lượng: " + order.getOrdersDetails().get(id));
                 }
             }
-            System.out.println("_____________________________________________");
+            System.out.println("__________________________________");
         }
 
         System.out.print(YELLOW + "Mời nhập ID để chọn đơn hàng cần huỷ, Hoặc nhập 0 để quay lại: " + RESET);
