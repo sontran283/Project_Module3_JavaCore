@@ -21,7 +21,7 @@ public class userManagement {
     public void menuUser() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                        --->> USER MANAGER <<---                      |");
+            System.out.println("|                    --->> QUẢN LÝ NGƯỜI DÙNG <<---                    |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                   1. Hiển thị danh sách người dùng                   |");
             System.out.println("|                   2. Tìm kiếm người dùng theo tên                    |");
@@ -105,7 +105,7 @@ public class userManagement {
     }
 
     private void changeRole() {
-        System.out.print("Nhập ID người dùng cần thay đổi trạng thái: ");
+        System.out.print("Nhập ID người dùng cần thay đổi Role: ");
         int userId = Integer.parseInt(Validate.validateString());
 
         Users user = userService.findByID(userId);
@@ -127,9 +127,14 @@ public class userManagement {
     }
 
     private void deleteUser() {
-        System.out.print("Nhập ID người dùng cần xoá: ");
+        System.out.print(YELLOW + "Nhập ID người dùng cần xoá, Hoặc nhập 0 để quay lại: " + RESET);
         int userId = Integer.parseInt(Validate.validateString());
         Users user = userService.findByID(userId);
+
+        if (userId == 0) {
+            return;
+        }
+
         if (user != null) {
             if (user.isAdmin()) {
                 System.out.println(RED + "Không thể xóa tài khoản admin" + RESET);

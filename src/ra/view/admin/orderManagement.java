@@ -27,7 +27,7 @@ public class orderManagement {
     public void menuOrder() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                      --->> ORDER MANAGER <<---                       |");
+            System.out.println("|                    --->> QUẢN LÝ ĐƠN HÀNG <<---                      |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                   1. Danh sách đơn hàng                              |");
             System.out.println("|                   2. Thay đổi trạng thái                             |");
@@ -65,8 +65,7 @@ public class orderManagement {
     }
 
     private void changeStatus() {
-        System.out.print("Nhập ID đơn hàng muốn thay đổi trạng thái, Hoặc ");
-        System.out.print("nhập 0 để quay lại:  ");
+        System.out.print(YELLOW + "Nhập ID đơn hàng muốn thay đổi trạng thái, Hoặc nhập 0 để quay lại: " + RESET);
         int orderId = Validate.validatePositiveInt();
         Order order = orderService.findByID(orderId);
 

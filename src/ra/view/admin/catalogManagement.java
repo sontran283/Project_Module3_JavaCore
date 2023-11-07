@@ -20,7 +20,7 @@ public class catalogManagement {
     public void menuCatalog() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                      --->> CATALOG MANAGER <<---                     |");
+            System.out.println("|                     --->> QUẢN LÝ DANH MỤC <<---                     |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                    1. Thêm mới danh mục                              |");
             System.out.println("|                    2. Hiển thị danh sách danh mục                    |");
@@ -73,7 +73,7 @@ public class catalogManagement {
 
                 for (Catalog checkName : catalogService.findAll()) {
                     if (checkName.getCatalogName().equalsIgnoreCase(catalog.getCatalogName())) {
-                        System.out.println(RED + "Danh mục đã tồn tại, mời nhập lại" + RESET);
+                        System.out.println(RED + "Danh mục đã tồn tại" + RESET);
                         check = true;
                         break;
                     }
@@ -95,6 +95,7 @@ public class catalogManagement {
         System.out.println("1. Tất cả danh mục");
         System.out.println("2. Danh mục đang mở");
         System.out.println("3. Danh mục đang đóng");
+        System.out.println("0. Quay lại");
         int choiceCheck = Validate.validatePositiveInt();
 
         if (choiceCheck == 1) {
@@ -116,6 +117,8 @@ public class catalogManagement {
                     System.out.println(subject);
                 }
             }
+        } else if (choiceCheck == 0) {
+            return;
         } else {
             System.out.println(RED + "Không hợp lệ" + RESET);
         }
@@ -139,14 +142,11 @@ public class catalogManagement {
     private void editCatalog() {
         System.out.print("Nhập ID danh mục cần thay đổi thông tin: ");
         int idEdit = Validate.validatePositiveInt();
-
         Catalog catalogEdit = catalogService.findByID(idEdit);
-        System.out.println(catalogEdit);
 
         if (catalogEdit == null) {
-            System.out.println("Không tìm thấy danh mục có ID: " + idEdit);
+            System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
         } else {
-            System.out.println("Sửa thông tin danh mục");
             System.out.println("1. Sửa tên danh mục");
             System.out.println("2. Sửa mô tả danh mục");
             System.out.println("0. Quay lại");
@@ -185,9 +185,14 @@ public class catalogManagement {
     }
 
     private void deleteCatalog() {
-        System.out.print("Mời nhập ID danh mục cần xoá: ");
+        System.out.print(YELLOW + "Mời nhập ID danh mục cần xoá, Hoặc nhập 0 để quay lại: " + RESET);
         int idDelete = Validate.validatePositiveInt();
         Catalog catalogDelete = catalogService.findByID(idDelete);
+
+        if (idDelete == 0) {
+            return;
+        }
+
         if (catalogDelete == null) {
             System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
         } else {
@@ -210,6 +215,7 @@ public class catalogManagement {
         if (catalog != null) {
             System.out.println("1. Ẩn danh mục");
             System.out.println("2. Mở lại danh mục");
+            System.out.println("0. Quay lại");
             int choice = Validate.validatePositiveInt();
 
             if (choice == 1) {
@@ -232,6 +238,8 @@ public class catalogManagement {
                 } else {
                     System.out.println(YELLOW + "Danh mục đang ở trạng thái mở" + RESET);
                 }
+            } else if (choice == 0) {
+                return;
             } else {
                 System.out.println(RED + "Lựa chọn không hợp lệ" + RESET);
             }

@@ -12,10 +12,10 @@ public class AdminManager {
         do {
             WriteReadFile<Users> config = new WriteReadFile<>();
             Users users = config.readFile(WriteReadFile.PATH_USER_LOGIN);
-            System.out.println(CYAN_BOLD_BRIGHT + "您好: " + users.getName() + "!" + RESET);
+            System.out.println(CYAN_BOLD_BRIGHT + "您好: " + users.getName() + RESET);
 
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                       --->> ADMIN MENU <<---                         |");
+            System.out.println("|                    --->> TRANG QUẢN TRỊ VIÊN <<---                   |");
             System.out.println("|                       \uD83C\uDF4E    \uD83C\uDF4C     \uD83C\uDF4A     \uD83C\uDF47                        |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                        1. Quản lý người dùng                         |");

@@ -29,7 +29,7 @@ public class homePage {
     public void home() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                        --->> HOME PAGE <<---                         |");
+            System.out.println("|                        --->> CỬA HÀNG <<---                          |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                1. Tìm kiếm sản phẩm theo tên                         |");
             System.out.println("|                2. 10 Sản phẩm theo tên (alpha-b)                     |");
@@ -236,8 +236,11 @@ public class homePage {
             System.out.println(catalog.getCatalogId() + ". " + catalog.getCatalogName());
         }
 
-        System.out.print("Nhập ID danh mục, ");
+        System.out.print(YELLOW +"Nhập ID danh mục cần tìm, Hoặc nhập 0 để quay lại: "+ RESET);
         int catalogId = Validate.validatePositiveInt();
+        if (catalogId == 0) {
+            return;
+        }
 
         Catalog selectedCatalog = null;
         for (Catalog catalog : catalogs) {

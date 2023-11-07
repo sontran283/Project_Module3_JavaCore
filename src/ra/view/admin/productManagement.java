@@ -19,7 +19,7 @@ public class productManagement {
     public void menuProduct() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                      --->> PRODUCT MANAGER <<---                     |");
+            System.out.println("|                    --->> QUẢN LÝ SẢN PHẨM <<---                      |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                   1. Thêm mới sản phẩm                               |");
             System.out.println("|                   2. Hiển thị danh sách sản phẩm                     |");
@@ -73,7 +73,7 @@ public class productManagement {
 
                 for (Product checkName : productService.findAll()) {
                     if (checkName.getProductName().equalsIgnoreCase(product.getProductName())) {
-                        System.out.println(RED + "Sản phẩm đã tồn tại, mời nhập lại" + RESET);
+                        System.out.println(RED + "Sản phẩm đã tồn tại" + RESET);
                         check = true;
                         break;
                     }
@@ -125,6 +125,7 @@ public class productManagement {
         System.out.println("1. Tất cả sản phẩm");
         System.out.println("2. Sản phẩm mở bán");
         System.out.println("3. Sản phẩm không mở bán");
+        System.out.println("0. Quay lại");
         int choiceCheck = Validate.validatePositiveInt();
 
         if (choiceCheck == 1) {
@@ -158,13 +159,15 @@ public class productManagement {
                     System.out.println(product);
                 }
             }
+        } else if (choiceCheck == 0) {
+            return;
         } else {
             System.out.println(RED + "Không hợp lệ, mời nhập lại" + YELLOW);
         }
     }
 
     private void editProduct() {
-        System.out.println("Nhập ID sản phẩm cần thay đổi: ");
+        System.out.print("Nhập ID sản phẩm cần thay đổi: ");
         int idEdit = Validate.validatePositiveInt();
         Product productedit = productService.findByID(idEdit);
 
@@ -178,7 +181,7 @@ public class productManagement {
             int choice = Validate.validatePositiveInt();
             switch (choice) {
                 case 1:
-                    System.out.println("Nhập tên mới: ");
+                    System.out.print("Nhập tên mới: ");
                     productedit.setProductName(Validate.validateString());
                     productService.update(productedit);
                     System.out.println(YELLOW + "Sửa tên thành công" + RESET);
@@ -188,33 +191,33 @@ public class productManagement {
                     for (int j = 0; j < catalogService.findAll().size(); j++) {
                         System.out.println((j + 1) + ", " + catalogService.findAll().get(j).getCatalogName());
                     }
-                    System.out.println("Mời chọn danh mục mới: ");
+                    System.out.print("Mời chọn danh mục mới: ");
                     while (true) {
                         int choiceEdit = Validate.validatePositiveInt();
                         if (choiceEdit >= 1 && choiceEdit <= catalogService.findAll().size()) {
                             productedit.setCatalog(catalogService.findAll().get(choiceEdit - 1));
                             break;
                         } else {
-                            System.out.println(RED + "Không có danh mục theo lựa chọn, mời nhập lại" + RESET);
+                            System.out.println(RED + "Không có danh mục theo lựa chọn" + RESET);
                         }
                     }
                     productService.update(productedit);
                     System.out.println(YELLOW + "Sửa danh mục thành công" + RESET);
                     break;
                 case 3:
-                    System.out.println("Nhập mô tả sản phẩm mới: ");
+                    System.out.print("Nhập mô tả sản phẩm mới: ");
                     productedit.setDescription(Validate.validateString());
                     productService.update(productedit);
                     System.out.println(YELLOW + "Sửa mô tả thành công" + RESET);
                     break;
                 case 4:
-                    System.out.println("Nhập đơn giá mới: ");
+                    System.out.print("Nhập đơn giá mới: ");
                     productedit.setUnitPrice(Validate.validatePositiveDouble());
                     productService.update(productedit);
                     System.out.println(YELLOW + "Sửa đơn giá thành công" + RESET);
                     break;
                 case 5:
-                    System.out.println("Nhập mới số lượng hàng tồn kho: ");
+                    System.out.print("Nhập mới số lượng hàng tồn kho: ");
                     productedit.setStock(Validate.validatePositiveInt());
                     productService.update(productedit);
                     System.out.println(YELLOW + "Sửa số lượng thành công" + RESET);
@@ -222,18 +225,23 @@ public class productManagement {
                 case 0:
                     return;
                 default:
-                    System.err.println(RED + "Nhập không hợp lệ, mời nhập lại" + RESET);
+                    System.err.println(RED + "Không hợp lệ, mời nhập lại" + RESET);
                     break;
             }
         } else {
-            System.out.println(RED + "Không tìm thấy sản phẩm có ID: " + idEdit + " ___" + RESET);
+            System.out.println(RED + "Không tìm thấy sản phẩm có ID: " + idEdit + RESET);
         }
     }
 
     private void deleteProduct() {
-        System.out.println("Nhập ID sản phẩm cần xoá: ");
+        System.out.print(YELLOW + "Nhập ID sản phẩm cần xoá, Hoặc nhập 0 để quay lại: " + RESET);
         int idDelete = Validate.validatePositiveInt();
         Product productDelete = productService.findByID(idDelete);
+
+        if (idDelete == 0) {
+            return;
+        }
+
         if (productDelete != null) {
             productService.delete(idDelete);
             System.out.println(YELLOW + "Xoá thành công" + RESET);

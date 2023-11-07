@@ -22,7 +22,7 @@ public class profilePage {
     public void profileHome() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                       --->> PROFILE PAGE <<---                       |");
+            System.out.println("|                    --->>  THÔNG TIN CÁ NHÂN <<---                    |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                    1. Đổi mật khẩu                                   |");
             System.out.println("|                    2. Hiển thị thông tin cá nhân                     |");
@@ -53,7 +53,7 @@ public class profilePage {
         Users usersEdit = userService.findByID(users.getId());
         String pass = usersEdit.getPassword();
 
-        System.out.print("Nhập mật khẩu cũ: ");
+        System.out.print("Mời nhập mật khẩu cũ: ");
         String oldPass = Validate.validateString();
 
         while (!oldPass.equals(pass)) {
@@ -61,7 +61,7 @@ public class profilePage {
             oldPass = Validate.validateString();
         }
 
-        System.out.print("Nhập mật khẩu mới: ");
+        System.out.print("Mời nhập mật khẩu mới: ");
         String newPass = Validate.validateString();
         usersEdit.setPassword(newPass);
         userService.save(usersEdit);
@@ -72,7 +72,7 @@ public class profilePage {
     }
 
     private void showProfile() {
-        System.out.println(YELLOW + "Thông tin tài khoản: " + RESET);
+        System.out.println(YELLOW + "Thông tin tài khoản " + RESET);
         Users usersProfile = userService.findByID(users.getId());
 
         System.out.println("- Tên: " + usersProfile.getName());
@@ -107,7 +107,7 @@ public class profilePage {
                 userService.save(usersProfile);
                 System.out.println(YELLOW + "Đổi tên thành công" + RESET);
             case 2:
-                System.out.print("Nhập email cần đổi");
+                System.out.print("Nhập email cần đổi: ");
                 String newEmail = Validate.validateEmail();
                 if (newEmail.equals(usersProfile.getEmail())) {
                     System.out.println(RED + "Email giống email ban đầu" + RESET);
@@ -119,7 +119,7 @@ public class profilePage {
                     break;
                 }
             case 3:
-                System.out.print("Nhập số điện thoại cần đổi");
+                System.out.print("Nhập số điện thoại cần đổi: ");
                 String newPhone = Validate.validatePhone();
                 if (newPhone.equals(usersProfile.getPhoneNumber())) {
                     System.out.println(RED + "Số điện thoại giống số điện thoại ban đầu" + RESET);

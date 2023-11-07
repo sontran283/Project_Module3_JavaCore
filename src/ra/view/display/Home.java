@@ -20,12 +20,8 @@ public class Home {
 
     public void menuHome() {
         do {
-            System.out.println("Danh sách người dùng: ");
-            for (Users users : userService.findAll()) {
-                System.out.println(users);
-            }
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                  --->> HELLO, COGO WELCOME BACK <<---                |");
+            System.out.println("|                   --->> CHÀO MỪNG QUAY TRỞ LẠI <<---                 |");
             System.out.println("|                       \uD83C\uDF4E    \uD83C\uDF4C     \uD83C\uDF4A     \uD83C\uDF47                        |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                            1. Đăng nhập                              |");
@@ -100,7 +96,7 @@ public class Home {
         users.setId(userService.getNewId());
         System.out.println("ID: " + users.getId());
 
-        System.out.print("Nhập họ tên (ví dụ_tran van a):  ");
+        System.out.print("Nhập họ tên (ví dụ: tran van a):  ");
         String fullName;
         while (true) {
             fullName = Validate.validateString();

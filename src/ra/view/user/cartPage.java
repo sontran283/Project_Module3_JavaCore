@@ -28,7 +28,7 @@ public class cartPage {
     public void cartHome() {
         do {
             System.out.println(BLUE + ".======================================================================.");
-            System.out.println("|                        --->> CART PAGE <<---                         |");
+            System.out.println("|                         --->> GIỎ HÀNG <<---                         |");
             System.out.println("|======================================================================|");
             System.out.println(YELLOW + "|                    1. Thay đổi số lượng đặt hàng                     |");
             System.out.println("|                    2. Xóa sản phẩm trong giỏ hàng                    |");
@@ -242,12 +242,13 @@ public class cartPage {
             System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;
         }
+
         if (orderUser == null || orderUser.isEmpty()) {
             System.out.println(RED + "Không có đơn hàng nào" + RESET);
             return;
         }
 
-        System.out.println("________________________________________________");
+        System.out.println("_____________________________________________");
         for (Order order : oders) {
             if (order.getUserId() == userLogin.getId()) {
                 System.out.println("-Order ID: " + order.getOrderId());
@@ -263,11 +264,10 @@ public class cartPage {
                     System.out.println("-Số lượng: " + order.getOrdersDetails().get(id));
                 }
             }
-            System.out.println("________________________________________________");
+            System.out.println("_____________________________________________");
         }
 
-        System.out.print("Mời nhập ID để chọn đơn hàng cần huỷ, Hoặc ");
-        System.out.print("nhập 0 để quay lại: ");
+        System.out.print(YELLOW + "Mời nhập ID để chọn đơn hàng cần huỷ, Hoặc nhập 0 để quay lại: " + RESET);
         int orderId = Validate.validatePositiveInt();
         Order order = orderService.findByID(orderId);
 
