@@ -150,8 +150,12 @@ public class orderManagement {
     }
 
     private void searchOrder() {
-        System.out.println("Nhập UserID cần tìm kiếm: ");
+        System.out.println(YELLOW + "Nhập UserID cần tìm kiếm, Hoặc nhập 0 để quay lại: " + RESET);
         int UserID = Validate.validatePositiveInt();
+        if (UserID == 0) {
+            return;
+        }
+
         int count = 0;
         System.out.println(YELLOW + "Danh sách đơn hàng cần tìm " + RESET);
         System.out.println("__________________________________");

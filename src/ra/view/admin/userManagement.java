@@ -75,8 +75,11 @@ public class userManagement {
     }
 
     private void editStatus() {
-        System.out.print("Nhập ID người dùng cần thay đổi trạng thái: ");
+        System.out.print(YELLOW + "Nhập ID người dùng cần thay đổi trạng thái, Hoặc nhập 0 để quay lại: " + RESET);
         int userId = Integer.parseInt(Validate.validateString());
+        if (userId == 0) {
+            return;
+        }
 
         Users user = userService.findByID(userId);
         if (user != null) {
@@ -101,8 +104,11 @@ public class userManagement {
     }
 
     private void changeRole() {
-        System.out.print("Nhập ID người dùng cần thay đổi Role: ");
+        System.out.print(YELLOW + "Nhập ID người dùng cần thay đổi Role, Hoặc nhập 0 để quay lại: " + RESET);
         int userId = Integer.parseInt(Validate.validateString());
+        if (userId == 0) {
+            return;
+        }
 
         Users user = userService.findByID(userId);
         if (user != null) {

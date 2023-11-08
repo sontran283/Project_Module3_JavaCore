@@ -60,8 +60,12 @@ public class catalogManagement {
     }
 
     private void addCatalog() {
-        System.out.print("Nhập số lượng danh mục cần thêm: ");
+        System.out.print(YELLOW + "Nhập số lượng danh mục cần thêm, Hoặc nhập 0 để quay lại: " + RESET);
         int n = Validate.validatePositiveInt();
+        if (n == 0) {
+            return;
+        }
+
         for (int i = 0; i < n; i++) {
             System.out.println("Danh mục thứ " + (i + 1) + ", ");
             Catalog catalog = new Catalog();
@@ -140,9 +144,13 @@ public class catalogManagement {
     }
 
     private void editCatalog() {
-        System.out.print("Nhập ID danh mục cần thay đổi thông tin: ");
+        System.out.print(YELLOW + "Nhập ID danh mục cần thay đổi thông tin, Hoặc nhập 0 để quay lại: " + RESET);
         int idEdit = Validate.validatePositiveInt();
         Catalog catalogEdit = catalogService.findByID(idEdit);
+
+        if (idEdit == 0) {
+            return;
+        }
 
         if (catalogEdit == null) {
             System.out.println(RED + "Không tồn tại danh mục theo ID vừa nhập" + RESET);
@@ -158,10 +166,10 @@ public class catalogManagement {
                     catalogService.update(catalogEdit);
                     System.out.println(YELLOW + "Sửa tên danh mục thành công" + RESET);
 
-                    // Lấy tên danh mục mới
+                    // lay ten danh muc moi
                     String newCatalogName = catalogEdit.getCatalogName();
 
-                    // Cập nhật tên danh mục mới cho các sản phẩm có cùng mã danh mục
+                    // cap nhat ten danh muc moi cho cac sp co cung ma danh muc
                     for (Product product : productService.findAll()) {
                         if (product.getCatalog().getCatalogId() == idEdit) {
                             product.getCatalog().setCatalogName(newCatalogName);
@@ -219,7 +227,7 @@ public class catalogManagement {
             int choice = Validate.validatePositiveInt();
 
             if (choice == 1) {
-                // Ẩn danh mục và sản phẩm
+                // an danh muc va sp
                 if (catalog.isStatus()) {
                     catalog.setStatus(false);
                     catalogService.updateData();
@@ -229,7 +237,7 @@ public class catalogManagement {
                     System.out.println(YELLOW + "Danh mục đang ở trạng thái ẩn" + RESET);
                 }
             } else if (choice == 2) {
-                // Mở lại danh mục và sản phẩm
+                // mo lai danh muc va sp
                 if (!catalog.isStatus()) {
                     catalog.setStatus(true);
                     catalogService.updateData();
