@@ -69,6 +69,7 @@ public class profilePage {
         System.out.println(YELLOW + "Đổi mật khẩu thành công, vui lòng đăng nhập lại!" + RESET);
         new WriteReadFile<Users>().writeFile(WriteReadFile.PATH_LOGIN, null);
         new Home().menuHome();
+
     }
 
     private void showProfile() {

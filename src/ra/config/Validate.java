@@ -1,6 +1,7 @@
 package ra.config;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static ra.config.Color.*;
 
@@ -24,15 +25,34 @@ public class Validate {
 
     public static String validateEmail() {
         String email;
+        String emailPattern = "^[a-zA-Z0-9]+@gmail\\.com$";
+        Pattern pattern = Pattern.compile(emailPattern);
+
         while (true) {
             email = Validate.scanner().nextLine();
-            if (email.matches("[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@[a-z]+(\\.[a-z]+){1,2}")) {
+            if (pattern.matcher(email).matches()) {
                 break;
             } else {
                 System.out.println(RED + "Email không đúng định dạng, mời nhập lại" + RESET);
             }
         }
+
         return email;
+    }
+
+    public static String validatePassword() {
+        String password;
+        Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d).{7,}$");
+
+        while (true) {
+            password = Validate.scanner().nextLine();
+            if (pattern.matcher(password).matches() && password.length() >= 4) {
+                break;
+            } else {
+                System.out.println(RED + "Mật khẩu phải có ít nhất 7 kí tự cả số và chữ" + RESET);
+            }
+        }
+        return password;
     }
 
     public static String validatePhone() {

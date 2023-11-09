@@ -6,6 +6,8 @@ import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
 
+import java.util.LinkedList;
+
 import static ra.config.Color.*;
 
 
@@ -15,6 +17,8 @@ public class productManagement {
     IUserService userService = new UserServiceIMPL();
     IOrderService orderService = new OrderServiceIMPL();
     IOrdersDetailService ordersDetailService = new OrdersDetailServiceIMPL();
+    // Khởi tạo danh sách liên kết để lưu trữ các sản phẩm
+    LinkedList<Product> productList = new LinkedList<>();
 
     public void menuProduct() {
         do {

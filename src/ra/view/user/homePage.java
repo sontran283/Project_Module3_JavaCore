@@ -140,6 +140,7 @@ public class homePage {
     }
 
     private void addToCart() {
+        // Khởi tạo đối tượng WriteReadFile để đọc dữ liệu người dùng đăng nhập từ file
         WriteReadFile<Users> config = new WriteReadFile<>();
         Users userLogin = config.readFile(WriteReadFile.PATH_USER_LOGIN);
 
@@ -156,14 +157,14 @@ public class homePage {
             cart = new Cart(cartService.getNewId(), userLogin.getId(), new HashMap<>());
         }
 
-        // danh sach san pham
+        // In ra danh sách các sản phẩm đang có
         for (int i = 0; i < products.size(); i++) {
             if (products.get(i).isStatus()) {
                 System.out.println(products.get(i));
             }
         }
 
-        // chon san pham
+        // người dùng nhập ID sản phẩm muốn mua
         System.out.print(YELLOW + "Nhập ID sản phẩm để mua hàng, Hoặc nhập 0 để quay lại: " + RESET);
         int choice = Validate.validatePositiveInt();
 
@@ -171,24 +172,24 @@ public class homePage {
             return;
         }
 
-        // lay ra sp da chon
+        // Lấy ra đối tượng Product tương ứng với ID đã nhập
         Product selectedProduct = products.get(choice - 1);
         if (!selectedProduct.isStatus()) {
             System.out.println(RED + "Không thêm được vào giỏ hàng, do không còn mở bán" + RESET);
             return;
         }
 
-        // nhap so luong
+        // Nhập số lượng muốn mua
         System.out.print("Nhập số lượng muốn mua: ");
         int quantity = Validate.validatePositiveInt();
 
-        // kiem tra xem co hop le
+        // Kiểm tra số lượng hợp lệ hay không
         if (quantity <= 0) {
             System.out.println(RED + "Số lượng không hợp lệ. Không thêm được sản phẩm vào giỏ hàng" + RESET);
             return;
         }
 
-        //kiem tra trong kho co du so luong hay ko
+        // Kiểm tra số lượng trong kho có đủ không
         if (selectedProduct.getStock() < quantity) {
             System.out.println(RED + "Số lượng sản phẩm không đủ. Không thêm được sản phẩm vào giỏ hàng" + RESET);
             return;
@@ -200,6 +201,7 @@ public class homePage {
         // Cập nhật số lượng sản phẩm trong kho
         // selectedProduct.setStock(selectedProduct.getStock() - quantity);
 
+        // Lưu thông tin giỏ hàng và sản phẩm vào file
         cartService.save(cart);
         productService.update(selectedProduct);
         System.out.println(YELLOW + "Sản phẩm đã được thêm vào giỏ hàng" + RESET);

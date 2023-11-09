@@ -60,7 +60,6 @@ public class CartServiceIMPL implements ICartService {
 
     @Override
     public int getNewId() {
-//        return 0;
         int idMax = 0;
         for (Cart cart : cartList) {
             if (cart.getCartId() > idMax) {
@@ -72,6 +71,7 @@ public class CartServiceIMPL implements ICartService {
 
     @Override
     public Cart findCartByUserLogin() {
+        // tạo một đối tượng mới thuộc lớp WriteReadFile để chỉ định kiểu dữ liệu muốn đọc từ tệp tin
         Users userLogin = new WriteReadFile<Users>().readFile(WriteReadFile.PATH_USER_LOGIN);
         for (Cart cart : cartList) {
             if (cart.getUserId() == userLogin.getId()) {
