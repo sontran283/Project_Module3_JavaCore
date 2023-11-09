@@ -55,7 +55,7 @@ public class Home {
         String name = Validate.validateString();
 
         System.out.print("Nhập mật khẩu: ");
-        String pass = Validate.validatePassword();
+        String pass = Validate.validateString();
 
         Users users = userService.checkLogin(name, pass);
         if (users == null) {
@@ -122,11 +122,11 @@ public class Home {
         }
 
         System.out.print("Nhập mật khẩu: ");
-        users.setPassword(Validate.validatePassword());
+        users.setPassword(Validate.validateString());
 
         System.out.print("Xác nhận mật khẩu: ");
         while (true) {
-            String repeatPass = Validate.validatePassword();
+            String repeatPass = Validate.validateString();
             if (users.getPassword().equals(repeatPass)) {
                 break;
             } else {

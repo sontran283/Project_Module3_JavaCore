@@ -6,7 +6,10 @@ import ra.model.Product;
 import ra.service.*;
 import ra.service.impl.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 import static ra.config.Color.*;
 
@@ -31,6 +34,7 @@ public class productManagement {
             System.out.println("|                   4. Xoá sản phẩm theo mã sản phẩm                   |");
             System.out.println("|                   5. Tìm kiếm sản phẩm theo tên sản phẩm             |");
             System.out.println("|                   6. Ẩn/Mở sản phẩm theo mã sản phẩm                 |");
+            System.out.println("|                   7. Sắp xếp hai sản phẩm theo giá cao nhất          |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
@@ -53,6 +57,9 @@ public class productManagement {
                 case 6:
                     hideOpenProduct();
                     break;
+                case 7:
+                    sortProduct();
+                    break;
                 case 0:
                     return;
                 default:
@@ -60,6 +67,24 @@ public class productManagement {
                     break;
             }
         } while (true);
+    }
+
+    private void sortProduct() {
+        System.out.println("Danh sach san pham");
+        System.out.println("_______________________________________________________________________________________________________________________");
+        System.out.printf("%-15s %-20s %-20s %-20s %-10s %-20s %-15s%n",
+                "Product ID", "Product Name", "Description", "Unit Price", "Stock", "Catalog Name", "Status");
+        System.out.println("_______________________________________________________________________________________________________________________");
+        Collections.sort(productService.findAll(), new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return (int) -(o1.getUnitPrice() - o2.getUnitPrice());
+            }
+        });
+
+        for (int i = 0; i < 2; i++) {
+            System.out.println(productService.findAll().get(i));
+        }
     }
 
     private void addProduct() {

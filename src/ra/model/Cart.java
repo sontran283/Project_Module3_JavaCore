@@ -11,7 +11,7 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
     private int cartId;
     private int userId;
-    private Map<Integer, Integer> products ;
+    private Map<Integer, Integer> products;
     private boolean status;
 
     public Cart() {
