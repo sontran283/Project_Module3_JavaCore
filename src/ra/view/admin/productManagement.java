@@ -34,7 +34,7 @@ public class productManagement {
             System.out.println("|                   4. Xoá sản phẩm theo mã sản phẩm                   |");
             System.out.println("|                   5. Tìm kiếm sản phẩm theo tên sản phẩm             |");
             System.out.println("|                   6. Ẩn/Mở sản phẩm theo mã sản phẩm                 |");
-            System.out.println("|                   7. Sắp xếp hai sản phẩm theo giá cao nhất          |");
+            System.out.println("|                   7. Sắp xếp 2 sản phẩm theo giá cao nhất            |");
             System.out.println("|                   0. Quay lại                                        |");
             System.out.println(".======================================================================." + RESET);
             System.out.println("                  --->> Mời nhập lựa chọn của bạn <<---");
